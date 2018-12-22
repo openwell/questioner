@@ -1,0 +1,91 @@
+
+/*======================================================
+                    Questions
+======================================================*/
+function questionsInit(){
+const data = {
+        status: "success",
+        questions: [
+          {
+            subject: "How to get away with murder",
+            id: 1,
+            votes: 8
+          },
+          {
+            subject: "The adventure of simba and aladin",
+            id: 3,
+            votes: 4
+          },
+          {
+            subject: "How i met you mother in the town",
+            id: 2,
+            votes: 5
+          },
+          {
+            subject: "The adventure of jumanji part 2",
+            id: 3,
+            votes: 4
+          }
+        ]
+      };
+
+      let all = "";
+      const sortSample = data.questions.sort((a, b) => a.votes - b.votes);
+      data.questions.forEach(x => {
+        let main = document.getElementById("question-load");
+        let first =
+          '<div class="questions">' +
+          '<div class="vote_bar">' +
+          '<button class="up-vote" >' +
+          '<i class="fa fa-arrow-up" aria-hidden="true"></i></button>' +
+          '<div id="count">' +
+          x.votes +
+          " votes</div>" +
+          '<button class="down-vote">' +
+          '<i class="fa fa-arrow-down" aria-hidden="true"></i>' +
+          "</button> </div>" +
+          '<div class="questions-topic"><h4>' +
+          x.subject +
+          "</h4>" +
+          '<small> Add a comment</small> &#32 <small class="show-comment">Show comments</small></div></div>';
+        all += first;
+        main.innerHTML = all;
+      });
+
+      document.getElementById("comment-close").onclick = function(event) {
+        document.getElementById("comment-container").style.display = "none";
+      };
+
+      const showComment = document.getElementsByClassName("show-comment");
+      for (i = 0; i < showComment.length; ++i) {
+        showComment[i].onclick = function(event) {
+            document.getElementById("comment-container").style.display = "block";
+        };
+      }
+
+      const modal = document.getElementById("comment-container");
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+      const upVote = document.getElementsByClassName("up-vote");
+      for (i = 0; i < upVote.length; ++i) {
+        upVote[i].onclick = function(event) {
+          let vote = parseInt(event.currentTarget.nextSibling.innerHTML);
+          vote = vote + 1;
+          event.currentTarget.nextSibling.innerHTML = vote + " votes";
+        };
+      }
+
+      const downVote = document.getElementsByClassName("down-vote");
+      for (i = 0; i < downVote.length; ++i) {
+        downVote[i].onclick = function(event) {
+          let vote = parseInt(event.currentTarget.previousSibling.innerHTML);
+          vote = vote - 1;
+          event.currentTarget.previousSibling.innerHTML = vote + " votes";
+        };
+      }
+
+}
+      

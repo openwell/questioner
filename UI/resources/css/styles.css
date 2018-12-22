@@ -1,0 +1,501 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700,900|Roboto:400,700,900|Source+Sans+Pro:400");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+::selection {
+  color: rgb(72, 255, 0);
+  background: rgb(255, 255, 255);
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body {
+  font-size: 16px;
+  font-weight: 400;
+  /* max-width: 1200px; */
+  background: white;
+  margin: 0 auto;
+  /* border: 0.5px solid black; */
+  font-family: "Roboto", "Lato", "Source Sans Pro", "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
+}
+.row {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.row2 {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+/*======================================================
+                   index page
+======================================================*/
+header {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 6px 5px -3px #f4f4f4;
+}
+header a {
+  padding: 10px;
+  color: #232c30;
+  border: 0;
+  display: block;
+  background-color: transparent;
+  transition: color 0.3s ease-out;
+  letter-spacing: 1px;
+}
+a:link,
+a:active,
+a:visited {
+  text-decoration: none;
+  background-color: transparent;
+}
+a:hover {
+  color: #246bad;
+}
+
+.logo {
+  padding: 10px;
+  background: url(../images/Untitled-1.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 150px;
+  margin-left: 20px;
+}
+nav li {
+  float: left;
+  margin: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+.clear {
+  clear: both;
+}
+.index_main {
+  background: linear-gradient(rgba(10, 10, 10, 0.466), rgba(10, 10, 10, 0.527)),
+    url(../images/64627.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 85vh;
+  width: 100%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.text {
+  background-color: white;
+  color: black;
+  font-size: 10vw;
+  font-weight: bold;
+  padding: 10px;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+footer {
+  text-align: center;
+  padding: 10px;
+}
+
+/*======================================================
+                  Sign Up Page
+======================================================*/
+
+.signup-section {
+  background: #dae0e6;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.signup-section form {
+  color: #000000;
+  background: #fff;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 20px;
+  caret-color: transparent;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+.form-control {
+  display: block;
+  border-radius: 3px;
+  width: 100%;
+  padding: 0.3em 0.55em;
+  font-size: 1em;
+  line-height: 1;
+  color: #000000;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.form-control:focus {
+  outline: auto 5px #3f51b5;
+  outline-offset: -2px;
+}
+.signup-section button,
+.signin-section button {
+  background: #edeff0;
+  padding: 10px 20px;
+  width: 50%;
+  border: none;
+  margin: 0 25%;
+  font-weight: bold;
+  box-shadow: 0 6px 5px -3px #f4f4f4;
+  transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.4s;
+}
+
+.signup-section button:hover,
+.signin-section button:hover {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.col-2 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+}
+.form-group {
+  margin-bottom: 0.5em;
+}
+
+.form-row > [class*="col-"] {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+/*======================================================
+                   Login Page
+======================================================*/
+.signin-section {
+  padding-top: 20px;
+  height: 80vh;
+  margin-top: 20px;
+  background: #dae0e6;
+}
+.signin-section form {
+  background: #fff;
+  margin: 0 auto;
+  max-width: 400px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/*======================================================
+                  Meet Ups 
+======================================================*/
+.meetup_section {
+  display: flex;
+  flex-wrap: wrap;
+}
+.meetup-card {
+  flex: 0 0 200px;
+  border-radius: 2px;
+  padding: 10px;
+  margin: 8px;
+  background: #fff;
+  box-shadow: 0 6px 5px -3px #f4f4f4;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.meetup-card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.meetup-card a:link {
+  color: black;
+}
+.meetup-card a:visited {
+  color: black;
+}
+.meetup-img {
+  width: 260px;
+  border: 0.1px solid black;
+}
+.meetup-img img {
+  width: 100%;
+  height: auto;
+}
+.meetup-banner {
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 20px;
+  border-bottom: 1px solid grey;
+  width: 100%;
+  height: 300px;
+  background: url(../images/meetup-example.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/*======================================================
+                 Questions
+======================================================*/
+.question-header-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin: 0 auto;
+}
+.question-header-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.new-comment {
+  position: absolute;
+  bottom: 20px;
+  right: 200px;
+  font-size: 30px;
+  color: #246bad;
+}
+.new-comment span {
+  max-width: 0;
+  transition: max-width 1s;
+  display: inline-block;
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.new-comment:hover span {
+  max-width: 12rem;
+}
+
+.question_section {
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.questions {
+  display: flex;
+  border: 1px solid rgb(241, 236, 236);
+  margin: 5px 5px;
+  border-radius: 3px;
+}
+.up-vote,
+.down-vote {
+  display: block;
+  outline: none;
+}
+.vote_bar {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px;
+  background: #ced4da;
+}
+
+.vote_bar button {
+  color: black;
+  background: none;
+  border: 0px white;
+  margin: 0 auto;
+  font-size: 19px;
+  cursor: pointer;
+}
+.questions-topic {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+.questions-topic small {
+  text-decoration: underline;
+}
+.new-question {
+  float: 1;
+}
+#question-load {
+  flex: 0 1 568px;
+}
+.new-question-form button {
+  padding: 5px 20px;
+  background: #edeff0;
+  border: none;
+  margin-left: 50px;
+}
+.new-question-form button:hover{
+  outline: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+}
+.new-question-form div[contenteditable] {
+  border: 1px solid black;
+  padding: 3px;
+  margin: 5px;
+  width: 200px;
+}
+
+/*======================================================
+                  Question Comment Modal
+======================================================*/
+.comment-form div[contenteditable] {
+  border: 1px solid black;
+  padding: 3px;
+  margin: 5px;
+  width: 400px;
+}
+.comment-form button {
+  padding: 5px 20px;
+  background: #edeff0;
+  border: none;
+  margin-left: 50px;
+}
+.comment-form button:hover {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+}
+
+.show-comment {
+  cursor: pointer;
+}
+
+#comment-close {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  padding: 5px;
+}
+#comment-close:hover {
+  cursor: pointer;
+}
+#comment-container {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 1400px;
+  position: fixed;
+  top: 0;
+  display: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.comment-main {
+  position: relative;
+  top: 20%;
+  width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+/*======================================================
+                  User Dashboard
+======================================================*/
+.user-dashboard-section {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: #d9dde0af;
+}
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 200px;
+  background: url(../images/avatar-svgrepo-com.svg);
+  display: block;
+  margin: 0 auto;
+}
+
+.user-details {
+  flex: 1;
+  border: 1px solid black;
+  margin: 10px;
+}
+.user-statistic-bar {
+  flex: 4;
+  height: 80vh;
+}
+.user-statistic {
+  display: flex;
+}
+.user-top-feed {
+  width: 100%;
+  height: calc(100% - 130px);
+  border: 1px solid black;
+  margin: 10px;
+}
+.user-statistic-1 {
+  width: 50%;
+  height: 100px;
+  margin: 10px;
+  background: linear-gradient(to right, #11998e, #38ef7d);
+  transition: all 0.5s;
+}
+.user-statistic-1:hover,
+.user-statistic-2:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.user-statistic-2 {
+  width: 50%;
+  height: 100px;
+  margin: 10px;
+  background: linear-gradient(to right, #fc4a1a, #f7b733);
+  transition: all 0.5s;
+}
+
+/*======================================================
+                 Admin Dashboard
+======================================================*/
+.admin-new-meetup-form div[contenteditable] {
+  border: 1px solid black;
+  padding: 3px;
+  margin: 5px;
+  width: 400px;
+  background: #fff;
+}
+
+.admin-new-meetup-form button {
+  padding: 5px 20px;
+  background: #fff;
+  border: none;
+  margin-left: 50px;
+}
+.admin-new-meetup-form button:hover {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+}
