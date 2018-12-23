@@ -292,6 +292,8 @@ label {
   color: #246bad;
 }
 .new-comment span {
+  color: #fff;
+  font-size: 0.7em;
   max-width: 0;
   transition: max-width 1s;
   display: inline-block;
@@ -300,7 +302,7 @@ label {
   overflow: hidden;
 }
 .new-comment:hover span {
-  max-width: 12rem;
+  max-width: 14rem;
 }
 
 .question_section {
@@ -354,7 +356,7 @@ label {
   border: none;
   margin-left: 50px;
 }
-.new-question-form button:hover{
+.new-question-form button:hover {
   outline: none;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   background: #4caf50;
@@ -431,6 +433,12 @@ label {
   flex-wrap: wrap;
   background: #d9dde0af;
 }
+
+.user-details {
+  flex: 1;
+  border: 1px solid black;
+  margin: 10px;
+}
 .user-avatar {
   width: 100px;
   height: 100px;
@@ -439,22 +447,17 @@ label {
   display: block;
   margin: 0 auto;
 }
-
-.user-details {
-  flex: 1;
-  border: 1px solid black;
-  margin: 10px;
-}
 .user-statistic-bar {
   flex: 4;
   height: 80vh;
+  margin: 10px;
 }
 .user-statistic {
   display: flex;
 }
 .user-top-feed {
-  width: 100%;
-  height: calc(100% - 130px);
+  width: calc(100% - 10px);
+  height: calc(100% - 140px);
   border: 1px solid black;
   margin: 10px;
 }
@@ -484,15 +487,19 @@ label {
   border: 1px solid black;
   padding: 3px;
   margin: 5px;
-  width: 400px;
+  width: 300px;
   background: #fff;
+  display: inline-block;
+}
+.admin-new-meetup-form input[type="url"] {
+  padding: 5px;
 }
 
 .admin-new-meetup-form button {
   padding: 5px 20px;
   background: #fff;
   border: none;
-  margin-left: 50px;
+  margin-left: 120px;
 }
 .admin-new-meetup-form button:hover {
   outline: none;
