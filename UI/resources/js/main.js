@@ -47,7 +47,7 @@ const data = {
           '<div class="questions-topic"><h4>' +
           x.subject +
           "</h4>" +
-          '<small> Add a comment</small> &#32 <small class="show-comment">Show comments</small></div></div>';
+          '<small class="show-comment"> Add a comment</small> &#32 <small class="show-comment">Show comments</small></div></div>';
         all += first;
         main.innerHTML = all;
       });
