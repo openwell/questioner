@@ -18,16 +18,25 @@ class Controller {
     });
   }
 
-    // Fetch all meetup records.
-    static allMeetUps(req, res) {
-      const result = model.fetchAllMeetUps();
-      return res.status(200).json({
-        status: 200,
-        data: result,
-      });
-    }
+  // Fetch all meetup records.
+  static allMeetUps(req, res) {
+    const result = model.fetchAllMeetUps();
+    return res.status(200).json({
+      status: 200,
+      data: result,
+    });
+  }
+  // Fetch a specific meetup record.
+  static findMeetUpsById(req, res) {
+    const meetUpId = req.params.meetupId;
+    const result = model.searchMeetUpById(meetUpId);
+    return res.status(200).json({
+      status: 200,
+      data: [result],
+    });
+  }
 
-      // Fetch all upcoming meetup records.
+  // Fetch all upcoming meetup records.
   static upComingMeetUps(req, res) {
     const result = model.fetchAllMeetUps();
     return res.status(200).json({
