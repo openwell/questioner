@@ -35,5 +35,15 @@ class Controller {
       data: [result],
     });
   }
+
+  // Create a question for a specific meetup.
+  static questionEntry(req, res) {
+    const newQuestion = req.body;
+    const result = model.createQuestion(newQuestion);
+    return res.status(201).json({
+      status: 201,
+      data: [result],
+    });
+  }
 }
 export default Controller;
