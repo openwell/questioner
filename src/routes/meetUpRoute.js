@@ -10,6 +10,8 @@ const time = (req, res, next) => {
 
 router.get('/', time, controller.home);
 router.post('/meetups', validate.meetUp, controller.createMeetUps);
+router.get('/meetups', validate.checkMeetUpEmpty, controller.allMeetUps);
+router.get('/meetups/upcoming', validate.checkMeetUpEmpty, controller.upComingMeetUps);
 
 export default router;
 

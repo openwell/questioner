@@ -17,5 +17,23 @@ class Controller {
       data: [result],
     });
   }
+
+    // Fetch all meetup records.
+    static allMeetUps(req, res) {
+      const result = model.fetchAllMeetUps();
+      return res.status(200).json({
+        status: 200,
+        data: result,
+      });
+    }
+
+      // Fetch all upcoming meetup records.
+  static upComingMeetUps(req, res) {
+    const result = model.fetchAllMeetUps();
+    return res.status(200).json({
+      status: 200,
+      data: [result],
+    });
+  }
 }
 export default Controller;
