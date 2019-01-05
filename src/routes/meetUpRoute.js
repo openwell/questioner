@@ -12,6 +12,7 @@ router.get('/', time, controller.home);
 router.post('/meetups', validate.meetUp, controller.createMeetUps);
 router.get('/meetups', validate.checkMeetUpEmpty, controller.allMeetUps);
 router.get('/meetups/upcoming', validate.checkMeetUpEmpty, controller.upComingMeetUps);
+router.post('/questions', validate.question, controller.questionEntry);
 
 export default router;
 
