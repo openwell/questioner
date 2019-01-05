@@ -3,10 +3,11 @@ import model from '../model/meetUpModel';
 
 const middleware = {
   meetUp: [
-    check('topic')
-      .isLength({ min: 10 }).withMessage('topic cannot be blank'),
-    check('location').isLength({ min: 5 }).isAlpha().withMessage('location cannot be blank'),
-    check('happeningOn').isLength({ min: 5 }).withMessage('happeningOn cannot be blank'),
+    check('id').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isInt().withMessage('must be an integer'),
+    check('topic').escape().isLength({ min: 10, max: 30 }).withMessage('must be minimum of 10-30 letters').isString(),
+    check('location').escape().isLength({ min: 5, max: 10 }).withMessage('must be minimum of 5-10 letters').isString(),
+    check('happeningOn').escape().isLength({ min: 5, max: 10 }).withMessage('must be minimum of 5-10 letters'),
+    check('createdOn').escape().isLength({ min: 5, max: 10 }).withMessage('must be minimum of 5-10 letters'),
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -19,14 +20,12 @@ const middleware = {
     },
   ],
   question: [
-    check('id')
-      .isLength({ min: 1 }).withMessage('id cannot be blank')
-      .isNumeric().withMessage('Must be a Number'),
-    check('createdOn').isLength({ min: 5 }).withMessage('createdOn cannot be blank'),
-    check('createdBy').isLength({ min: 4 }).isAlpha().withMessage('createdBy cannot be blank'),
-    check('meetup').isLength({ min: 5 }).withMessage('must be minimum of 5 letters'),
-    check('title').isLength({ min: 10 }).withMessage('title cannot be blank'),
-    check('body').isLength({ min: 10 }).withMessage('body cannot be blank'),
+    check('id').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isInt().withMessage('must be an integer'),
+    check('createdOn').escape().isLength({ min: 5, max: 10 }).withMessage('must be minimum of 5-10 letters').isString().withMessage('must be an string'),
+    check('createdBy').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isInt().withMessage('must be an integer'),
+    check('meetup').isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isInt().withMessage('must be an integer'),
+    check('title').escape().isLength({ min: 10, max: 30 }).withMessage('must be minimum of 10-30 letters').isString().withMessage('must be an string'),
+    check('body').escape().isLength({ min: 10, max: 100 }).withMessage('must be minimum of 10-100 letters').isString().withMessage('must be an string'),
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -39,12 +38,10 @@ const middleware = {
     },
   ],
   rsvp: [
-    check('id')
-      .isLength({ min: 1 }).withMessage('id cannot be blank')
-      .isNumeric().withMessage('Must be a Number'),
-    check('meetup').isLength({ min: 5 }).withMessage('meetup be minimum of 9 letters'),
-    check('user').isLength({ min: 5 }).withMessage('user cannot be blank'),
-    check('response').isLength({ min: 2 }).isAlpha().withMessage('response cannot be blank'),
+    check('id').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isString().withMessage('must be an string'),
+    check('meetup').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letters').isInt().withMessage('must be an integer'),
+    check('user').escape().isLength({ min: 1, max: 4 }).withMessage('must be minimum of 1-4 letter').isInt().withMessage('must be an integer'),
+    check('response').escape().isLength({ min: 2, max: 6 }).withMessage('must be minimum of 2-6 letters').isString().withMessage('response cannot be blank'),
     (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
