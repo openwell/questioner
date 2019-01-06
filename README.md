@@ -43,6 +43,11 @@ Npm v6.4.1 or above
 - App runs on port 3000
 - Access endpoints on **localhost:3000**
 
+## On Heroku
+- Pull the [develop](https://github.com/openwell/questioner) branch off this repository
+- Run `npm install` to install all dependencies
+- Access endpoints on [questioner1.herokuapp.com](https://questioner1.herokuapp.com/api/v1)
+
 ## Running the tests
 
 Run `npm test` in the terminal for the cloned folder.
@@ -51,6 +56,12 @@ Run `npm test` in the terminal for the cloned folder.
 
 - It tests the API end-point.
 - It tests the REST API functionality
+
+### Deployment on Heroku Server
+
+- Create an account on Heroku.
+- Select [ch-deploy-application-heroku-163008182](https://github.com/openwell/sendIT/tree/ch-deploy-application-heroku-163008182) to deploy on.
+- Run **heroku push ch-deploy-application-heroku-163008182:master** to deploy
 
 ## Built With
 
