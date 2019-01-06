@@ -74,5 +74,15 @@ class Controller {
     });
   }
 
+  // Respond to meetup RSVP.
+  static rsvp(req, res) {
+    const meetupIds = req.params.meetupId;
+    const result = model.meetUpResponds(meetupIds, req.body);
+    return res.status(200).json({
+      status: 200,
+      data: [result],
+    });
+  }
+
 }
 export default Controller;
