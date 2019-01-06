@@ -16,6 +16,7 @@ router.get('/meetups/upcoming', validate.checkMeetUpEmpty, controller.upComingMe
 router.post('/questions', validate.question, controller.questionEntry);
 router.patch('/questions/:questionId/upvote', validate.checkQuestionId, controller.upVote);
 router.patch('/questions/:questionId/downvote', validate.checkQuestionId, controller.downVote);
+router.post('/meetups/:meetupId/rsvps', validate.rsvp, validate.checkMeetUpId, controller.rsvp);
 
 export default router;
 
