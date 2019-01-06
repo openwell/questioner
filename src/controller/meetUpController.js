@@ -54,5 +54,25 @@ class Controller {
       data: [result],
     });
   }
+  //  upVote (increase votes by 1) a specific question.
+  static upVote(req, res) {
+    const upVoteQuestionId = req.params.questionId;
+    const result = model.vote(upVoteQuestionId, '+');
+    return res.status(200).json({
+      status: 200,
+      data: [result],
+    });
+  }
+
+  // downVote (decrease votes by 1) a specific question.
+  static downVote(req, res) {
+    const downVoteQuestionId = req.params.questionId;
+    const result = model.vote(downVoteQuestionId, '-');
+    return res.status(200).json({
+      status: 200,
+      data: [result],
+    });
+  }
+
 }
 export default Controller;

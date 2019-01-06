@@ -14,6 +14,8 @@ router.get('/meetups', validate.checkMeetUpEmpty, controller.allMeetUps);
 router.get('/meetups/1/:meetupId', validate.checkMeetUpId, controller.findMeetUpsById);
 router.get('/meetups/upcoming', validate.checkMeetUpEmpty, controller.upComingMeetUps);
 router.post('/questions', validate.question, controller.questionEntry);
+router.patch('/questions/:questionId/upvote', validate.checkQuestionId, controller.upVote);
+router.patch('/questions/:questionId/downvote', validate.checkQuestionId, controller.downVote);
 
 export default router;
 
