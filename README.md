@@ -1,8 +1,7 @@
 # Questioner
+[![Build Status](https://travis-ci.org/openwell/questioner.svg?branch=develop)](https://travis-ci.org/openwell/questioner)
 [![Coverage Status](https://coveralls.io/repos/github/openwell/questioner/badge.svg?branch=develop)](https://coveralls.io/github/openwell/questioner?branch=develop)
-
 [![Maintainability](https://api.codeclimate.com/v1/badges/a3a966589be730bc865e/maintainability)](https://codeclimate.com/github/openwell/questioner/maintainability)
-
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a3a966589be730bc865e/test_coverage)](https://codeclimate.com/github/openwell/questioner/test_coverage)
 
 Crowd-source questions for a meetup. Questioner helps the meetup organizer prioritize
