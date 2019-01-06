@@ -1,4 +1,9 @@
 # Questioner
+[![Coverage Status](https://coveralls.io/repos/github/openwell/questioner/badge.svg?branch=develop)](https://coveralls.io/github/openwell/questioner?branch=develop)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/a3a966589be730bc865e/maintainability)](https://codeclimate.com/github/openwell/questioner/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/a3a966589be730bc865e/test_coverage)](https://codeclimate.com/github/openwell/questioner/test_coverage)
 
 Crowd-source questions for a meetup. Questioner helps the meetup organizer prioritize
 questions to be answered. Other users can vote on asked questions and they bubble to the top
@@ -38,6 +43,15 @@ Npm v6.4.1 or above
 - Run npm start to start the app
 - App runs on port 3000
 - Access endpoints on **localhost:3000**
+
+## Running the tests
+
+Run `npm test` in the terminal for the cloned folder.
+
+### Break down into end to end tests
+
+- It tests the API end-point.
+- It tests the REST API functionality
 
 ## Built With
 
