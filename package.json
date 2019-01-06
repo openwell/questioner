@@ -8,7 +8,7 @@
     "build": "@babel src/ -d dist",
     "serve": "node dist/index.js",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill ./src/test/",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
     "lint": "eslint --fix-dry-run ./src/index.js ./src/controllers/"
   },
   "repository": {
