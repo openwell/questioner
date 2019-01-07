@@ -29,18 +29,70 @@
       <div class="question-header-image">
         <img src="../UI/resources/images/meetup.jpg" alt="meetup-img" />
         <i class="fas fa-plus new-comment" title="question"
-          ><span>Will You Be Attending</span></i
+          ><span> RSVP</span></i
         >
       </div>
     </section>
 
     <section class="question_section row2">
       <div class="new-question">
-        <form action="" class="new-question-form">
-          <label for="">New Question</label>
-          <div contenteditable="true"></div>
+        <form
+          action=""
+          class="new-question-form"
+          onsubmit="event.preventDefault()"
+        >
+          <h4>New Question</h4>
+          <label for="">Title</label>
+          <div
+            contenteditable="true"
+            name="title"
+            value=""
+            id="newQuestionTitle"
+          ></div>
+          <label for="">Body</label>
+          <div
+            contenteditable="true"
+            name="body"
+            value=""
+            id="newQuestionBody"
+          ></div>
           <button>Submit</button>
         </form>
+        <br />
+        <div class="">
+          <form
+            action=""
+            class="new-question-form"
+            onsubmit="event.preventDefault()"
+          >
+            <h4>RSVP</h4>
+            <label for="yes">YES</label>
+            <input
+              type="checkbox"
+              id="yes"
+              name="rsvp"
+              onclick="Rsvp(this)"
+              value="yes"
+            />
+            <label for="no">NO</label>
+            <input
+              type="checkbox"
+              id="no"
+              name="rsvp"
+              onclick="Rsvp(this)"
+              value="no"
+            />
+            <label for="maybe">MAY-BE</label>
+            <input
+              type="checkbox"
+              id="maybe"
+              name="rsvp"
+              onclick="Rsvp(this)"
+              value="maybe"
+            /><br />
+            <button>Submit</button>
+          </form>
+        </div>
       </div>
       <div id="question-load"></div>
     </section>
@@ -48,8 +100,13 @@
       <div id="comment-container">
         <div class="comment-main">
           <span><i class="fas fa-times" id="comment-close"></i></span><br />
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius,
-          minus<br /><br />
+          <h3>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</h3>
+          <br />
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+          nobis enim rem ea ipsa illum beatae eligendi officiis, voluptates
+          deleniti.</p>
+           <br /><br />
+           <h4>New Comment</h4>
           <form
             action=""
             onsubmit="event.preventDefault()"
@@ -60,10 +117,10 @@
               contenteditable="true"
             ></div>
             <button>Submit</button>
-          </form>
-          comments <br />
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius, minus
-          et!. <br />
+          </form><br />
+          <h4>Comments</h4> <br />
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius, minus
+          et!.</p>  <br />
         </div>
       </div>
     </section>

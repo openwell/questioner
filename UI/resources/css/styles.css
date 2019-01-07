@@ -27,10 +27,8 @@
 body {
   font-size: 16px;
   font-weight: 400;
-  /* max-width: 1200px; */
   background: white;
   margin: 0 auto;
-  /* border: 0.5px solid black; */
   font-family: "Roboto", "Lato", "Source Sans Pro", "Segoe UI", "Helvetica Neue",
     Arial, sans-serif;
 }
@@ -249,7 +247,6 @@ label {
 }
 .meetup-img {
   width: 260px;
-  border: 0.1px solid black;
 }
 .meetup-img img {
   width: 100%;
@@ -310,6 +307,7 @@ label {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .questions {
   display: flex;
@@ -337,15 +335,21 @@ label {
   font-size: 19px;
   cursor: pointer;
 }
+
+.vote_bar button:hover {
+  background: white;
+}
+
 .questions-topic {
   margin-top: 20px;
   margin-left: 10px;
 }
 .questions-topic small {
-  text-decoration: underline;
+  text-decoration: dotted underline black;
 }
 .new-question {
-  float: 1;
+  flex: 1;
+  background-color: #246bad23;
 }
 #question-load {
   flex: 0 1 568px;
@@ -367,7 +371,9 @@ label {
   margin: 5px;
   width: 200px;
 }
-
+#newQuestionBody{
+ height: 50px;
+}
 /*======================================================
                   Question Comment Modal
 ======================================================*/
@@ -435,8 +441,7 @@ label {
 }
 
 .user-details {
-  flex: 1;
-  border: 1px solid black;
+  flex: 0 0 191px;
   margin: 10px;
 }
 .user-avatar {
@@ -458,7 +463,6 @@ label {
 .user-top-feed {
   width: calc(100% - 10px);
   height: calc(100% - 140px);
-  border: 1px solid black;
   margin: 10px;
 }
 .user-statistic-1 {
@@ -480,19 +484,47 @@ label {
   transition: all 0.5s;
 }
 
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+tr:nth-child(odd) {
+  background-color: #2471AC;
+}
+
 /*======================================================
                  Admin Dashboard
 ======================================================*/
 .admin-new-meetup-form div[contenteditable] {
-  border: 1px solid black;
+  border: .3px solid rgb(243, 235, 235) !important;
   padding: 3px;
   margin: 5px;
   width: 300px;
   background: #fff;
   display: inline-block;
+  border-radius: 5px;
 }
-.admin-new-meetup-form input[type="url"] {
+.admin-new-meetup-form input[type="text"] {
   padding: 5px;
+  border: .2px solid rgb(248, 237, 237);
+  border-radius: 5px;
+}
+.admin-new-meetup-form input[type="date"] {
+  padding: 5px;
+  border: .2px solid rgb(248, 237, 237);
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
 .admin-new-meetup-form button {
