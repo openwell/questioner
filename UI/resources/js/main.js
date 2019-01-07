@@ -7,22 +7,22 @@ const data = {
         status: "success",
         questions: [
           {
-            subject: "How to get away with murder",
+            subject: "Lorem ipsum, dolor sit adipisicing elit.",
             id: 1,
             votes: 8
           },
           {
-            subject: "The adventure of simba and aladin",
+            subject: "Lorem ipsum, dolor sit amet consectetur",
             id: 3,
             votes: 4
           },
           {
-            subject: "How i met you mother in the town",
+            subject: "Lorem ipsum, dolor sit amet consectetur",
             id: 2,
             votes: 5
           },
           {
-            subject: "The adventure of jumanji part 2",
+            subject: "Lorem ipsum, dolor sit amet consectetur",
             id: 3,
             votes: 4
           }
