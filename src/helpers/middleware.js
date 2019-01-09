@@ -12,66 +12,47 @@ const validatorFunction = (req, res, next) => {
   return next();
 };
 
-function validationHandler(arg) {
+function validationHandler(arg, min, max) {
   return check(arg)
     .escape()
-    .isLength({ min: 1, max: 4 })
-    .withMessage('must be minimum of 1-4 letter')
+    .isLength({ min, max })
+    .withMessage(`must be minimum of ${min} -${max} letters`)
     .isInt()
     .withMessage('must be an integer');
 }
 
-function validationHandler1(arg) {
+function validationHandler1(arg, min, max) {
   return check(arg)
     .escape()
-    .isLength({ min: 5, max: 10 })
-    .withMessage('must be minimum of 5-10 letters')
+    .isLength({ min, max })
+    .withMessage(`must be minimum of ${min} -${max} letters`)
     .isString()
-    .withMessage('must be an string');
-}
-
-function validationHandler2(arg) {
-  return check(arg)
-    .escape()
-    .isLength({ min: 10, max: 30 })
-    .withMessage('must be minimum of 10-30 letters')
-    .isString()
-    .withMessage('must be an string');
+    .withMessage('must be a string');
 }
 
 const middleware = {
   meetUp: [
-    validationHandler('id'),
-    validationHandler2('topic'),
-    validationHandler1('location'),
-    validationHandler1('happeningOn'),
-    validationHandler1('createdOn'),
+    validationHandler('id', 1, 4),
+    validationHandler1('topic', 10, 30),
+    validationHandler1('location', 5, 10),
+    validationHandler1('happeningOn', 5, 10),
+    validationHandler1('createdOn', 5, 10),
     validatorFunction,
   ],
   question: [
-    validationHandler('id'),
-    validationHandler1('createdOn'),
-    validationHandler('createdBy'),
-    validationHandler('meetup'),
-    validationHandler2('title'),
-    check('body')
-      .escape()
-      .isLength({ min: 10, max: 100 })
-      .withMessage('must be minimum of 10-100 letters')
-      .isString()
-      .withMessage('must be an string'),
+    validationHandler('id', 1, 4),
+    validationHandler1('createdOn', 5, 10),
+    validationHandler('createdBy', 1, 4),
+    validationHandler('meetup', 1, 4),
+    validationHandler1('title', 10, 30),
+    validationHandler1('body', 10, 100),
     validatorFunction,
   ],
   rsvp: [
-    validationHandler('id'),
-    validationHandler('meetup'),
-    validationHandler('user'),
-    check('response')
-      .escape()
-      .isLength({ min: 2, max: 6 })
-      .withMessage('must be minimum of 2-6 letters')
-      .isString()
-      .withMessage('response cannot be blank'),
+    validationHandler('id', 1, 4),
+    validationHandler('meetup', 1, 4),
+    validationHandler('user', 1, 4),
+    validationHandler1('response', 2, 6),
     validatorFunction,
   ],
   checkMeetUpId: [
