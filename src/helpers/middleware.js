@@ -12,64 +12,48 @@ const validatorFunction = (req, res, next) => {
   return next();
 };
 
+function validationHandler(arg) {
+  return check(arg)
+    .escape()
+    .isLength({ min: 1, max: 4 })
+    .withMessage('must be minimum of 1-4 letter')
+    .isInt()
+    .withMessage('must be an integer');
+}
+
+function validationHandler1(arg) {
+  return check(arg)
+    .escape()
+    .isLength({ min: 5, max: 10 })
+    .withMessage('must be minimum of 5-10 letters')
+    .isString()
+    .withMessage('must be an string');
+}
+
+function validationHandler2(arg) {
+  return check(arg)
+    .escape()
+    .isLength({ min: 10, max: 30 })
+    .withMessage('must be minimum of 10-30 letters')
+    .isString()
+    .withMessage('must be an string');
+}
+
 const middleware = {
   meetUp: [
-    check('id')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isInt()
-      .withMessage('must be an integer'),
-    check('topic')
-      .escape()
-      .isLength({ min: 10, max: 30 })
-      .withMessage('must be minimum of 10-30 letters')
-      .isString(),
-    check('location')
-      .escape()
-      .isLength({ min: 5, max: 10 })
-      .withMessage('must be minimum of 5-10 letters')
-      .isString(),
-    check('happeningOn')
-      .escape()
-      .isLength({ min: 5, max: 10 })
-      .withMessage('must be minimum of 5-10 letters'),
-    check('createdOn')
-      .escape()
-      .isLength({ min: 5, max: 10 })
-      .withMessage('must be minimum of 5-10 letters'),
+    validationHandler('id'),
+    validationHandler2('topic'),
+    validationHandler1('location'),
+    validationHandler1('happeningOn'),
+    validationHandler1('createdOn'),
     validatorFunction,
   ],
   question: [
-    check('id')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isInt()
-      .withMessage('must be an integer'),
-    check('createdOn')
-      .escape()
-      .isLength({ min: 5, max: 10 })
-      .withMessage('must be minimum of 5-10 letters')
-      .isString()
-      .withMessage('must be an string'),
-    check('createdBy')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isInt()
-      .withMessage('must be an integer'),
-    check('meetup')
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isInt()
-      .withMessage('must be an integer'),
-    check('title')
-      .escape()
-      .isLength({ min: 10, max: 30 })
-      .withMessage('must be minimum of 10-30 letters')
-      .isString()
-      .withMessage('must be an string'),
+    validationHandler('id'),
+    validationHandler1('createdOn'),
+    validationHandler('createdBy'),
+    validationHandler('meetup'),
+    validationHandler2('title'),
     check('body')
       .escape()
       .isLength({ min: 10, max: 100 })
@@ -79,24 +63,9 @@ const middleware = {
     validatorFunction,
   ],
   rsvp: [
-    check('id')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isString()
-      .withMessage('must be an string'),
-    check('meetup')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letters')
-      .isInt()
-      .withMessage('must be an integer'),
-    check('user')
-      .escape()
-      .isLength({ min: 1, max: 4 })
-      .withMessage('must be minimum of 1-4 letter')
-      .isInt()
-      .withMessage('must be an integer'),
+    validationHandler('id'),
+    validationHandler('meetup'),
+    validationHandler('user'),
     check('response')
       .escape()
       .isLength({ min: 2, max: 6 })
