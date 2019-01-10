@@ -4,41 +4,41 @@ const momentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
 
 class MeetUpModel {
   constructor() {
-    this.dataBase = [];
+    this.meetupDataBase = [];
     this.questionDataBase = [];
   }
 
-  createMeetUp(data) {
+  createMeetUp(meetupData) {
     const entry = {
-      id: data.id,
-      createdOn: data.createdOn,
-      location: data.location,
-      topic: data.topic,
-      happeningOn: data.happeningOn,
-      tags: data.tags,
+      id: meetupData.id,
+      createdOn: meetupData.createdOn,
+      location: meetupData.location,
+      topic: meetupData.topic,
+      happeningOn: meetupData.happeningOn,
+      tags: meetupData.tags,
       rsvp: [],
     };
-    this.dataBase.push(entry);
-    const index = this.dataBase.length - 1;
+    this.meetupDataBase.push(entry);
+    const index = this.meetupDataBase.length - 1;
     const {
       topic, location, happeningOn, tags,
-    } = this.dataBase[index];
+    } = this.meetupDataBase[index];
     return {
       topic, location, happeningOn, tags,
     };
   }
 
-  searchMeetUpById(data) {
+  searchMeetUpById(meetupId) {
     const {
       topic, location, happeningOn, tags,
-    } = this.dataBase.find(db => db.id === data);
+    } = this.meetupDataBase.find(db => db.id === meetupId);
     return {
       topic, location, happeningOn, tags,
     };
   }
 
   fetchAllMeetUps() {
-    const result = this.dataBase.map(({
+    const result = this.meetupDataBase.map(({
       topic, location, happeningOn, tags,
     }) => ({
       topic, location, happeningOn, tags,
@@ -46,15 +46,15 @@ class MeetUpModel {
     return result;
   }
 
-  createQuestion(data) {
+  createQuestion(questionData) {
     const entry = {
-      id: data.id,
+      id: questionData.id,
       createdOn: momentDate,
-      createdBy: data.createdBy,
-      meetup: data.meetup,
-      title: data.title,
-      body: data.body,
-      votes: data.votes,
+      createdBy: questionData.createdBy,
+      meetup: questionData.meetup,
+      title: questionData.title,
+      body: questionData.body,
+      votes: questionData.votes,
       voters: [],
     };
     this.questionDataBase.push(entry);
@@ -67,10 +67,10 @@ class MeetUpModel {
     };
   }
 
-  vote(questionId, sign) {
+  vote(questionId, voteOperator) {
     const result = this.questionDataBase.find(db => db.id === questionId);
     const index = this.questionDataBase.indexOf(result);
-    if (sign === '-') this.questionDataBase[index].votes = parseInt(this.questionDataBase[index].votes, 10) - 1;
+    if (voteOperator === '-') this.questionDataBase[index].votes = parseInt(this.questionDataBase[index].votes, 10) - 1;
     else this.questionDataBase[index].votes = parseInt(this.questionDataBase[index].votes, 10) + 1;
     const {
       meetup, title, body, votes,
@@ -80,34 +80,34 @@ class MeetUpModel {
     };
   }
 
-  meetUpResponds(meetupId, data) {
+  meetUpResponds(meetupId, meetupRsvpData) {
     const entry = {
-      id: data.id,
-      meetup: data.meetup,
-      user: data.user,
-      response: data.response,
+      id: meetupRsvpData.id,
+      meetup: meetupRsvpData.meetup,
+      user: meetupRsvpData.user,
+      response: meetupRsvpData.response,
     };
-    const result = this.dataBase.find(db => db.id === meetupId);
-    const index = this.dataBase.indexOf(result);
-    this.dataBase[index].rsvp.push(entry);
-    const index2 = this.dataBase[index].rsvp.length - 1;
-    const { meetup, user, response } = this.dataBase[index].rsvp[index2];
+    const result = this.meetupDataBase.find(db => db.id === meetupId);
+    const index = this.meetupDataBase.indexOf(result);
+    this.meetupDataBase[index].rsvp.push(entry);
+    const index2 = this.meetupDataBase[index].rsvp.length - 1;
+    const { meetup, user, response } = this.meetupDataBase[index].rsvp[index2];
     return { meetup, user, response };
   }
 
   // checks
-  checkMeetUpId(data) {
-    const result = this.dataBase.find(db => db.id === data);
+  checkMeetUpId(meetupId) {
+    const result = this.meetupDataBase.find(db => db.id === meetupId);
     return result;
   }
 
-  checkQuestionId(data) {
-    const result = this.questionDataBase.find(db => db.id === data);
+  checkQuestionId(questionId) {
+    const result = this.questionDataBase.find(db => db.id === questionId);
     return result;
   }
 
   checkMeetUpEmpty() {
-    return this.dataBase;
+    return this.meetupDataBase;
   }
 }
 
