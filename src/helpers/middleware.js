@@ -12,7 +12,7 @@ const validatorFunction = (req, res, next) => {
   return next();
 };
 
-function validationHandler(arg, min, max) {
+function validationHandlerForIntegerInput(arg, min, max) {
   return check(arg)
     .escape()
     .isLength({ min, max })
@@ -21,7 +21,7 @@ function validationHandler(arg, min, max) {
     .withMessage('must be an integer');
 }
 
-function validationHandler1(arg, min, max) {
+function validationHandlerForStringInput(arg, min, max) {
   return check(arg)
     .escape()
     .isLength({ min, max })
@@ -32,27 +32,27 @@ function validationHandler1(arg, min, max) {
 
 const middleware = {
   meetUp: [
-    validationHandler('id', 1, 4),
-    validationHandler1('topic', 10, 30),
-    validationHandler1('location', 5, 10),
-    validationHandler1('happeningOn', 5, 10),
-    validationHandler1('createdOn', 5, 10),
+    validationHandlerForIntegerInput('id', 1, 4),
+    validationHandlerForStringInput('topic', 10, 30),
+    validationHandlerForStringInput('location', 5, 10),
+    validationHandlerForStringInput('happeningOn', 5, 10),
+    validationHandlerForStringInput('createdOn', 5, 10),
     validatorFunction,
   ],
   question: [
-    validationHandler('id', 1, 4),
-    validationHandler1('createdOn', 5, 10),
-    validationHandler('createdBy', 1, 4),
-    validationHandler('meetup', 1, 4),
-    validationHandler1('title', 10, 30),
-    validationHandler1('body', 10, 100),
+    validationHandlerForIntegerInput('id', 1, 4),
+    validationHandlerForStringInput('createdOn', 5, 10),
+    validationHandlerForIntegerInput('createdBy', 1, 4),
+    validationHandlerForIntegerInput('meetup', 1, 4),
+    validationHandlerForStringInput('title', 10, 30),
+    validationHandlerForStringInput('body', 10, 100),
     validatorFunction,
   ],
   rsvp: [
-    validationHandler('id', 1, 4),
-    validationHandler('meetup', 1, 4),
-    validationHandler('user', 1, 4),
-    validationHandler1('response', 2, 6),
+    validationHandlerForIntegerInput('id', 1, 4),
+    validationHandlerForIntegerInput('meetup', 1, 4),
+    validationHandlerForIntegerInput('user', 1, 4),
+    validationHandlerForStringInput('response', 2, 6),
     validatorFunction,
   ],
   checkMeetUpId: [
