@@ -30,7 +30,6 @@ class UserControl {
     }
   }
 
-
   static async login(req, res) {
     try {
       const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
@@ -46,7 +45,6 @@ class UserControl {
       return errorHandler(400, res, 'The credentials you provided is incorrect');
     }
   }
-
 
 }
 

@@ -15,7 +15,6 @@ app.use(cors());
 app.use('/api/v1', router, router2, router3);
 
 
-
 app.all('*', (req, res) => {
   res.redirect(301, '/api/v1');
 });
