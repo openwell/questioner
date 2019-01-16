@@ -51,17 +51,11 @@ const userLogin = {
   password: 'Timetofly2',
 };
 
-
-const adminLogin = {
-  email: 'admin5@questioner.com',
-  password: '111111',
-};
-
 let userToken;
 let adminToken;
 
 // create user
-describe('/POST /api/v1/signup', () => {
+describe('/POST /api/v1/auth/signup', () => {
   it('create a user', (done) => {
     request(server)
       .post('/api/v1/auth/signup')
