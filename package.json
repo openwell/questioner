@@ -4,17 +4,17 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node ./src/index.js",
+    "start": "nodemon --exec @babel-node ./src/index.js",
     "serve": "node dist/index.js",
-    "build": "babel src/ -d dist",
+    "build": "@babel src/ -d dist",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill --timeout 10000 ./src/test/",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --fix-dry-run ./src/index.js ./src/controllers/",
     "preTest": "npm run dropTables && npm run createTables && npm run foreignKeys && npm run admin",
-    "dropTables": "babel-node ./src/db/dropTables.js",
-    "createTables": "babel-node ./src/db/createTables.js",
-    "emptyTables": "babel-node ./src/db/emptyTables.js",
-    "foreignKeys": "babel-node ./src/db/forTables.js"
+    "dropTables": "@babel-node ./src/db/dropTables.js",
+    "createTables": "@babel-node ./src/db/createTables.js",
+    "emptyTables": "@babel-node ./src/db/emptyTables.js",
+    "foreignKeys": "@babel-node ./src/db/forTables.js"
   },
   "repository": {
     "type": "git",
