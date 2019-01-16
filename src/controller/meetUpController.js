@@ -1,6 +1,15 @@
-import model from '../model/meetUpModel';
+import moment from 'moment';
+import db from '../db/index';
+import queries from './queries';
+import errorHandler from '../helpers/errorHandler';
 
 class Controller {
+  /**
+   * Create A Questioner
+   * @param {object} req
+   * @param {object} res
+   * @returns {object} home object
+   */
   static home(req, res) {
     return res.status(200).json({
       status: 200,
@@ -9,80 +18,187 @@ class Controller {
   }
 
   // Create an meetup record.
-  static createMeetUps(req, res) {
-    const newMeetUp = req.body;
-    const result = model.createMeetUp(newMeetUp);
-    return res.status(201).json({
-      status: 201,
-      data: [result],
-    });
+  static async createMeetUps(req, res) {
+    const createdOn = moment(new Date());
+    const locations = req.body.location;
+    const topics = req.body.topic;
+    const date = req.body.happeningOn;
+    const tag = req.body.tags;
+    const adminId = req.body.admin;
+
+    try {
+      const { rows } = await db.query(queries.newMeetUp(createdOn, locations,
+        topics, date, tag, adminId));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
   // Fetch all meetup records.
-  static allMeetUps(req, res) {
-    const result = model.fetchAllMeetUps();
-    return res.status(200).json({
-      status: 200,
-      data: result,
-    });
+  static async allMeetUps(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectAll('meetups'));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
+
   // Fetch a specific meetup record.
-  static findMeetUpsById(req, res) {
-    const meetUpId = req.params.meetupId;
-    const result = model.searchMeetUpById(meetUpId);
-    return res.status(200).json({
-      status: 200,
-      data: [result],
-    });
+  static async findMeetUpsById(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectById('meetups', 'id', req.params.meetupId));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
   // Fetch all upcoming meetup records.
-  static upComingMeetUps(req, res) {
-    const result = model.fetchAllMeetUps();
-    return res.status(200).json({
-      status: 200,
-      data: [result],
-    });
+  static async upComingMeetUps(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectAll('meetups'));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
   // Create a question for a specific meetup.
-  static questionEntry(req, res) {
-    const newQuestion = req.body;
-    const result = model.createQuestion(newQuestion);
-    return res.status(201).json({
-      status: 201,
-      data: [result],
-    });
+  static async questionEntry(req, res) {
+    const createdOn = moment(new Date());
+    const createdBys = req.body.createdBy;
+    const meetupId = req.body.meetup;
+    const titles = req.body.title;
+    const mainBody = req.body.body;
+    try {
+      const { rows } = await db.query(queries.newQuestion(createdOn, createdBys,
+        meetupId, titles, mainBody, 0));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
+
+  // get all questions
+  static async allQuestions(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectAll('questions'));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
+
   //  upVote (increase votes by 1) a specific question.
-  static upVote(req, res) {
-    const upVoteQuestionId = req.params.questionId;
-    const result = model.vote(upVoteQuestionId, '+');
-    return res.status(200).json({
-      status: 200,
-      data: [result],
-    });
+  static async upVote(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
+      const increase = [(rows[0].votes + 1), rows[0].id];
+      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING *';
+      const resp = await db.query(query2, increase);
+      return res.status(200).json({
+        status: 200,
+        data: resp.rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
   // downVote (decrease votes by 1) a specific question.
-  static downVote(req, res) {
-    const downVoteQuestionId = req.params.questionId;
-    const result = model.vote(downVoteQuestionId, '-');
-    return res.status(200).json({
-      status: 200,
-      data: [result],
-    });
+  static async downVote(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
+      const increase = [(rows[0].votes - 1), rows[0].id];
+      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING *';
+      const resp = await db.query(query2, increase);
+      return res.status(200).json({
+        status: 200,
+        data: resp.rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
   // Respond to meetup RSVP.
-  static rsvp(req, res) {
-    const meetupIds = req.params.meetupId;
-    const result = model.meetUpResponds(meetupIds, req.body);
-    return res.status(200).json({
-      status: 200,
-      data: [result],
-    });
+  static async rsvp(req, res) {
+    const meetup = req.params.meetupId;
+    const responses = req.body.response;
+    const userId = req.body.user;
+    const createdOn = moment(new Date());
+    try {
+      const { rows } = await db.query(queries.rsvp(meetup, responses, userId, createdOn));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
   }
 
+  static async comment(req, res) {
+    const comments = req.body.comment;
+    const questions = req.body.question;
+    const createdOn = moment(new Date());
+    const userId = req.body.user;
+    try {
+      const { rows } = await db.query(queries.comment(comments, questions, createdOn, userId));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
+
+  // get all questions
+  static async allComment(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectAll('comments'));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
+
+  static async deleteMeetUp(req, res) {
+    try {
+      const resp = await db.query(queries.deleteMeetup(req.params.meetupId));
+      if (resp.rowCount === 1) {
+        return res.status(200).json({
+          status: 200,
+          data: 'meetup deleted',
+        });
+      }
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
 }
 export default Controller;
