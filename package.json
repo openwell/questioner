@@ -6,6 +6,9 @@
   "scripts": {
     "start": "nodemon --exec babel-node ./src/index.js",
     "test": "npm run preTest && nyc mocha --require @babel/register --require @babel/polyfill --timeout 10000 ./src/test/",
+    "serve": "node dist/index.js",
+    "build": "babel src/ -d dist",
+    "test": "nyc mocha --require @babel/register --require @babel/polyfill --timeout 10000 ./src/test/",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --fix-dry-run ./src/index.js ./src/controllers/",
     "preTest": "npm run dropTables && npm run createTables && npm run foreignKeys && npm run admin",
@@ -13,6 +16,9 @@
     "createTables": "babel-node ./src/db/createTables.js",
     "foreignKeys": "babel-node ./src/db/forTables.js",
     "admin": "babel-node ./src/db/adminModel.js"
+    "emptyTables": "babel-node ./src/db/emptyTables.js",
+    "foreignKeys": "babel-node ./src/db/forTables.js"
+
   },
   "repository": {
     "type": "git",

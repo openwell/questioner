@@ -51,10 +51,12 @@ const userLogin = {
   password: 'Timetofly2',
 };
 
+
 let userToken;
 let adminToken;
 
 // create user
+
 describe('/POST /api/v1/auth/signup', () => {
   it('create a user', (done) => {
     request(server)
@@ -67,6 +69,7 @@ describe('/POST /api/v1/auth/signup', () => {
       });
   });
 });
+
 
 // user login
 describe('/POST /api/v1/auth/login', () => {

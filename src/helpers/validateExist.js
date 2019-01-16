@@ -16,20 +16,24 @@ class validateExist {
     }
   }
 
-  static async checkMeetUpId(req, res, next) {
+
+  static async checkMeetUpId(req, res, next) { 
     const value = req.params.meetupId;
     validateExist.validate('meetups', value, 'The credentials you provided are incorrect', res, next);
   }
 
-  static async checkMeetUpId2(req, res, next) {
+
+  static async checkMeetUpId2(req, res, next) { 
     const value = req.body.meetup;
     validateExist.validate('meetups', value, 'The credentials you provided are incorrect', res, next);
   }
+
 
   static async checkUser(req, res, next) {
     const value = req.body.user;
     validateExist.validate('users', value, 'The credentials you provided are incorrect', res, next);
   }
+
 
   static async checkAdmin(req, res, next) {
     const value = req.body.admin;
