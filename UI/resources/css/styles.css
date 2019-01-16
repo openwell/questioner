@@ -41,6 +41,10 @@ body {
   max-width: 1400px;
   margin: 0 auto;
 }
+.row3 {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 .row2 {
   max-width: 1000px;
   margin: 0 auto;
@@ -112,7 +116,21 @@ nav li {
 .text {
   background-color: white;
   color: black;
-  font-size: 10vw;
+  font-size: 40px;
+  font-weight: bold;
+  padding: 10px;
+  width: 50%;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+
+.text2 {
+  background-color: white;
+  color: black;
+  font-size: 25px;
   font-weight: bold;
   padding: 10px;
   width: 50%;
@@ -120,8 +138,29 @@ nav li {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
+  /* mix-blend-mode: screen; */
 }
+
+.index_main button{
+  background: #e74c3c;
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  width: 30%;
+  border: none;
+  margin: 0 30%;
+  font-weight: bold;
+  box-shadow: 0 6px 5px -3px #f4f4f4;
+  transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.4s;
+}
+
+.index_main button:hover {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+}
+
 footer {
   text-align: center;
   padding: 10px;
@@ -242,16 +281,19 @@ label {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 .meetup-card {
-  flex: 0 0 200px;
+  flex: 0 0 300px;
   border-radius: 2px;
-  padding: 10px;
-  margin: 8px;
+  padding: 10px 20px;
+  margin: 20px 10px;
   background: #fff;
   box-shadow: 0 6px 5px -3px #f4f4f4;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.meetup-card:nth-child(3n+1){
+  margin-left: 25px
 }
 .meetup-card:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
