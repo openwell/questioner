@@ -32,7 +32,7 @@ class validateExist {
   static async checkUser(req, res, next) {
     const value = req.body.user;
     validateExist.validate('users', value, 'The credentials you provided are incorrect', res, next);
-  
+  }
 
   static async checkAdmin(req, res, next) {
     const value = req.body.admin;
