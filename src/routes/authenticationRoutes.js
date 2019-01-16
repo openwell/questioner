@@ -16,4 +16,8 @@ router.post('/auth/signup',
   userValidate.checkEmailPassword,
   user.login);
 
+  router.post('/auth/admin',
+  adminValidate.checkEmailPassword,
+  admin.login);
+
 export default router;

@@ -51,8 +51,29 @@ const userLogin = {
   password: 'Timetofly2',
 };
 
+const adminLogin = {
+  email: 'admin5@questioner.com',
+  password: '111111',
+};
+
 let userToken;
 let adminToken;
+
+// admin login
+describe('/POST', () => {
+  it('admin should be able to login', (done) => {
+    request(server)
+      .post('/api/v1/auth/admin')
+      .send(adminLogin)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        const { token } = res.body.data[0];
+        adminToken = token;
+        done();
+      });
+  });
+});
 
 // create user
 describe('/POST /api/v1/auth/signup', () => {
