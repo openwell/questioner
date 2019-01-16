@@ -31,6 +31,20 @@ const rsvp = {
   response: 'yes',
 };
 
+const user = {
+  id: '007',
+  firstName: 'Ronaldo',
+  lastName: 'Ozil',
+  otherName: 'John',
+  email: 'info2@yahoo.com',
+  phoneNumber: '08903332829',
+  userName: 'bimpe2',
+  registered: '2018-3-3',
+  isAdmin: 'false',
+  password: 'Timetofly2',
+  confirmPassword: 'Timetofly2',
+};
+
 
 const userLogin = {
   email: 'info2@yahoo.com',
@@ -46,7 +60,19 @@ const adminLogin = {
 let userToken;
 let adminToken;
 
-
+// create user
+describe('/POST /api/v1/signup', () => {
+  it('create a user', (done) => {
+    request(server)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .end((err, res) => {
+        res.should.have.a.status(201);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 
 // user login
 describe('/POST', () => {
