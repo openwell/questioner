@@ -1,6 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
+import '@babel/polyfill';
 import router from './routes/questionRoutes';
 import router3 from './routes/meetupRoutes';
 import error from './helpers/errorHandler';
