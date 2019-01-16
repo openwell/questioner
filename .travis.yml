@@ -3,6 +3,9 @@ node_js:
  - "stable"
 services:
   - postgresql
+install:
+  - npm install -g babel-cli
+  - npm install --save-dev @babel/core @babel/node @babel/register @babel/preset-env
 env:
   global:
     - CC_TEST_REPORTER_ID=8962bed5ff369510949100055043152bad5a4be2e23d296376bd2efc34225791
