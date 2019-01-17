@@ -45,6 +45,12 @@ const user = {
   confirmPassword: 'Timetofly2',
 };
 
+const comment = {
+  comment: 'Hi love myself',
+  question: '1',
+  createdOn: '2018-12-9',
+  user: '1',
+};
 
 const userLogin = {
   email: 'info2@yahoo.com',
@@ -232,6 +238,19 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
   });
 });
 
+describe('/POST /api/v1/comments', () => {
+  it('user should be able to create comment', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 
 // Bad Page.
 describe('/GET', () => {

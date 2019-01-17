@@ -1,9 +1,10 @@
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
-import router from './routes/questionRoutes';
-import router2 from './routes/authenticationRoutes';
-import router3 from './routes/meetupRoutes';
+import questionRoute from './routes/questionRoutes';
+import authRoute from './routes/authenticationRoutes';
+import meetupRoute from './routes/meetupRoutes';
+import commentRoute from './routes/commentRoutes';
 import error from './helpers/errorHandler';
 
 const app = express();
@@ -12,7 +13,7 @@ app.use(logger('common'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-app.use('/api/v1', router, router2, router3);
+app.use('/api/v1', questionRoute, authRoute, meetupRoute, commentRoute);
 
 
 app.all('*', (req, res) => {
