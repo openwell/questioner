@@ -45,6 +45,13 @@ const user = {
   confirmPassword: 'Timetofly2',
 };
 
+const comment = {
+  comment: 'Hi love myself',
+  question: '1',
+  createdOn: '2018-12-9',
+  user: '1',
+};
+
 
 const userLogin = {
   email: 'info2@yahoo.com',
@@ -55,7 +62,6 @@ const adminLogin = {
   email: 'admin5@questioner.com',
   password: '111111',
 };
-
 
 let userToken;
 let adminToken;
@@ -225,6 +231,21 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .post('/api/v1/meetups/1/rsvps')
       .set('tokens', userToken)
       .send(rsvp)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
+
+
+describe('/POST /api/v1/comments', () => {
+  it('user should be able to create comment', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment)
       .end((err, res) => {
         res.should.have.a.status(200);
         res.body.should.a('object');

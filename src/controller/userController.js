@@ -34,11 +34,14 @@ class UserControl {
     try {
       const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
       const token = auth.generateToken(rows[0].id);
+      const { firstname, lastname, email, phonenumber, isadmin } = rows[0];
       return res.status(200).json({
         status: 200,
         data: [{
           token,
-          user: rows[0],
+          user: {
+            firstname, lastname, email, phonenumber, isadmin,
+          },
         }],
       });
     } catch (error) {

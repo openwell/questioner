@@ -17,12 +17,10 @@ class validateExist {
   }
 
 
-
   static async checkMeetUpId(req, res, next) { 
     const value = req.params.meetupId;
     validateExist.validate('meetups', value, 'The credentials you provided are incorrect', res, next);
   }
-
 
   static async checkMeetUpId2(req, res, next) { 
     const value = req.body.meetup;

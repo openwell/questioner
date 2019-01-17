@@ -14,7 +14,7 @@ const Queries = {
       text: `INSERT INTO
       meetups(createdon, location, topic, happeningon, tags, admin_id)
       VALUES($1, $2, $3, $4, $5, $6)
-      returning *`,
+      returning topic,happeningon,location,tags`,
       values: [createdOn, location, topic, happeningOn, tags, adminId],
     };
   },
@@ -23,7 +23,7 @@ const Queries = {
       text: `INSERT INTO
       questions(createdon, createdby, meetup_id, title, body, votes)
       VALUES($1, $2, $3, $4, $5, $6)
-      returning *`,
+      returning createdby, meetup_id, title, body,`,
       values: [createdOn, createdBy, meetupId, title, body, votes],
     };
   },
@@ -32,7 +32,7 @@ const Queries = {
       text: `INSERT INTO
       rsvp(meetup_id, response, user_id, created_on)
       VALUES($1, $2, $3, $4)
-      returning *`,
+      returning meetup_id, response`,
       values: [meetup, response, userId, createdOn],
     };
   },
@@ -41,7 +41,7 @@ const Queries = {
       text: `INSERT INTO
       comments(comment, question_id, created_on, user_id)
       VALUES($1, $2, $3, $4)
-      returning *`,
+      returning question_id, comment`,
       values: [comment, question, createdOn, userId],
     };
   },
