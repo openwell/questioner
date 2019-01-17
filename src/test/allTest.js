@@ -52,6 +52,7 @@ const comment = {
   user: '1',
 };
 
+
 const userLogin = {
   email: 'info2@yahoo.com',
   password: 'Timetofly2',
@@ -238,6 +239,7 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
   });
 });
 
+
 describe('/POST /api/v1/comments', () => {
   it('user should be able to create comment', (done) => {
     request(server)
@@ -251,6 +253,7 @@ describe('/POST /api/v1/comments', () => {
       });
   });
 });
+
 
 // Bad Page.
 describe('/GET', () => {
