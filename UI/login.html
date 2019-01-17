@@ -21,16 +21,18 @@
     </header>
     <section class="signin-section row">
       
-        <form action="" onclick="event.preventDefault">
+        <form action="" onsubmit="event.preventDefault()">
             <h1>LOG IN</h1>
-          
+            <br> <small id="success" style="color: green"></small>
           <div class="form-group">
             <label for="username">User Name</label>
             <input
               class="form-control"
               type="text"
               name="username"
+              id="username"
               placeholder="username"
+              required
             />
           </div>
             <div class="form-group">
@@ -39,7 +41,9 @@
                 class="form-control"
                 type="password"
                 name="pw1"
+                id="pw"
                 placeholder="***********"
+                required
               />
             </div>
   
@@ -48,5 +52,46 @@
       </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
+    <script>
+    async function signin(dat) { 
+      try{
+        let response = await fetch(dat);
+        console.log(response)
+        let data = await response.json();
+          if(response.ok) {
+          document.getElementById('success').innerHTML = 'Login Successful';
+          setTimeout(()=>{
+          window.location.href = 'user/dashboard.html'
+          },6000);
+          return data;
+          }
+          document.getElementById('success').innerHTML = response.statusText
+         return response.status
+      }catch(err){
+        throw err;
+      }
+    }
+     let uN, pW;
+   document.onsubmit = function(event){
+     uN = document.getElementById('username').value;
+     pW = document.getElementById('pw').value;
+          const data = {
+          "email": uN,
+          "password": pW,
+          }
+    const url = 'https://questioner1.herokuapp.com/api/v1/auth/sigin';
+    let request = new Request(url, {
+    method: 'POST', 
+    body: JSON.stringify(data), 
+    headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'tokens': 'adminToken'
+            },
+      });
+      signin(request);
+    }
+     
+    </script>
   </body>
 </html>
