@@ -16,22 +16,23 @@ class validateExist {
     }
   }
 
-  static async checkMeetUpId(req, res, next) { // its from body not params
+
+  static async checkMeetUpId(req, res, next) { 
     const value = req.params.meetupId;
     validateExist.validate('meetups', value, 'The credentials you provided are incorrect', res, next);
   }
 
-  static async checkMeetUpId2(req, res, next) { // its from body not params
+  static async checkMeetUpId2(req, res, next) { 
     const value = req.body.meetup;
     validateExist.validate('meetups', value, 'The credentials you provided are incorrect', res, next);
   }
 
-  static async checkUser(req, res, next) { // its from body not params
+  static async checkUser(req, res, next) {
     const value = req.body.user;
     validateExist.validate('users', value, 'The credentials you provided are incorrect', res, next);
   }
 
-  static async checkAdmin(req, res, next) { // its from body not params
+  static async checkAdmin(req, res, next) {
     const value = req.body.admin;
     validateExist.validate('admins', value, 'The credentials you provided are incorrect', res, next);
   }

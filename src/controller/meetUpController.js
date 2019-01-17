@@ -42,9 +42,14 @@ class Controller {
   static async allMeetUps(req, res) {
     try {
       const { rows } = await db.query(queries.selectAll('meetups'));
+      const result = rows.map(({
+        id, topic, location, happeningon,
+      }) => ({
+        id, topic, location, happeningon,
+      }));
       return res.status(200).json({
         status: 200,
-        data: rows,
+        data: result,
       });
     } catch (err) {
       return errorHandler(400, res, err);
@@ -68,9 +73,14 @@ class Controller {
   static async upComingMeetUps(req, res) {
     try {
       const { rows } = await db.query(queries.selectAll('meetups'));
+      const result = rows.map(({
+        id, topic, location, happeningon,
+      }) => ({
+        id, topic, location, happeningon,
+      }));
       return res.status(200).json({
         status: 200,
-        data: rows,
+        data: result,
       });
     } catch (err) {
       return errorHandler(400, res, err);
@@ -100,9 +110,14 @@ class Controller {
   static async allQuestions(req, res) {
     try {
       const { rows } = await db.query(queries.selectAll('questions'));
+      const result = rows.map(({
+        createdby, meetup_id, title, body,
+      }) => ({
+        createdby, meetup_id, title, body,
+      }));
       return res.status(200).json({
         status: 200,
-        data: rows,
+        data: result,
       });
     } catch (err) {
       return errorHandler(400, res, err);
@@ -114,7 +129,7 @@ class Controller {
     try {
       const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
       const increase = [(rows[0].votes + 1), rows[0].id];
-      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING *';
+      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING meetup_id,title,body, votes';
       const resp = await db.query(query2, increase);
       return res.status(200).json({
         status: 200,
@@ -130,7 +145,7 @@ class Controller {
     try {
       const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
       const increase = [(rows[0].votes - 1), rows[0].id];
-      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING *';
+      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING meetup_id,title,body, votes';
       const resp = await db.query(query2, increase);
       return res.status(200).json({
         status: 200,
@@ -149,6 +164,21 @@ class Controller {
     const createdOn = moment(new Date());
     try {
       const { rows } = await db.query(queries.rsvp(meetup, responses, userId, createdOn));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
+  static async comment(req, res) {
+    const comments = req.body.comment;
+    const questions = req.body.question;
+    const createdOn = moment(new Date());
+    const userId = req.body.user;
+    try {
+      const { rows } = await db.query(queries.comment(comments, questions, createdOn, userId));
       return res.status(200).json({
         status: 200,
         data: rows,

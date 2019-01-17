@@ -11,6 +11,7 @@ before_script:
    - chmod +x ./cc-test-reporter
    - npm install
    - ./cc-test-reporter before-build  
+   - psql -c "DROP DATABASE IF EXISTS travis_ci_test;" -U postgres
    - psql -c "CREATE DATABASE travis_ci_test;" -U postgres
 script:
   - npm test

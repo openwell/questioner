@@ -30,6 +30,25 @@ class UserControl {
     }
   }
 
+  static async login(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
+      const token = auth.generateToken(rows[0].id);
+      const { firstname, lastname, email, phonenumber, isadmin } = rows[0];
+      return res.status(200).json({
+        status: 200,
+        data: [{
+          token,
+          user: {
+            firstname, lastname, email, phonenumber, isadmin,
+          },
+        }],
+      });
+    } catch (error) {
+      return errorHandler(400, res, 'The credentials you provided is incorrect');
+    }
+  }
+
 }
 
 export default UserControl;

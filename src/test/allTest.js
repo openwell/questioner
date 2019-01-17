@@ -45,12 +45,18 @@ const user = {
   confirmPassword: 'Timetofly2',
 };
 
+const comment = {
+  comment: 'Hi love myself',
+  question: '1',
+  createdOn: '2018-12-9',
+  user: '1',
+};
+
 
 const userLogin = {
   email: 'info2@yahoo.com',
   password: 'Timetofly2',
 };
-
 
 const adminLogin = {
   email: 'admin5@questioner.com',
@@ -60,8 +66,24 @@ const adminLogin = {
 let userToken;
 let adminToken;
 
+// admin login
+describe('/POST', () => {
+  it('admin should be able to login', (done) => {
+    request(server)
+      .post('/api/v1/auth/admin')
+      .send(adminLogin)
+      .end((err, res) => {
+        res.should.have.a.status(201);
+        res.body.should.a('object');
+        const { token } = res.body.data[0];
+        adminToken = token;
+        done();
+      });
+  });
+});
+
 // create user
-describe('/POST /api/v1/signup', () => {
+describe('/POST /api/v1/auth/signup', () => {
   it('create a user', (done) => {
     request(server)
       .post('/api/v1/auth/signup')
@@ -75,7 +97,7 @@ describe('/POST /api/v1/signup', () => {
 });
 
 // user login
-describe('/POST', () => {
+describe('/POST /api/v1/auth/login', () => {
   it('user should be able to login', (done) => {
     request(server)
       .post('/api/v1/auth/login')
@@ -209,6 +231,21 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .post('/api/v1/meetups/1/rsvps')
       .set('tokens', userToken)
       .send(rsvp)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
+
+
+describe('/POST /api/v1/comments', () => {
+  it('user should be able to create comment', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment)
       .end((err, res) => {
         res.should.have.a.status(200);
         res.body.should.a('object');
