@@ -51,6 +51,12 @@ const comment = {
   createdOn: '2018-12-9',
   user: '1',
 };
+const comment2 = {
+  comment: 'Hi love myself',
+  question: '10',
+  createdOn: '2018-12-9',
+  user: '1',
+};
 
 const userLogin = {
   email: 'info2@yahoo.com',
@@ -266,7 +272,33 @@ describe('/GET', () => {
 
 
 // MiddleWare Test
+// MiddleWare Test
+describe('/POST /api/v1/comments', () => {
+  it('it should return 400 Error', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment2)
+      .end((err, res) => {
+        res.should.have.a.status(400);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 
+describe('/POST /api/v1/auth/login', () => {
+  it('it should return 400 Error', (done) => {
+    request(server)
+      .post('/api/v1/auth/login')
+      .send(userLogins)
+      .end((err, res) => {
+        res.should.have.a.status(400);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 describe('/POST /api/v1/meetups', () => {
   it('it should return 400 Error', (done) => {
     const data1 = {
@@ -293,8 +325,8 @@ describe('/POST /api/v1/questions', () => {
     const data22 = {
       id: '001',
       createdOn: '2018-12-2',
-      createdBy: 'user', // represents the user asking the question
-      meetup: '', // represents the meetup the question is for
+      createdBy: 'user',
+      meetup: '',
       title: 'Lorem ipsum dolor sit',
       body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
       votes: '',
@@ -325,6 +357,19 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .send(data33)
       .end((err, res) => {
         res.should.have.a.status(400);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
+// Delete a meetup
+describe('/DELETE /api/v1/meetups/:meeetupId', () => {
+  it('it should delete a meetup', (done) => {
+    request(server)
+      .delete('/api/v1/meetups/1')
+      .set('tokens', adminToken)
+      .end((err, res) => {
+        res.should.have.a.status(200);
         res.body.should.a('object');
         done();
       });

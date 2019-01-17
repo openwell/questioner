@@ -203,6 +203,18 @@ class Controller {
       return errorHandler(400, res, err);
     }
   }
-
+  static async deleteMeetUp(req, res) {
+    try {
+      const resp = await db.query(queries.deleteMeetup(req.params.meetupId));
+      if (resp.rowCount === 1) {
+        return res.status(200).json({
+          status: 200,
+          data: 'meetup deleted',
+        });
+      }
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
 }
 export default Controller;

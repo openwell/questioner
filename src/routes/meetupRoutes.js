@@ -38,4 +38,10 @@ router.post('/meetups/:meetupId/rsvps',
   validateExist.checkMeetUpId,
   controller.rsvp);
 
+  router.delete('/meetups/:meetupId',
+  validate.meetUpParams,
+  auth.adminVerifyToken,
+  validateExist.checkMeetUpId,
+  controller.deleteMeetUp);
+
 export default router;
