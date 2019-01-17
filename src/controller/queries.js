@@ -23,7 +23,7 @@ const Queries = {
       text: `INSERT INTO
       questions(createdon, createdby, meetup_id, title, body, votes)
       VALUES($1, $2, $3, $4, $5, $6)
-      returning createdby, meetup_id, title, body,`,
+      returning createdby, meetup_id, title, body`,
       values: [createdOn, createdBy, meetupId, title, body, votes],
     };
   },

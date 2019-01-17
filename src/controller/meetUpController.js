@@ -187,5 +187,22 @@ class Controller {
       return errorHandler(400, res, err);
     }
   }
+  static async allComment(req, res) {
+    try {
+      const { rows } = await db.query(queries.selectAll('comments'));
+      const result = rows.map(({
+        question_id, comment,
+      }) => ({
+        question_id, comment,
+      }));
+      return res.status(200).json({
+        status: 200,
+        data: result,
+      });
+    } catch (err) {
+      return errorHandler(400, res, err);
+    }
+  }
+
 }
 export default Controller;
