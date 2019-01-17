@@ -52,7 +52,6 @@ const comment = {
   user: '1',
 };
 
-
 const userLogin = {
   email: 'info2@yahoo.com',
   password: 'Timetofly2',
@@ -73,7 +72,7 @@ describe('/POST', () => {
       .post('/api/v1/auth/admin')
       .send(adminLogin)
       .end((err, res) => {
-        res.should.have.a.status(201);
+        res.should.have.a.status(200);
         res.body.should.a('object');
         const { token } = res.body.data[0];
         adminToken = token;
@@ -239,6 +238,19 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
   });
 });
 
+describe('/POST /api/v1/comments', () => {
+  it('user should be able to create comment', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 
 describe('/POST /api/v1/comments', () => {
   it('user should be able to create comment', (done) => {

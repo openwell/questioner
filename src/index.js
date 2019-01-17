@@ -16,7 +16,6 @@ app.use(cors());
 app.use('/api/v1', questionRoute, authRoute, meetupRoute, commentRoute);
 
 
-
 app.all('*', (req, res) => {
   res.redirect(301, '/api/v1');
 });
