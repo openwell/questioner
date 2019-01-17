@@ -63,6 +63,11 @@ const userLogin = {
   password: 'Timetofly2',
 };
 
+const userLogins = {
+  email: 'info12@yahoo.com',
+  password: 'Timetofly2',
+};
+
 const adminLogin = {
   email: 'admin5@questioner.com',
   password: '111111',
