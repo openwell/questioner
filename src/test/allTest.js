@@ -263,6 +263,21 @@ describe('/POST /api/v1/comments', () => {
   });
 });
 
+describe('/POST /api/v1/comments', () => {
+  it('user should be able to create comment', (done) => {
+    request(server)
+      .post('/api/v1/comments')
+      .set('tokens', userToken)
+      .send(comment)
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
+
+
 // Bad Page.
 describe('/GET', () => {
   it('it should redirect', (done) => {
