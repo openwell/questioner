@@ -1,7 +1,10 @@
-
 const Queries = {
   selectAll(table) {
     return `SELECT * FROM ${table}`;
+  },
+  getAllCommentJoin(questionId) {
+    return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
+    q left join comments c on c.question_id = q.id WHERE q.id = ${questionId}; `;
   },
   selectById(table, location, val) {
     return {
@@ -15,7 +18,7 @@ const Queries = {
       meetups(createdon, location, topic, happeningon, tags, admin_id)
       VALUES($1, $2, $3, $4, $5, $6)
       returning topic,happeningon,location,tags`,
-      values: [createdOn, location, topic, happeningOn, tags, adminId],
+      values: [createdOn, location, topic, happeningOn, tags, adminId]
     };
   },
   newQuestion(createdOn, createdBy, meetupId, title, body, votes) {
@@ -24,7 +27,7 @@ const Queries = {
       questions(createdon, createdby, meetup_id, title, body, votes)
       VALUES($1, $2, $3, $4, $5, $6)
       returning createdby, meetup_id, title, body`,
-      values: [createdOn, createdBy, meetupId, title, body, votes],
+      values: [createdOn, createdBy, meetupId, title, body, votes]
     };
   },
   rsvp(meetup, response, userId, createdOn) {
@@ -33,7 +36,7 @@ const Queries = {
       rsvp(meetup_id, response, user_id, created_on)
       VALUES($1, $2, $3, $4)
       returning meetup_id, response`,
-      values: [meetup, response, userId, createdOn],
+      values: [meetup, response, userId, createdOn]
     };
   },
   comment(comment, question, createdOn, userId) {
@@ -42,13 +45,13 @@ const Queries = {
       comments(comment, question_id, created_on, user_id)
       VALUES($1, $2, $3, $4)
       returning question_id, comment`,
-      values: [comment, question, createdOn, userId],
+      values: [comment, question, createdOn, userId]
     };
   },
   deleteMeetup(meetup) {
     return {
-      text: 'DELETE FROM meetups WHERE id = $1',
-      values: [meetup],
+      text: "DELETE FROM meetups WHERE id = $1",
+      values: [meetup]
     };
   },
   adminSignUp(email, registered, isadmin, password) {
@@ -57,11 +60,20 @@ const Queries = {
       admins(email, registered, isadmin, password)
       VALUES($1, $2, $3, $4)
       returning email, registered, isadmin`,
-      values: [email, registered, isadmin, password],
+      values: [email, registered, isadmin, password]
     };
   },
-  userSignUp(firstname, lastname, othername, email, phonenumber,
-    username, registered, isadmin, password) {
+  userSignUp(
+    firstname,
+    lastname,
+    othername,
+    email,
+    phonenumber,
+    username,
+    registered,
+    isadmin,
+    password
+  ) {
     return {
       text: `INSERT INTO
       users(firstname, lastname, othername, email, phonenumber, 
@@ -69,9 +81,18 @@ const Queries = {
       VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
       returning firstname, lastname, othername, email, phonenumber, 
       username, registered, isadmin`,
-      values: [firstname, lastname, othername, email, phonenumber,
-        username, registered, isadmin, password],
+      values: [
+        firstname,
+        lastname,
+        othername,
+        email,
+        phonenumber,
+        username,
+        registered,
+        isadmin,
+        password
+      ]
     };
-  },
+  }
 };
 export default Queries;

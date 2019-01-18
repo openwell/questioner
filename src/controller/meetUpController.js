@@ -172,6 +172,7 @@ class Controller {
       return errorHandler(400, res, err);
     }
   }
+
   static async comment(req, res) {
     const comments = req.body.comment;
     const questions = req.body.question;
@@ -187,22 +188,23 @@ class Controller {
       return errorHandler(400, res, err);
     }
   }
+
+  // get all questions
   static async allComment(req, res) {
     try {
-      const { rows } = await db.query(queries.selectAll('comments'));
-      const result = rows.map(({
-        question_id, comment,
-      }) => ({
-        question_id, comment,
-      }));
+      const { rows, rowCount } = await db.query(queries.getAllCommentJoin(req.params.question_id));
+      if (rowCount === 0) {
+        return errorHandler(400, res, 'Empty comment table');
+      }
       return res.status(200).json({
         status: 200,
-        data: result,
+        data: rows,
       });
     } catch (err) {
       return errorHandler(400, res, err);
     }
   }
+
   static async deleteMeetUp(req, res) {
     try {
       const resp = await db.query(queries.deleteMeetup(req.params.meetupId));
