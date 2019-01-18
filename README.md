@@ -26,13 +26,18 @@ Npm v6.4.1 or above
 ### ENDPOINTS
 
 - POST **/api/v1/meetups** Create an meetup record.
-- GET **/api/v1//meetups** Fetch all meetup records.
-- GET **/api/v1//meetups/1/<meetup-id>** Fetch a specific meetup record.
+- GET **/api/v1/meetups** Fetch all meetup records.
+- GET **/api/v1/meetups/1/:meetup-id** Fetch a specific meetup record.
 - GET **/api/v1/meetups/upcoming/** Fetch all upcoming meetup records.
 - POST **/api/v1/questions** Create a question for a specific meetup.
-- PATCH **/api/v1/questions/<question-id>/upvote** Upvote (increase votes by 1) a specific question.
-- PATCH **/api/v1/questions/<question-id>/downvote** Downvote (decrease votes by 1) a specific question.
-- POST **/api/v1/meetups/<meetup-id>/rsvps** Respond to meetup RSVP.
+- PATCH **/api/v1/questions/:question-id/upvote** Upvote (increase votes by 1) a specific question.
+- PATCH **/api/v1/questions/:question-id/downvote** Downvote (decrease votes by 1) a specific question.
+- POST *- POST **/api/v1/auth/signup** Create a user account.
+- POST **/api/v1/auth/login** Login a user
+- POST **/api/v1/auth/admin** Login as an admin
+- POST **/api/v1/comments/** Comment on a question.
+- GET **/api/v1/comments/:question-Id/** Get Comments of a Question.
+- DELETE **/api/v1/meetups/:meetup-id** Delete a meetup
 
 ### Installing
 

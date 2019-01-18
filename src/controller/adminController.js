@@ -8,11 +8,12 @@ class AdminControl {
     try {
       const { rows } = await db.query(queries.selectById('admins', 'email', req.body.email));
       const token = auth.generateToken(rows[0].id);
+      const { email, registered, isadmin } = rows[0];
       return res.status(200).json({
         status: 200,
         data: [{
           token,
-          admin: rows[0],
+          admin: { email, registered, isadmin },
         }],
       });
     } catch (error) {

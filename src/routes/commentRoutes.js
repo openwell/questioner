@@ -6,7 +6,7 @@ import validateExit from '../helpers/validateExist';
 
 const router = express.Router();
 
-router.get('/comments',
+router.get('/comments/:question_id',
   controller.allComment);
 
 router.post('/comments',

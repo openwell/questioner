@@ -1,6 +1,5 @@
 import db from '../db/index';
 import queries from '../controller/queries';
-import auth from '../controller/helpers';
 import errorHandler from './errorHandler';
 
 class validateExist {

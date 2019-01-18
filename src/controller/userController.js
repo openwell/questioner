@@ -15,7 +15,7 @@ class UserControl {
     const phonenumber = req.body.phoneNumber;
     const username = req.body.userName;
     const registered = moment(new Date());
-    const isadmin = req.body.isAdmin;
+    const isadmin = 'false';
     const password = hashPassword;
     try {
       const { rows } = await db.query(queries.userSignUp(firstname, lastname,
