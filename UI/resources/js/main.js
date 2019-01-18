@@ -105,10 +105,6 @@ function logOut() {
   window.location.href = "../login.html";
 }
 
-
-
-
-
 if (!RegExp.escape) {
   RegExp.escape = function(s) {
     return String(s).replace(/[\\^$*+?.()|[\]{}]/g, "\\$&");

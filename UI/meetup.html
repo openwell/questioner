@@ -19,71 +19,72 @@
         </ul>
       </nav>
     </header>
-    <!-- <div class="meetup-banner row"></div> -->
     <section class="meetup_header">
        <h1>What interest you the most. Join a MeetUp to do More</h1>
        <h3>Popular MeetUp Coming Up</h3>
     </section>
-    <section class="meetup_section row2">
-      <div class="meetup-card">
-        <a href="questions.html">
-          <h1>Laravel Nigeria</h1>
-          <h4>Lagos</h4>
-          <div class="meetup-img">
-            <img
-              src="../UI/resources/images/img3.webp"
-              alt="meetup-img"
-            />
-          </div>
-          <h5>21 Questions</h5>
-          <h5>Friday, March 13, 3:00 PM</h5>
-        </a>
-      </div>
-      <div class="meetup-card">
-        <a href="questions.html">
-          <h1>Android Developers</h1>
-          <h4>Lagos</h4>
-          <div class="meetup-img">
-            <img
-              src="../UI/resources/images/img5.webp"
-              alt="meetup-img"
-            />
-          </div>
-          <h5>21 Questions</h5>
-          <h5>Friday, March 13, 3:00 PM</h5>
-        </a>
-      </div>
-      <div class="meetup-card">
-        <a href="questions.html">
-          <h1>Instagram Celebs</h1>
-          <h4>Lagos</h4>
-          <div class="meetup-img">
-            <img
-              src="../UI/resources/images/tech-meetup.jpg"
-              alt="meetup-img"
-            />
-          </div>
-          <h5>21 Questions</h5>
-          <h5>Friday, March 13, 3:00 PM</h5>
-        </a>
-      </div>
-      <div class="meetup-card">
-        <a href="questions.html">
-          <h1>Nigeria Modern Excel</h1>
-          <h4>Lagos</h4>
-          <div class="meetup-img">
-            <img
-              src="../UI/resources/images/img5.webp"
-              alt="meetup-img"
-            />
-          </div>
-          <h5>21 Questions</h5>
-          <h5>Friday, March 13, 3:00 PM</h5>
-        </a>
-      </div>
+    <section class="meetup_section row2" id="question_loads">
+      
+    <div ></div>
     </section>
+    
     <footer>©Questioner 2018</footer>
 
     <script src="./resources/js/main.js"></script>
+    <script>
+    async function meetup(dat) {
+  try {
+    let response = await fetch(dat);
+    let data = await response.json();
+      console.log(data.data[0])
+
+      for(let i = 0; i <= data.data.length -1; i++){
+         console.log(data.data[i], 'iii')
+         let main = document.getElementById("question_loads").innerHTML +=
+      `<div class="meetup-card">
+        <a href="questions.html">
+          <h1> ${data.data[i].topic}</h1>
+          <h4>${data.data[i].location}</h4>
+          <div class="meetup-img">
+            <img
+              src="../UI/resources/images/img5.webp"
+              alt="meetup-img"
+            />
+          </div>
+          <h5>21 Questions</h5>
+          <h5>${data.data[i].happeningon}</h5>
+        </a>
+      </div>`;
+      }
+ 
+
+   for (var p in data.data){
+          console.log(data.data[p].location, data.data[p].topic)
+          console.log('yii')
+   }   
+    return response.status;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
+window.onload = function(event) {
+  const url = "https://questioner1.herokuapp.com/api/v1/meetups";
+  let request = new Request(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json"
+    }
+  });
+  meetup(request);
+};
+
+
+
+
+
+    </script>
   </body>
 </html>
