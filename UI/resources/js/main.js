@@ -93,3 +93,24 @@ function Rsvp(checkbox) {
     if (item !== checkbox) item.checked = false;
   });
 }
+
+function checkUserLogin() {
+  if (localStorage.getItem("userToken") === null) {
+    window.location.href = "../login.html";
+  }
+}
+
+function logOut() {
+  localStorage.clear("userToken") 
+  window.location.href = "../login.html";
+}
+
+
+
+
+
+if (!RegExp.escape) {
+  RegExp.escape = function(s) {
+    return String(s).replace(/[\\^$*+?.()|[\]{}]/g, "\\$&");
+  };
+}

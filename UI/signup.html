@@ -132,68 +132,60 @@
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
     <script>
-    async function signup(dat) { 
-      try{
-        let response = await fetch(dat);
-        console.log(response)
-        let data = await response.json();
-          if(response.ok) {
-          document.getElementById('success').innerHTML = 'Registration Successful';
-          setTimeout(()=>{
-          window.location.href = 'user/dashboard.html'
-          },6000);
-          return data;
-          }
-          document.getElementById('success').innerHTML = response.statusText
-         return response.status
-      }catch(err){
-        throw err;
-      }
+    //Sign Up
+async function signup(dat) {
+  try {
+    let response = await fetch(dat);
+    console.log(response);
+    let data = await response.json();
+    if (response.ok) {
+      document.getElementById("success").innerHTML = "Registration Successful";
+      setTimeout(() => {
+        window.location.href = "user/dashboard.html";
+      }, 6000);
+      return data;
     }
-     let fN, lN, oN, e, pN, uN, p1, p2;
-   document.onsubmit = function(event){
-     fN = document.getElementById('firstName').value;
-     lN = document.getElementById('lastName').value;
-     oN = document.getElementById('otherName').value;
-     e = document.getElementById('email').value;
-     pN = document.getElementById('phoneNumber').value;
-     uN = document.getElementById('userName').value;
-     p1= document.getElementById('password').value;
-     p2 = document.getElementById('confirmPassword').value;
-          const data = {
-          "id": '1',
-          "firstName": fN,
-          "lastName": lN,
-          "otherName": oN,
-          "email": e,
-          "phoneNumber": pN,
-          "userName": uN,
-          "registered": "2018-3-3",
-          "isAdmin": "false",
-          "password": p1,
-          "confirmPassword": p2
-          }
-    const url = 'https://questioner1.herokuapp.com/api/v1/auth/signup';
-    let request = new Request(url, {
-    method: 'POST', 
-    body: JSON.stringify(data), 
+    document.getElementById("success").innerHTML = response.statusText;
+    return response.status;
+  } catch (err) {
+    throw err;
+  }
+}
+let fN, lN, oN, e, pN, uN, p1, p2;
+document.onsubmit = function(event) {
+  fN = document.getElementById("firstName").value;
+  lN = document.getElementById("lastName").value;
+  oN = document.getElementById("otherName").value;
+  e = document.getElementById("email").value;
+  pN = document.getElementById("phoneNumber").value;
+  uN = document.getElementById("userName").value;
+  p1 = document.getElementById("password").value;
+  p2 = document.getElementById("confirmPassword").value;
+  const data = {
+    id: "1",
+    firstName: fN,
+    lastName: lN,
+    otherName: oN,
+    email: e,
+    phoneNumber: pN,
+    userName: uN,
+    registered: "2018-3-3",
+    isAdmin: "false",
+    password: p1,
+    confirmPassword: p2
+  };
+  const url = "https://questioner1.herokuapp.com/api/v1/auth/signup";
+  let request = new Request(url, {
+    method: "POST",
+    body: JSON.stringify(data),
     headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'tokens': 'adminToken'
-            },
-      });
-      signup(request);
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: "adminToken"
     }
-     
-    if(!RegExp.escape) {
-    RegExp.escape = function(s) {
-      return String(s).replace(/[\\^$*+?.()|[\]{}]/g, '\\$&');
-      };
-    }
-
-
-
+  });
+  signup(request);
+};
     </script>
 
   </body>
