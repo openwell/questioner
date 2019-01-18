@@ -274,9 +274,18 @@ describe('/GET', () => {
       });
   });
 });
+describe('/GET /api/v1/comments/:commentId', () => {
+  it('user should get all comments', (done) => {
+    request(server)
+      .get('/api/v1/comments/1')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
 
-
-// MiddleWare Test
 // MiddleWare Test
 describe('/POST /api/v1/comments', () => {
   it('it should return 400 Error', (done) => {
