@@ -136,14 +136,14 @@
 async function signup(dat) {
   try {
     let response = await fetch(dat);
-    console.log(response);
     let data = await response.json();
     if (response.ok) {
       document.getElementById("success").innerHTML = "Registration Successful";
+      localStorage.setItem("userToken", data.token);
       setTimeout(() => {
         window.location.href = "user/dashboard.html";
       }, 6000);
-      return data;
+      return response.status;
     }
     document.getElementById("success").innerHTML = response.statusText;
     return response.status;
