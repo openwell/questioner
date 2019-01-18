@@ -12,17 +12,17 @@
       <div class="logo"></div>
       <nav>
         <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="meetup.html">MEET UPS</a></li>
-            <li><a href="login.html">LOGIN</a></li>
-            <li><a href="signup.html">SIGNUP</a></li>
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="meetup.html">MEET UPS</a></li>
+          <li><a href="login.html">LOGIN</a></li>
+          <li><a href="signup.html">SIGNUP</a></li>
         </ul>
       </nav>
     </header>
     <section class="signup-section row">
-      
-      <form action="" onclick="event.preventDefault">
-          <h1>REGISTER</h1>
+      <form action="" onsubmit="event.preventDefault()">
+        <h1>REGISTER</h1>
+        <br> <small id="success" style="color: green"></small>
         <div class="form-row">
           <div class="form-group col-2">
             <label for="firstName">First Name</label>
@@ -32,6 +32,8 @@
               id="firstName"
               name="firstName"
               placeholder="John"
+              required
+              pattern=".{2,20}" title="2 to 20 characters"
             />
           </div>
           <div class="form-group col-2 ">
@@ -39,8 +41,11 @@
             <input
               class="form-control"
               type="text"
+              id="lastName"
               name="lastName"
               placeholder="Doe"
+              required
+              pattern=".{2,20}" title="2 to 20 characters"
             />
           </div>
         </div>
@@ -50,8 +55,11 @@
           <input
             class="form-control"
             type="text"
+            id="otherName"
             name="otherName"
             placeholder="Your Other Name"
+            required
+            pattern=".{2,20}" title="2 to 20 characters"
           />
         </div>
         <div class="form-group">
@@ -59,17 +67,21 @@
           <input
             class="form-control"
             type="email"
+            id="email"
             name="email"
             placeholder="Email address"
+            required
           />
         </div>
         <div class="form-group">
           <label for="phoneNumber">Mobile Number</label>
           <input
             class="form-control"
-            type="text"
+            type="tel"
+            id="phoneNumber"
             name="phoneNumber"
             placeholder="0802266...."
+            required
           />
         </div>
         <div class="form-group">
@@ -77,8 +89,11 @@
           <input
             class="form-control"
             type="text"
+            id="userName"
             name="username"
             placeholder="Username"
+            required
+            pattern=".{5,20}" title="5 to 20 characters"
           />
         </div>
         <div class="form-row">
@@ -87,18 +102,25 @@
             <input
               class="form-control"
               class="form-control"
+              id="password"
               type="password"
               name="pw1"
               placeholder="***********"
-            />
+              required
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" onchange="form.pw2.pattern = RegExp.escape(this.value);"
+              title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
+              />
           </div>
           <div class="form-group col-2">
             <label for="username">Confirm Password</label>
             <input
               class="form-control"
               type="password"
+              id="confirmPassword"
               name="pw2"
               placeholder="***********"
+              required
+              title="Please enter the same Password as above"
             />
           </div>
         </div>
@@ -109,5 +131,62 @@
     </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
+    <script>
+    //Sign Up
+async function signup(dat) {
+  try {
+    let response = await fetch(dat);
+    console.log(response);
+    let data = await response.json();
+    if (response.ok) {
+      document.getElementById("success").innerHTML = "Registration Successful";
+      setTimeout(() => {
+        window.location.href = "user/dashboard.html";
+      }, 6000);
+      return data;
+    }
+    document.getElementById("success").innerHTML = response.statusText;
+    return response.status;
+  } catch (err) {
+    throw err;
+  }
+}
+let fN, lN, oN, e, pN, uN, p1, p2;
+document.onsubmit = function(event) {
+  fN = document.getElementById("firstName").value;
+  lN = document.getElementById("lastName").value;
+  oN = document.getElementById("otherName").value;
+  e = document.getElementById("email").value;
+  pN = document.getElementById("phoneNumber").value;
+  uN = document.getElementById("userName").value;
+  p1 = document.getElementById("password").value;
+  p2 = document.getElementById("confirmPassword").value;
+  const data = {
+    id: "1",
+    firstName: fN,
+    lastName: lN,
+    otherName: oN,
+    email: e,
+    phoneNumber: pN,
+    userName: uN,
+    registered: "2018-3-3",
+    isAdmin: "false",
+    password: p1,
+    confirmPassword: p2
+  };
+  const url = "https://questioner1.herokuapp.com/api/v1/auth/signup";
+  let request = new Request(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: "adminToken"
+    }
+  });
+  signup(request);
+};
+    </script>
+
   </body>
 </html>
