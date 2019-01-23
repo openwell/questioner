@@ -152,6 +152,7 @@ function Rsvp(checkbox) {
     if (item !== checkbox) item.checked = false;
   });
 }
+
 function rsvpForm() {
   event.preventDefault();
 }
