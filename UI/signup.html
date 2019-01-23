@@ -6,11 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Sign-Up</title>
     <link rel="stylesheet" href="./resources/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <header class="row">
-      <div class="logo"></div>
-      <nav>
+    <header class="row topnav">
+      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
           <li><a href="meetup.html">MEET UPS</a></li>
@@ -18,9 +24,12 @@
           <li><a href="signup.html">SIGNUP</a></li>
         </ul>
       </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
     </header>
     <section class="signup-section row">
-      <form action="" onsubmit="event.preventDefault()">
+      <form action="" onsubmit=" return signUp()">
         <h1>REGISTER</h1>
         <br> <small id="success" style="color: green"></small>
         <div class="form-row">
@@ -81,6 +90,7 @@
             id="phoneNumber"
             name="phoneNumber"
             placeholder="0802266...."
+            pattern="[0-9]{11}" title="min of 11 numbers"
             required
           />
         </div>
@@ -128,65 +138,14 @@
         <input type="text" name="registered" value="" hidden />
         <input type="text" name="isAdmin" value="false" hidden />
       </form>
+      <div class="cs-loader" id="cs-loader" hidden>
+        <div class="cs-loader-inner">
+          <label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label>
+        </div>
+      </div>
     </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
     <script>
-    //Sign Up
-async function signup(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    if (response.ok) {
-      document.getElementById("success").innerHTML = "Registration Successful";
-      localStorage.setItem("userToken", data.token);
-      setTimeout(() => {
-        window.location.href = "user/dashboard.html";
-      }, 6000);
-      return response.status;
-    }
-    document.getElementById("success").innerHTML = response.statusText;
-    return response.status;
-  } catch (err) {
-    throw err;
-  }
-}
-let fN, lN, oN, e, pN, uN, p1, p2;
-document.onsubmit = function(event) {
-  fN = document.getElementById("firstName").value;
-  lN = document.getElementById("lastName").value;
-  oN = document.getElementById("otherName").value;
-  e = document.getElementById("email").value;
-  pN = document.getElementById("phoneNumber").value;
-  uN = document.getElementById("userName").value;
-  p1 = document.getElementById("password").value;
-  p2 = document.getElementById("confirmPassword").value;
-  const data = {
-    id: "1",
-    firstName: fN,
-    lastName: lN,
-    otherName: oN,
-    email: e,
-    phoneNumber: pN,
-    userName: uN,
-    registered: "2018-3-3",
-    isAdmin: "false",
-    password: p1,
-    confirmPassword: p2
-  };
-  const url = "https://questioner1.herokuapp.com/api/v1/auth/signup";
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: "adminToken"
-    }
-  });
-  signup(request);
-};
-    </script>
-
-  </body>
+    </script></body>
 </html>

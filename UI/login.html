@@ -6,22 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>login</title>
     <link rel="stylesheet" href="./resources/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <header class="row">
-      <div class="logo"></div>
-      <nav>
+    <header class="row topnav">
+      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <nav class="nav-links">
         <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="meetup.html">MEET UPS</a></li>
-            <li><a href="login.html">LOGIN</a></li>
-            <li><a href="signup.html">SIGNUP</a></li>
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="meetup.html">MEET UPS</a></li>
+          <li><a href="login.html">LOGIN</a></li>
+          <li><a href="signup.html">SIGNUP</a></li>
         </ul>
       </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
     </header>
     <section class="signin-section row">
       
-        <form action="" onsubmit="event.preventDefault()">
+        <form action="" onsubmit="return signin()">
             <h1>LOG IN</h1>
             <br> <small id="success" style="color: green"></small>
           <div class="form-group">
@@ -44,54 +53,21 @@
                 id="pw"
                 placeholder="***********"
                 required
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
               />
             </div>
   
           <div class=""><button type="submit">LOG IN</button></div>
         </form>
+        <div class="cs-loader" id="cs-loader" hidden>
+          <div class="cs-loader-inner">
+            <label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label>
+          </div>
+        </div>
       </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
-    <script>
-     async function signin(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    if (response.ok) {
-      document.getElementById("success").innerHTML = "Login Successful";
-      setTimeout(() => {
-        window.location.href = "user/dashboard.html";
-      }, 6000);
-      localStorage.setItem("userToken", data.data[0].token);
-      return response.status;
-    }
-    document.getElementById("success").innerHTML = response.statusText;
-    return response.status;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-}
-let uE, pW;
-document.onsubmit = function(event) {
-  uE = document.getElementById("email").value;
-  pW = document.getElementById("pw").value;
-  const data = {
-    email: uE,
-    password: pW
-  };
-  const url = "https://questioner1.herokuapp.com/api/v1/auth/login";
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: "adminToken"
-    }
-  });
-  signin(request);
-};
-    </script>
+    <script></script>
   </body>
 </html>
