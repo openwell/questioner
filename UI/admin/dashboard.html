@@ -6,11 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Questioner</title>
     <link rel="stylesheet" href="../resources/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <header>
-      <div class="logo"></div>
-      <nav>
+    <header class="topnav">
+      <div class="logo" id="bash" onclick="window.location.href='../index.html'"></div>
+      <nav class="nav-links">
         <ul>
           <li><a href="../index.html">HOME</a></li>
           <li><a href="../meetup.html">MEET UPS</a></li>
@@ -18,22 +24,31 @@
           <li><a href="" onclick="">LOG OUT</a></li>
         </ul>
       </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
     </header>
     <section class="user-dashboard-section row2">
       <div class="user-details">
         <span class="user-avatar"></span>
-        <p>Admin:</p>
-        <p>last login:</p>
+        <p>Admin</p>
+        <p>last login</p>
       </div>
       <div class="user-statistic-bar">
         <form action="" class="admin-new-meetup-form">
           <h3>NEW MEETUPS</h3>
-          <label for="">MeetUp Name</label>
-          <div contenteditable="" style="border:1px solid black"></div>
-          <label for="">Tags</label>
-          <input type="text" name="image-tags" id="" /><br />
-          <label for="">Happening On</label>
-          <input type="date" name="happening-on" id="" />
+          <label for="">MeetUp Name
+            <input type="text" required name="meetup-name" id="" /><br />
+          </label>
+          
+          <label for="">Tags
+            <input type="text" required name="image-tags" id="" /><br />
+          </label>
+          
+          <label for="">Happening On
+           <input type="datetime-local" required name="happening-on" id="" /> 
+          </label>
+          
           <button type="submit">Submit</button>
         </form>
         <div class="user-top-feed">

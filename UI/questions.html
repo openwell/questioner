@@ -14,9 +14,9 @@
     />
   </head>
   <body>
-    <header class="row">
-      <div class="logo"></div>
-      <nav>
+    <header class="row topnav">
+      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
           <li><a href="meetup.html">MEET UPS</a></li>
@@ -24,19 +24,18 @@
           <li><a href="signup.html">SIGNUP</a></li>
         </ul>
       </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
     </header>
     <section class="question-header row3">
       <div class="question-header-meetup-details">
-        <div>
-          <h2>MeetUp Name: Android Developers Niger</h2>
-          <p>Location - &nbsp;Lagos</p>
-          <p>Happening On - 2019, May 17th</p>
-          <p>RSVP - 20 Attending</p>
+        <div id="meet_up-info">
         </div>
         <form
           action=""
           class="new-question-form"
-          onsubmit="event.preventDefault()"
+          onclick="return rsvpForm()"
         >
           <h4>Will You be Attending</h4>
           <label for="yes">YES</label>
@@ -75,7 +74,7 @@
         <form
           action=""
           class="new-question-form"
-          onsubmit="event.preventDefault()"
+          onsubmit="return newQuestion()"
         >
           <h4>New Question</h4>
           <label for="">Title</label>
@@ -84,6 +83,7 @@
             name="title"
             value=""
             id="newQuestionTitle"
+            required
           ></div>
           <label for="">Body</label>
           <div
@@ -91,6 +91,8 @@
             name="body"
             value=""
             id="newQuestionBody"
+            required
+            data-minlength="5"
           ></div>
           <button>Submit</button>
         </form>
@@ -118,7 +120,7 @@
             <h5>New Comment</h5>
             <form
               action=""
-              onsubmit="event.preventDefault()"
+              onsubmit=""
               class="comment-form"
             >
               <div
@@ -147,6 +149,7 @@
     <script src="./resources/js/main.js"></script>
     <script>
       QuestionsInit();
+      window.onload = meetup_details();
     </script>
   </body>
 </html>
