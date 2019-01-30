@@ -1,7 +1,7 @@
 import db from '../db/index';
 import auth from './helpers';
 import queries from './queries';
-import errorHandler from '../helpers/errorHandler';
+import errorHandler from '../middleware/errorHandler';
 
 class AdminControl {
   static async login(req, res) {

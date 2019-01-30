@@ -1,7 +1,7 @@
 import moment from 'moment';
 import db from '../db/index';
 import queries from './queries';
-import errorHandler from '../helpers/errorHandler';
+import errorHandler from '../middleware/errorHandler';
 
 class Controller {
   /**
@@ -119,13 +119,28 @@ class Controller {
     try {
       const { rows } = await db.query(queries.selectAll('questions'));
       const result = rows.map(({
-        createdby, meetup_id, title, body, votes,
+        id, createdby, meetup_id, title, body, votes,
       }) => ({
-        createdby, meetup_id, title, body, votes,
+        id, createdby, meetup_id, title, body, votes,
       }));
       return res.status(200).json({
         status: 200,
         data: result,
+      });
+    } catch (err) {
+      return errorHandler(500, res, err);
+    }
+  }
+
+  static async questionsWithComments(req, res) {
+    const quesId = req.params.questionId;
+    try {
+      const data1 = await db.query(queries.selectById('questions', 'id', quesId));
+      const data2 = await db.query(queries.getCommentsUser(quesId));
+      return res.status(200).json({
+        status: 200,
+        data: data1.rows[0],
+        comment: data2.rows,
       });
     } catch (err) {
       return errorHandler(500, res, err);

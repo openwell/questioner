@@ -11,7 +11,7 @@ async function signUp() {
   const password = hashPassword;
   try {
     const { rows } = await pool.query(queries.adminSignUp(email, registered, isAdmin, password));
-    return 'console.log(`Admin Sign up Successfully ${rows[0].email}`)';
+    return console.log(`Admin Sign up Successfully ${rows[0].email}`);
   } catch (err) {
     console.log(err);
   }

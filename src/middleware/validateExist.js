@@ -9,7 +9,7 @@ class validateExist {
       if (rows[0]) {
         return next();
       }
-      return errorHandler(404, res, message);
+      return errorHandler(200, res, message);
     } catch (err) {
       return errorHandler(500, res, message);
     }
@@ -21,7 +21,7 @@ class validateExist {
     if (req.body.meetup) {
       value = (req.body.meetup);
     }
-    validateExist.validate('meetups', value, 'Meetup-id not found', res, next);
+    validateExist.validate('meetups', value, 'Meetup-id Doesnt Exist', res, next);
   }
 
   static async checkQuestionId(req, res, next) {
@@ -30,7 +30,7 @@ class validateExist {
       params = req.body.question;
     }
     validateExist.validate('questions', params,
-      'Question-id not found', res, next);
+      'Question-id Doesnt Exist', res, next);
   }
 
   static async checkMeetUpEmpty(req, res, next) {
@@ -39,7 +39,7 @@ class validateExist {
       if (rows[0]) {
         return next();
       }
-      return errorHandler(404, res, 'MeetUp not found');
+      return errorHandler(200, res, 'No Meetups Exist');
     } catch (err) {
       return errorHandler(500, res, err);
     }
@@ -51,7 +51,7 @@ class validateExist {
       if (rows[0]) {
         return next();
       }
-      return errorHandler(404, res, 'question not found');
+      return errorHandler(200, res, 'No Questions Exist');
     } catch (err) {
       return errorHandler(500, res, err);
     }

@@ -31,6 +31,7 @@ Npm v5.6 or above
 - GET `/api/v1/meetups/upcoming/` Fetch all upcoming meetup records.
 - POST `/api/v1/questions` Create a question for a specific meetup.
 - GET `/api/v1/questions` Fetch all questions.
+- GET `/api/v1/questions/:question-id` Fetches a Single question with Comments Attached to it.
 - PATCH `/api/v1/questions/:question-id/upvote` Upvote (increase votes by 1) a specific question.
 - PATCH `/api/v1/questions/:question-id/downvote` Downvote (decrease votes by 1) a specific question.
 - POST `/api/v1/meetups/:meetup-id/rsvps` Respond to meetup RSVP.
@@ -47,14 +48,11 @@ Npm v5.6 or above
 ## On your Local Machine
 - Pull the [develop](https://github.com/openwell/Questioner) branch off this repository
 - Install postgreSql 11 on your local machine or registered on any online platform
-- create a .env file
-- create a database and input the connection string into the .env file
-- create a secret key, admin details and input in .env file
-- template can be found in .env-sample file
-- Run `npm install` to install all dependencies
+- Rename the sample.env file to .env and input the right configurations
+- Run `npm i` to install all dependencies
 - Run `npm database` to create the database tables and create an admin
-- An admin token is generated if successfully and will be displayed in the terminal
 - Run `npm start` to start the app
+- The Admin is required to login with the data in the now .env file
 - App runs on port 3000
 - Access endpoints on `localhost:3000`
 

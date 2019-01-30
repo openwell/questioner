@@ -2,7 +2,7 @@ import moment from 'moment';
 import db from '../db/index';
 import auth from './helpers';
 import queries from './queries';
-import errorHandler from '../helpers/errorHandler';
+import errorHandler from '../middleware/errorHandler';
 
 class UserControl {
   static async signUp(req, res) {
@@ -20,16 +20,16 @@ class UserControl {
         Othername, Email, Phonenumber, Username, Registered, 'false', password));
       const token = auth.generateToken(rows[0].id, rows[0].isadmin);
       const { firstname, lastname, othername, email, phonenumber, username, registered } = rows[0];
+      const statistic = await db.query(queries.countAll('createdby', 'questions', rows[0].id));
+      const statistic1 = await db.query(queries.countAll('user_id', 'comments', rows[0].id));
       return res.status(201).json({
         status: 200,
-        data: [{
-          token, user: { firstname, lastname, othername, email, phonenumber, username, registered },
+        data: [{ token, user: { firstname, lastname, email, phonenumber },
+          totalQuestions: statistic.rows[0].count, totalComments: statistic1.rows[0].count,
         }],
       });
     } catch (err) {
-      return errorHandler(500, res, err);
-    }
-  }
+      return errorHandler(500, res, err); } }
 
   static async login(req, res) {
     try {

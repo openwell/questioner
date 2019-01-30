@@ -21,7 +21,7 @@ class userValidation {
     try {
       const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
       if (!rows[0]) {
-        return errorHandler(404, res, 'User not found');
+        return errorHandler(401, res, 'Invalid Email');
       }
       if (!auth.comparePassword(rows[0].password, req.body.password)) {
         return errorHandler(401, res, 'Invalid Password');

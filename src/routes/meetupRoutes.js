@@ -1,8 +1,8 @@
 import express from 'express';
 import controller from '../controller/meetUpController';
 import auth from '../controller/helpers';
-import validate from '../helpers/validateInput';
-import validateExist from '../helpers/validateExist';
+import validate from '../middleware/validateInput';
+import validateExist from '../middleware/validateExist';
 
 const router = express.Router();
 

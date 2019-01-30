@@ -63,39 +63,37 @@ function validationHandlerForPassword(arg) {
     .withMessage("Passwords don't match.");
 }
 
-function hasWhiteSpace(str) {
-  return (!str || str.trim().length === 0 || /^\s*$/.test(str));
-}
-function meetup(req, res, next) {
-  const inputDate = Date.parse(req.body.happeningOn);
-  const currentDate = Date.now();
-  if (hasWhiteSpace(req.body.topic) === true) {
-    return errorHandler(400, res, 'Topic is required');
-  } if ((req.body.topic).trim().length < 5) {
-    return errorHandler(422, res, 'Topic cannot be less than 5 Character');
-  } if ((typeof req.body.topic) !== 'string') {
-    return errorHandler(422, res, 'Strings Only in Topic');
-  } if (hasWhiteSpace(req.body.location) === true) {
-    return errorHandler(400, res, 'location is required');
-  } if ((req.body.location).trim().length < 5) {
-    return errorHandler(422, res, 'location cannot be less than 5 Character');
-  } if ((typeof req.body.location) !== 'string') {
-    return errorHandler(422, res, 'Strings Only in location');
-  } if (hasWhiteSpace(req.body.happeningOn)) {
-    return errorHandler(400, res, 'happeningOn is required');
-  } if (!Number(inputDate)) {
-    return errorHandler(422, res, 'happeningOn requires Date/time in this format (yyyy:mm:dd hh:mm:ss)');
-  } if (currentDate > inputDate) {
-    return errorHandler(422, res, 'happeningOn requires future Date/time in this format (yyyy:mm:dd hh:mm:ss)');
-  } return next();
+function validateHappeningOn(arg) {
+  return check(arg)
+    .custom((value, { req }) => {
+      const inputDate = Date.parse(value);
+      if (!Number(inputDate)) {
+        return false;
+      } return value;
+    })
+    .withMessage('happeningOn requires Date/time in this format (yyyy:mm:dd hh:mm:ss)')
+    .custom((value, { req }) => {
+      const inputDate = Date.parse(value);
+      const currentDate = Date.now();
+      if (currentDate > inputDate) {
+        return false;
+      }
+      return value;
+    })
+    .withMessage('happeningOn requires future Date/time in this format (yyyy:mm:dd hh:mm:ss)');
 }
 
 const middleware = {
-  meetUp: [meetup],
+  meetUp: [
+    validationHandlerForStringInput('topic', 5, 100),
+    validationHandlerForStringInput('location', 4, 50),
+    validateHappeningOn('happeningOn'),
+    validatorFunction,
+  ],
   question: [
     validationHandlerForIntegerInput('meetup', 1, 4),
-    validationHandlerForStringInput('title', 10, 30),
-    validationHandlerForStringInput('body', 10, 100),
+    validationHandlerForStringInput('title', 10, 50),
+    validationHandlerForStringInput('body', 10, 200),
     validatorFunction,
   ],
   rsvp: [
@@ -103,8 +101,14 @@ const middleware = {
     validatorFunction,
   ],
   comment: [
-    validationHandlerForStringInput('comment', 2, 100),
+    validationHandlerForStringInput('comment', 2, 200),
     validationHandlerForIntegerInput('question', 1, 4),
+    validatorFunction,
+  ],
+  login: [
+    check('email').trim().isEmail().escape().withMessage('Please provide a valid email'),
+    check('password').trim().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i')
+      .withMessage('Password must contain at least 8 characters, including 1 UPPER / 1 Lowercase a Number'),
     validatorFunction,
   ],
   user: [

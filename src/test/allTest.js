@@ -2,7 +2,6 @@ import { should as _should, use, request } from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../index';
 
-
 use(chaiHttp);
 const should = _should();
 const sevenDaysFuture = (new Date(Date.now() + 435600000)).toISOString().slice(0, -1);
@@ -53,7 +52,7 @@ const userLogins = {
 
 const adminLogin = {
   email: 'admin5@questioner.com',
-  password: '111111',
+  password: 'Timetofly2',
 };
 
 let userToken;
@@ -66,6 +65,7 @@ describe('/POST /', () => {
       .end((err, res) => {
         res.should.have.a.status(200);
         res.body.should.a('object');
+        res.body.data.should.equal('Welcome to Questioner');
         done();
       });
   });
@@ -288,7 +288,8 @@ describe('/POST /api/v1/comments', () => {
       .set('tokens', userToken)
       .send(comment2)
       .end((err, res) => {
-        res.should.have.a.status(404);
+        res.should.have.a.status(200);
+        res.body.error.should.equal('Question-id Doesnt Exist');
         res.body.should.a('object');
         done();
       });
@@ -296,12 +297,13 @@ describe('/POST /api/v1/comments', () => {
 });
 
 describe('/POST /api/v1/auth/login', () => {
-  it('it should return 404 Error', (done) => {
+  it('it should return 401 Error', (done) => {
     request(server)
       .post('/api/v1/auth/login')
       .send(userLogins)
       .end((err, res) => {
-        res.should.have.a.status(404);
+        res.should.have.a.status(401);
+        res.body.error.should.equal('Invalid Email');
         res.body.should.a('object');
         done();
       });
@@ -366,6 +368,7 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .send(data33)
       .end((err, res) => {
         res.should.have.a.status(400);
+        res.body.errors[0].msg.should.equal('must be minimum of 2 -6 letters');
         res.body.should.a('object');
         done();
       });
@@ -378,6 +381,7 @@ describe('/POST /api/v1/signup', () => {
       .send(user)
       .end((err, res) => {
         res.should.have.a.status(409);
+        res.body.error.should.equal('Email already registered');
         res.body.should.a('object');
         done();
       });
@@ -391,6 +395,7 @@ describe('/DELETE /api/v1/meetups/:meeetupId', () => {
       .set('tokens', adminToken)
       .end((err, res) => {
         res.should.have.a.status(200);
+        res.body.data.should.equal('meetup deleted');
         res.body.should.a('object');
         done();
       });
