@@ -1,7 +1,7 @@
 import moment from 'moment';
 import db from '../db/index';
 import queries from './queries';
-import errorHandler from '../helpers/errorHandler';
+import errorHandler from '../middleware/errorHandler';
 
 class Controller {
   /**
@@ -13,28 +13,28 @@ class Controller {
   static home(req, res) {
     return res.status(200).json({
       status: 200,
-      data: `Welcome to Questioner ${req.reqTime}`,
+      data: 'Welcome to Questioner',
     });
   }
 
   // Create an meetup record.
   static async createMeetUps(req, res) {
     const createdOn = moment(new Date());
-    const locations = req.body.location;
-    const topics = req.body.topic;
-    const date = req.body.happeningOn;
-    const tag = req.body.tags;
-    const adminId = req.body.admin;
+    const locations = req.body.location.trim();
+    const topics = req.body.topic.trim();
+    const date = req.body.happeningOn.trim();
+    const tag = '';
+    const adminId = req.user.id;
 
     try {
       const { rows } = await db.query(queries.newMeetUp(createdOn, locations,
         topics, date, tag, adminId));
-      return res.status(200).json({
-        status: 200,
+      return res.status(201).json({
+        status: 201,
         data: rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -52,7 +52,7 @@ class Controller {
         data: result,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -65,44 +65,52 @@ class Controller {
         data: rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
   // Fetch all upcoming meetup records.
   static async upComingMeetUps(req, res) {
+    const currentDate = (new Date(Date.now() + 3600000)).toISOString().slice(0, -1);
+    const sevenDaysFuture = (new Date(Date.now() + 608400000)).toISOString().slice(0, -1);
     try {
-      const { rows } = await db.query(queries.selectAll('meetups'));
+      const { rows } = await db.query(queries.upComingMeetups(currentDate, sevenDaysFuture));
       const result = rows.map(({
         id, topic, location, happeningon,
       }) => ({
         id, topic, location, happeningon,
       }));
-      return res.status(200).json({
-        status: 200,
-        data: result,
+      if (rows[0]) {
+        return res.status(200).json({
+          status: 200,
+          data: result,
+        });
+      }
+      return res.status(404).json({
+        status: 404,
+        data: 'Resource not Found',
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
   // Create a question for a specific meetup.
   static async questionEntry(req, res) {
     const createdOn = moment(new Date());
-    const createdBys = req.body.createdBy;
+    const createdBys = req.user.id;
     const meetupId = req.body.meetup;
     const titles = req.body.title;
     const mainBody = req.body.body;
     try {
       const { rows } = await db.query(queries.newQuestion(createdOn, createdBys,
         meetupId, titles, mainBody, 0));
-      return res.status(200).json({
-        status: 200,
+      return res.status(201).json({
+        status: 201,
         data: rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -111,16 +119,31 @@ class Controller {
     try {
       const { rows } = await db.query(queries.selectAll('questions'));
       const result = rows.map(({
-        createdby, meetup_id, title, body,
+        id, createdby, meetup_id, title, body, votes,
       }) => ({
-        createdby, meetup_id, title, body,
+        id, createdby, meetup_id, title, body, votes,
       }));
       return res.status(200).json({
         status: 200,
         data: result,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
+    }
+  }
+
+  static async questionsWithComments(req, res) {
+    const quesId = req.params.questionId;
+    try {
+      const data1 = await db.query(queries.selectById('questions', 'id', quesId));
+      const data2 = await db.query(queries.getCommentsUser(quesId));
+      return res.status(200).json({
+        status: 200,
+        data: data1.rows[0],
+        comment: data2.rows,
+      });
+    } catch (err) {
+      return errorHandler(500, res, err);
     }
   }
 
@@ -128,15 +151,14 @@ class Controller {
   static async upVote(req, res) {
     try {
       const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
-      const increase = [(rows[0].votes + 1), rows[0].id];
-      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING meetup_id,title,body, votes';
-      const resp = await db.query(query2, increase);
+      const resp = await db.query(queries.updateVote((rows[0].votes + 1), rows[0].id));
+      const { rowCount } = await db.query(queries.votes(req.params.questionId, req.user.id));
       return res.status(200).json({
         status: 200,
         data: resp.rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -144,15 +166,14 @@ class Controller {
   static async downVote(req, res) {
     try {
       const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
-      const increase = [(rows[0].votes - 1), rows[0].id];
-      const query2 = 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING meetup_id,title,body, votes';
-      const resp = await db.query(query2, increase);
+      const resp = await db.query(queries.updateVote((rows[0].votes - 1), rows[0].id));
+      const { rowCount } = await db.query(queries.votes(req.params.questionId, req.user.id));
       return res.status(200).json({
         status: 200,
         data: resp.rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -160,16 +181,16 @@ class Controller {
   static async rsvp(req, res) {
     const meetup = req.params.meetupId;
     const responses = req.body.response;
-    const userId = req.body.user;
+    const userId = req.user.id;
     const createdOn = moment(new Date());
     try {
       const { rows } = await db.query(queries.rsvp(meetup, responses, userId, createdOn));
-      return res.status(200).json({
-        status: 200,
+      return res.status(201).json({
+        status: 201,
         data: rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -177,15 +198,16 @@ class Controller {
     const comments = req.body.comment;
     const questions = req.body.question;
     const createdOn = moment(new Date());
-    const userId = req.body.user;
+    const userId = req.user.id;
     try {
       const { rows } = await db.query(queries.comment(comments, questions, createdOn, userId));
-      return res.status(200).json({
-        status: 200,
-        data: rows,
+      const response = await db.query(queries.getComment(questions, rows[0].id));
+      return res.status(201).json({
+        status: 201,
+        data: response.rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -194,14 +216,14 @@ class Controller {
     try {
       const { rows, rowCount } = await db.query(queries.getAllCommentJoin(req.params.question_id));
       if (rowCount === 0) {
-        return errorHandler(400, res, 'Empty comment table');
+        return errorHandler(404, res, 'Resource not Found');
       }
       return res.status(200).json({
         status: 200,
         data: rows,
       });
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -215,7 +237,7 @@ class Controller {
         });
       }
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 }

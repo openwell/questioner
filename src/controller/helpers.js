@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../db/index';
 import queries from './queries';
-import errorHandler from '../helpers/errorHandler';
+import errorHandler from '../middleware/errorHandler';
 
 
 class auth {
@@ -14,38 +14,55 @@ class auth {
     return bcrypt.compareSync(password, hashPassword);
   }
 
-  static generateToken(id) {
+  static generateToken(id, isadmin) {
     const token = jwt.sign({
       userId: id,
+      isAdmin: isadmin,
     },
     process.env.SECRET, { expiresIn: '1d' });
     return token;
   }
 
-  static async tokenHandler(table, req, res, next) {
+  static async verifyToken(req, res, next) {
     const token = req.headers.tokens;
     if (!token) {
-      return errorHandler(400, res, 'Token is not provided');
+      return errorHandler(401, res, 'Token is not provided');
     }
     try {
       const decoded = await jwt.verify(token, process.env.SECRET);
-      const { rows } = await db.query(queries.selectById(table, 'id', decoded.userId));
-      if (!rows[0]) {
-        return errorHandler(400, res, 'The token you provided is invalid');
+      if (decoded.isAdmin === 'true') {
+        return errorHandler(403, res, 'Token Forbidden');
       }
-      req.user = { id: decoded.userId };
-      next();
+      const { rows } = await db.query(queries.selectById('users', 'id', decoded.userId));
+      if (!rows[0]) {
+        return errorHandler(401, res, 'Invalid token');
+      }
+      req.user = { id: decoded.userId, isadmin: decoded.isAdmin };
+      return next();
     } catch (error) {
-      return errorHandler(400, res, error);
+      return errorHandler(401, res, error);
     }
   }
 
-  static async verifyToken(req, res, next) {
-    auth.tokenHandler('users', req, res, next);
-  }
-
   static async adminVerifyToken(req, res, next) {
-    auth.tokenHandler('admins', req, res, next);
+    const token = req.headers.tokens;
+    if (!token) {
+      return errorHandler(401, res, 'Token is not provided');
+    }
+    try {
+      const decoded = await jwt.verify(token, process.env.SECRET);
+      if (decoded.isAdmin === 'false') {
+        return errorHandler(403, res, 'Token Forbidden');
+      }
+      const { rows } = await db.query(queries.selectById('admins', 'id', decoded.userId));
+      if (!rows[0]) {
+        return errorHandler(401, res, 'Invalid token');
+      }
+      req.user = { id: decoded.userId, isadmin: decoded.isAdmin };
+      return next();
+    } catch (error) {
+      return errorHandler(401, res, error);
+    }
   }
 }
 

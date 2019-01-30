@@ -11,10 +11,9 @@ async function signUp() {
   const password = hashPassword;
   try {
     const { rows } = await pool.query(queries.adminSignUp(email, registered, isAdmin, password));
-    const token = Helper.generateToken(rows[0].id);
-    return token;
+    return console.log(`Admin Sign up Successfully ${rows[0].email}`);
   } catch (err) {
     console.log(err);
   }
 }
-signUp();
+export default signUp();

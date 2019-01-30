@@ -7,7 +7,7 @@ pool.on('connect', () => {
 async function dropTables() {
   try {
     const res = await pool.query(`DROP TABLE IF EXISTS comments, rsvp,
-     questions, meetups, users, admins CASCADE`);
+     questions, meetups, users, admins, votes CASCADE`);
     console.log(res);
     pool.end();
   } catch (err) {

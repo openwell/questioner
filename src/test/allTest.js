@@ -4,58 +4,40 @@ import server from '../index';
 
 use(chaiHttp);
 const should = _should();
+const sevenDaysFuture = (new Date(Date.now() + 435600000)).toISOString().slice(0, -1);
 const meetup = {
-  id: '17',
-  createdOn: '2018-12-2',
   location: 'London',
   topic: 'Lorem ipsum dolor sit, amet',
-  happeningOn: '2018-12-2',
-  tags: ['space', 'tech'],
-  admin: '1',
+  happeningOn: sevenDaysFuture,
 };
 
 const question = {
-  id: '3',
-  createdOn: '2018-12-2',
-  createdBy: '1',
   meetup: '1',
   title: 'Lorem ipsum dolor sit',
   body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
-  votes: '0',
 };
 
 const rsvp = {
-  id: '1',
-  meetup: '1',
-  user: '1',
   response: 'yes',
+};
+const comment = {
+  comment: 'Hi love myself',
+  question: '1',
+};
+const comment2 = {
+  comment: 'Hi love myself',
+  question: '10',
 };
 
 const user = {
-  id: '007',
   firstName: 'Ronaldo',
   lastName: 'Ozil',
   otherName: 'John',
   email: 'info2@yahoo.com',
   phoneNumber: '08903332829',
   userName: 'bimpe2',
-  registered: '2018-3-3',
-  isAdmin: 'false',
   password: 'Timetofly2',
   confirmPassword: 'Timetofly2',
-};
-
-const comment = {
-  comment: 'Hi love myself',
-  question: '1',
-  createdOn: '2018-12-9',
-  user: '1',
-};
-const comment2 = {
-  comment: 'Hi love myself',
-  question: '10',
-  createdOn: '2018-12-9',
-  user: '1',
 };
 
 const userLogin = {
@@ -70,14 +52,27 @@ const userLogins = {
 
 const adminLogin = {
   email: 'admin5@questioner.com',
-  password: '111111',
+  password: 'Timetofly2',
 };
 
 let userToken;
 let adminToken;
 
+describe('/POST /', () => {
+  it('Welcome page', (done) => {
+    request(server)
+      .get('/api/v1/')
+      .end((err, res) => {
+        res.should.have.a.status(200);
+        res.body.should.a('object');
+        res.body.data.should.equal('Welcome to Questioner');
+        done();
+      });
+  });
+});
+
 // admin login
-describe('/POST', () => {
+describe('/POST /api/v1/auth/admin', () => {
   it('admin should be able to login', (done) => {
     request(server)
       .post('/api/v1/auth/admin')
@@ -93,7 +88,7 @@ describe('/POST', () => {
 });
 
 // create user
-describe('/POST /api/v1/auth/signup', () => {
+describe('/POST /api/v1/signup', () => {
   it('create a user', (done) => {
     request(server)
       .post('/api/v1/auth/signup')
@@ -107,7 +102,7 @@ describe('/POST /api/v1/auth/signup', () => {
 });
 
 // user login
-describe('/POST /api/v1/auth/login', () => {
+describe('/POST', () => {
   it('user should be able to login', (done) => {
     request(server)
       .post('/api/v1/auth/login')
@@ -130,7 +125,7 @@ describe('/POST /api/v1/meetups', () => {
       .set('tokens', adminToken)
       .send(meetup)
       .end((err, res) => {
-        res.should.have.a.status(200);
+        res.should.have.a.status(201);
         res.body.should.a('object');
         done();
       });
@@ -151,10 +146,10 @@ describe('/GET /api/v1/meetups', () => {
 });
 
 // Fetch a specific meetup record.
-describe('/GET /api/v1/meetups/1/:meetupId/', () => {
+describe('/GET /api/v1/meetups/:meetupId/', () => {
   it('it should return a single meetup', (done) => {
     request(server)
-      .get('/api/v1/meetups/1/1/')
+      .get('/api/v1/meetups/1/')
       .end((err, res) => {
         res.should.have.a.status(200);
         res.body.should.a('object');
@@ -185,7 +180,7 @@ describe('/POST /api/v1/questions', () => {
       .set('tokens', userToken)
       .send(question)
       .end((err, res) => {
-        res.should.have.a.status(200);
+        res.should.have.a.status(201);
         res.body.should.a('object');
         done();
       });
@@ -207,7 +202,6 @@ describe('/GET /api/v1/questions', () => {
 
 // upVote (increase votes by 1) a specific question.
 describe('/PATCH  /api/v1/questions/:questionId/upvote', () => {
-
   it('it should update the vote count by 1', (done) => {
     request(server)
       .patch('/api/v1/questions/1/upvote')
@@ -222,12 +216,12 @@ describe('/PATCH  /api/v1/questions/:questionId/upvote', () => {
 
 // downVote (decrease votes by 1) a specific question.
 describe('/PATCH /api/v1/questions/:questionId/downvote', () => {
-  it('it should update the vote count by 1', (done) => {
+  it('it should return 400 error', (done) => {
     request(server)
       .patch('/api/v1/questions/1/downvote')
       .set('tokens', userToken)
       .end((err, res) => {
-        res.should.have.a.status(200);
+        res.should.have.a.status(400);
         res.body.should.a('object');
         done();
       });
@@ -242,7 +236,7 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .set('tokens', userToken)
       .send(rsvp)
       .end((err, res) => {
-        res.should.have.a.status(200);
+        res.should.have.a.status(201);
         res.body.should.a('object');
         done();
       });
@@ -256,35 +250,8 @@ describe('/POST /api/v1/comments', () => {
       .set('tokens', userToken)
       .send(comment)
       .end((err, res) => {
-        res.should.have.a.status(200);
+        res.should.have.a.status(201);
         res.body.should.a('object');
-        done();
-      });
-  });
-});
-
-describe('/POST /api/v1/comments', () => {
-  it('user should be able to create comment', (done) => {
-    request(server)
-      .post('/api/v1/comments')
-      .set('tokens', userToken)
-      .send(comment)
-      .end((err, res) => {
-        res.should.have.a.status(200);
-        res.body.should.a('object');
-        done();
-      });
-  });
-});
-
-
-// Bad Page.
-describe('/GET', () => {
-  it('it should redirect', (done) => {
-    request(server)
-      .get('/home').redirects(0)
-      .end((err, res) => {
-        res.should.redirectTo('/api/v1');
         done();
       });
   });
@@ -300,16 +267,29 @@ describe('/GET /api/v1/comments/:commentId', () => {
       });
   });
 });
+// Bad Page.
+describe('/GET', () => {
+  it('it should redirect', (done) => {
+    request(server)
+      .get('/home')
+      .redirects(0)
+      .end((err, res) => {
+        res.should.redirectTo('/api/v1');
+        done();
+      });
+  });
+});
 
 // MiddleWare Test
 describe('/POST /api/v1/comments', () => {
-  it('it should return 400 Error', (done) => {
+  it('it should return 404 Error', (done) => {
     request(server)
       .post('/api/v1/comments')
       .set('tokens', userToken)
       .send(comment2)
       .end((err, res) => {
-        res.should.have.a.status(400);
+        res.should.have.a.status(200);
+        res.body.error.should.equal('Question-id Doesnt Exist');
         res.body.should.a('object');
         done();
       });
@@ -317,12 +297,13 @@ describe('/POST /api/v1/comments', () => {
 });
 
 describe('/POST /api/v1/auth/login', () => {
-  it('it should return 400 Error', (done) => {
+  it('it should return 401 Error', (done) => {
     request(server)
       .post('/api/v1/auth/login')
       .send(userLogins)
       .end((err, res) => {
-        res.should.have.a.status(400);
+        res.should.have.a.status(401);
+        res.body.error.should.equal('Invalid Email');
         res.body.should.a('object');
         done();
       });
@@ -357,7 +338,8 @@ describe('/POST /api/v1/questions', () => {
       createdBy: 'user',
       meetup: '',
       title: 'Lorem ipsum dolor sit',
-      body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
+      body:
+        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
       votes: '',
     };
     request(server)
@@ -373,7 +355,7 @@ describe('/POST /api/v1/questions', () => {
 });
 
 describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
-  it('it should update the rsvp of a meetup', (done) => {
+  it('it should return 400 Error', (done) => {
     const data33 = {
       id: '1',
       meetup: 'meetup-id',
@@ -386,6 +368,20 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .send(data33)
       .end((err, res) => {
         res.should.have.a.status(400);
+        res.body.errors[0].msg.should.equal('must be minimum of 2 -6 letters');
+        res.body.should.a('object');
+        done();
+      });
+  });
+});
+describe('/POST /api/v1/signup', () => {
+  it('should error 409 user already exist', (done) => {
+    request(server)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .end((err, res) => {
+        res.should.have.a.status(409);
+        res.body.error.should.equal('Email already registered');
         res.body.should.a('object');
         done();
       });
@@ -399,6 +395,7 @@ describe('/DELETE /api/v1/meetups/:meeetupId', () => {
       .set('tokens', adminToken)
       .end((err, res) => {
         res.should.have.a.status(200);
+        res.body.data.should.equal('meetup deleted');
         res.body.should.a('object');
         done();
       });

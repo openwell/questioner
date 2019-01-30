@@ -11,7 +11,7 @@ const meetups = `CREATE TABLE IF NOT EXISTS
           createdon TIMESTAMP,
           location VARCHAR(128) NOT NULL,
           topic VARCHAR(128) NOT NULL,
-          happeningon VARCHAR(128) NOT NULL,
+          happeningon TIMESTAMP NOT NULL,
           tags VARCHAR(128) NOT NULL,
           admin_id INTEGER NOT NULL
         )`;
@@ -67,16 +67,23 @@ const comments = `CREATE TABLE IF NOT EXISTS
           created_on TIMESTAMP,
           user_id INTEGER NOT NULL
         )`;
+const votes = `CREATE TABLE IF NOT EXISTS
+votes(
+  id serial PRIMARY KEY NOT NULL,
+  question_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL
+)`;
 
-async function createAllTables(query1, query2, query3, query4, query5, query6) {
+async function createAllTables(...restArgs) {
   try {
     const results = await Promise.all([
-      pool.query(query1),
-      pool.query(query2),
-      pool.query(query3),
-      pool.query(query4),
-      pool.query(query5),
-      pool.query(query6),
+      pool.query(restArgs[0]),
+      pool.query(restArgs[1]),
+      pool.query(restArgs[2]),
+      pool.query(restArgs[3]),
+      pool.query(restArgs[4]),
+      pool.query(restArgs[5]),
+      pool.query(restArgs[6]),
     ]);
     console.log(results);
     await pool.end();
@@ -86,12 +93,9 @@ async function createAllTables(query1, query2, query3, query4, query5, query6) {
   }
 }
 
-createAllTables(meetups, users, admins, questions, rsvp, comments);
+createAllTables(meetups, users, admins, questions, rsvp, comments, votes);
 
 pool.on('remove', () => {
   console.log('client removed');
   process.exit(0);
 });
-
-// adding for foreign key from the beginning didnt work well
-// e.g user_id INTEGER REFERENCES users(id) ON DELETE CASCADE

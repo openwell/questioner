@@ -1,45 +1,41 @@
 import express from 'express';
 import controller from '../controller/meetUpController';
 import auth from '../controller/helpers';
-import validate from '../helpers/validateInput';
-import validateExist from '../helpers/validateExist';
+import validate from '../middleware/validateInput';
+import validateExist from '../middleware/validateExist';
 
 const router = express.Router();
-const time = (req, res, next) => {
-  req.reqTime = Date.now();
-  next();
-};
 
-router.get('/', time, controller.home);
+router.get('/', controller.home);
 
 router.post('/meetups',
   auth.adminVerifyToken,
   validate.meetUp,
-  validateExist.checkAdmin,
   controller.createMeetUps);
 
 router.get('/meetups',
   validateExist.checkMeetUpEmpty,
   controller.allMeetUps);
 
-router.get('/meetups/1/:meetupId',
-  validate.meetUpParams,
-  validateExist.checkMeetUpId,
-  controller.findMeetUpsById);
-
 router.get('/meetups/upcoming',
   auth.verifyToken,
   controller.upComingMeetUps);
 
+router.get('/meetups/:meetupId',
+  validate.Params,
+  validateExist.checkMeetUpId,
+  controller.findMeetUpsById);
+
 router.post('/meetups/:meetupId/rsvps',
-  validate.meetUpParams,
+  validate.Params,
   validate.rsvp,
   auth.verifyToken,
   validateExist.checkMeetUpId,
+  validateExist.checkRSVP,
   controller.rsvp);
 
-  router.delete('/meetups/:meetupId',
-  validate.meetUpParams,
+router.delete('/meetups/:meetupId',
+  validate.Params,
   auth.adminVerifyToken,
   validateExist.checkMeetUpId,
   controller.deleteMeetUp);

@@ -8,11 +8,11 @@ class userValidation {
     try {
       const { rowCount } = await db.query(queries.selectById('users', 'email', req.body.email));
       if (rowCount > 0) {
-        return errorHandler(400, res, 'User with that EMAIL already exist');
+        return next(409);
       }
       return next();
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 
@@ -21,14 +21,14 @@ class userValidation {
     try {
       const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
       if (!rows[0]) {
-        return errorHandler(400, res, 'The credentials you provided is incorrect');
+        return errorHandler(401, res, 'Invalid Email');
       }
       if (!auth.comparePassword(rows[0].password, req.body.password)) {
-        return errorHandler(400, res, 'The credentials you provided is incorrect (password)');
+        return errorHandler(401, res, 'Invalid Password');
       }
       return next();
     } catch (err) {
-      return errorHandler(400, res, err);
+      return errorHandler(500, res, err);
     }
   }
 }

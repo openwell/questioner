@@ -32,16 +32,16 @@ const queryText7 = `ALTER TABLE comments
   ADD CONSTRAINT comments_question_id_fkey FOREIGN KEY (question_id)
   REFERENCES questions(id) ON DELETE CASCADE`;
 
-async function alt(data1, data2, data3, data4, data5, data6, data7) {
+async function alt(...restArgs) {
   try {
     const results = await Promise.all([
-      pool.query(data1),
-      pool.query(data2),
-      pool.query(data3),
-      pool.query(data4),
-      pool.query(data5),
-      pool.query(data6),
-      pool.query(data7),
+      pool.query(restArgs[0]),
+      pool.query(restArgs[1]),
+      pool.query(restArgs[2]),
+      pool.query(restArgs[3]),
+      pool.query(restArgs[4]),
+      pool.query(restArgs[5]),
+      pool.query(restArgs[6]),
     ]);
     console.log(results);
     await pool.end();

@@ -4,6 +4,7 @@ const errors = {
   403: 'you are forbidden for accessing this resource, please provide valid authentication',
   404: 'whatever it is you were looking for wasn\'t found',
   405: 'the request method used is not supported, please refer to API docs',
+  409: 'Email already registered',
   500: 'something happened on our end, try again. Apologies',
 };
 
