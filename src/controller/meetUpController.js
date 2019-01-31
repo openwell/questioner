@@ -1,6 +1,6 @@
 import moment from 'moment';
 import db from '../db/index';
-import queries from './queries';
+import queries from '../db/queries';
 import errorHandler from '../middleware/errorHandler';
 
 class Controller {
@@ -86,9 +86,9 @@ class Controller {
           data: result,
         });
       }
-      return res.status(404).json({
-        status: 404,
-        data: 'Resource not Found',
+      return res.status(200).json({
+        status: 200,
+        data: 'Empty Resource',
       });
     } catch (err) {
       return errorHandler(500, res, err);
@@ -136,7 +136,7 @@ class Controller {
     const quesId = req.params.questionId;
     try {
       const data1 = await db.query(queries.selectById('questions', 'id', quesId));
-      const data2 = await db.query(queries.getCommentsUser(quesId));
+      const data2 = await db.query(queries.getUsersComments(quesId));
       return res.status(200).json({
         status: 200,
         data: data1.rows[0],
@@ -214,9 +214,9 @@ class Controller {
   // get all questions
   static async allComment(req, res) {
     try {
-      const { rows, rowCount } = await db.query(queries.getAllCommentJoin(req.params.question_id));
+      const { rows, rowCount } = await db.query(queries.getAllComment(req.params.questionId));
       if (rowCount === 0) {
-        return errorHandler(404, res, 'Resource not Found');
+        return errorHandler(200, res, 'Empty Resource');
       }
       return res.status(200).json({
         status: 200,
@@ -229,13 +229,11 @@ class Controller {
 
   static async deleteMeetUp(req, res) {
     try {
-      const resp = await db.query(queries.deleteMeetup(req.params.meetupId));
-      if (resp.rowCount === 1) {
-        return res.status(200).json({
-          status: 200,
-          data: 'meetup deleted',
-        });
-      }
+      await db.query(queries.deleteMeetup(req.params.meetupId));
+      return res.status(200).json({
+        status: 200,
+        data: 'meetup deleted',
+      });
     } catch (err) {
       return errorHandler(500, res, err);
     }

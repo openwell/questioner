@@ -13,12 +13,8 @@ const Queries = {
       values: [currentDate, futureDate],
     };
   },
-  getAllCommentJoin(questionId) {
-    return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
-    q left join comments c on c.question_id = q.id WHERE q.id = ${questionId}`;
-  },
 
-  getCommenstUser(val) {
+  getUsersComments(val) {
     return `select c.comment, c.created_on, u.username from comments c left join users u on c.user_id = u.id where c.id = ${val}`;
   },
 
@@ -26,7 +22,10 @@ const Queries = {
     return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
     q left join comments c on c.question_id = q.id WHERE q.id = ${questionId} and c.id =${commentId}`;
   },
-
+  getAllComment(questionId) {
+    return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
+    q left join comments c on c.question_id = q.id WHERE q.id = ${questionId}`;
+  },
 
   selectById(table, location, val) {
     return {

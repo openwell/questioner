@@ -1,7 +1,7 @@
 import moment from 'moment';
 import pool from './index';
 import Helper from '../controller/helpers';
-import queries from '../controller/queries';
+import queries from './queries';
 
 async function signUp() {
   const hashPassword = Helper.hashPassword(process.env.ADMIN_PASSWORD);
