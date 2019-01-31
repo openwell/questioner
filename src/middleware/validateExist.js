@@ -1,5 +1,5 @@
 import db from '../db/index';
-import queries from '../controller/queries';
+import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
 class validateExist {
@@ -11,7 +11,7 @@ class validateExist {
       }
       return errorHandler(200, res, message);
     } catch (err) {
-      return errorHandler(500, res, message);
+      return errorHandler(500, res, err);
     }
   }
 

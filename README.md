@@ -27,20 +27,20 @@ Npm v5.6 or above
 
 - POST `/api/v1/meetups` Create an meetup record.
 - GET `/api/v1/meetups` Fetch all meetup records.
-- GET `/api/v1/meetups/1/:meetup-id` Fetch a specific meetup record.
+- GET `/api/v1/meetups/1/:meetupId` Fetch a specific meetup record.
 - GET `/api/v1/meetups/upcoming/` Fetch all upcoming meetup records.
 - POST `/api/v1/questions` Create a question for a specific meetup.
 - GET `/api/v1/questions` Fetch all questions.
-- GET `/api/v1/questions/:question-id` Fetches a Single question with Comments Attached to it.
-- PATCH `/api/v1/questions/:question-id/upvote` Upvote (increase votes by 1) a specific question.
-- PATCH `/api/v1/questions/:question-id/downvote` Downvote (decrease votes by 1) a specific question.
-- POST `/api/v1/meetups/:meetup-id/rsvps` Respond to meetup RSVP.
+- GET `/api/v1/questions/:questionId` Fetches a Single question with Comments Attached to it.
+- PATCH `/api/v1/questions/:questionId/upvote` Upvote (increase votes by 1) a specific question.
+- PATCH `/api/v1/questions/:questionId/downvote` Downvote (decrease votes by 1) a specific question.
+- POST `/api/v1/meetups/:meetupId/rsvps` Respond to meetup RSVP.
 - POST `/api/v1/auth/signup` Create a user account.
 - POST `/api/v1/auth/login` Login a user
 - POST `/api/v1/auth/admin` Login as an admin
 - POST `/api/v1/comments/` Comment on a question.
-- GET `/api/v1/comments/:question-Id/` Comment on a question.
-- DELETE `/api/v1/meetups/:meetup-id` Delete a meetup.
+- GET `/api/v1/comments/:questionId/` Comment on a question.
+- DELETE `/api/v1/meetups/:meetupId` Delete a meetup.
 
 
 ### Installing

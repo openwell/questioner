@@ -1,6 +1,6 @@
 import db from '../db/index';
 import auth from '../controller/helpers';
-import queries from '../controller/queries';
+import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
 class adminValidation {
@@ -8,7 +8,7 @@ class adminValidation {
     try {
       const { rows } = await db.query(queries.selectById('admins', 'email', req.body.email));
       if (!rows[0]) {
-        return errorHandler(404, res, 'Email not Found');
+        return errorHandler(401, res, 'Invalid Email');
       }
       if (!auth.comparePassword(rows[0].password, req.body.password)) {
         return errorHandler(401, res, 'Invalid Password');

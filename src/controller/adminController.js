@@ -1,6 +1,6 @@
 import db from '../db/index';
 import auth from './helpers';
-import queries from './queries';
+import queries from '../db/queries';
 import errorHandler from '../middleware/errorHandler';
 
 class AdminControl {

@@ -1,6 +1,6 @@
 import db from '../db/index';
 import auth from '../controller/helpers';
-import queries from '../controller/queries';
+import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
 class userValidation {
