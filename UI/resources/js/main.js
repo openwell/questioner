@@ -199,7 +199,7 @@ function meetupDetails() {
   getMeetupDetails(request);
 }
 
-*======================================================
+/*======================================================
                     // Post Questions need Valid Token
 ======================================================*/
 function newQuestion() {
@@ -343,10 +343,6 @@ function signin() {
 }
 
 /*======================================================
-                    //Auto load of meetup details
-======================================================*/
-
-/*======================================================
                     //Auto load of all meetups
 ======================================================*/
 
@@ -430,4 +426,86 @@ function adminSignin() {
     }
   }
   postAdminSignin(request);
+}
+
+/*======================================================
+                    // admin table get all meetup
+======================================================*/
+function loadAllMeetupAdmin() {
+  if (localStorage.getItem("adminToken") === null) {
+    return (window.location.href = "login.html");
+  }
+
+  const url = `${baseUrl}/meetups`;
+  let request = get(url);
+  async function getAllMeetUp(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      let all = "";
+      data.data.forEach(x => {
+        let first = `<tr>
+        <td>${x.topic}</td>
+        <td><button onclick="return deleteMeetup(${x.id})">DELETE</button></td>
+      </tr>`;
+        all += first;
+      });
+      let main = (document.getElementById(
+        "admin_all_meetups"
+      ).innerHTML = `  <caption>
+      <h3>MEETUPS</h3>
+    </caption>
+    <tr>
+      <th>Meetups</th>
+      <th>Delete</th>
+    </tr>
+        ${all}
+      </div> `);
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getAllMeetUp(request);
+}
+
+/*======================================================
+                    // meetup post by admin
+======================================================*/
+function newMeetup() {
+  async function postMeetup(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        location.reload();
+        return response.status;
+      }
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  event.preventDefault();
+  const mT = document.getElementById("new_meetup-name").value;
+  const mL = document.getElementById("new_location").value;
+  const mD = document.getElementById("new_happeningon").value;
+  const data = {
+    topic: mT,
+    location: mL,
+    happeningOn: mD
+  };
+  const url = `${baseUrl}/meetups`;
+  let request = new Request(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("adminToken")
+    }
+  });
+  postMeetup(request);
 }
