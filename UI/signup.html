@@ -15,11 +15,11 @@
   </head>
   <body>
     <header class="row topnav">
-      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <div class="logo" onclick="location.href='index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
-          <li><a href="meetup.html">MEET UPS</a></li>
+          <li><a href="meetups.html">MEET UPS</a></li>
           <li><a href="login.html">LOGIN</a></li>
           <li><a href="signup.html">SIGNUP</a></li>
         </ul>
@@ -29,9 +29,11 @@
       </a>
     </header>
     <section class="signup-section row">
+      <div id="alert" class="icon">
+        <small id="success"></small><small id="danger"></small>
+      </div>
       <form action="" onsubmit=" return signUp()">
         <h1>REGISTER</h1>
-        <br> <small id="success" style="color: green"></small>
         <div class="form-row">
           <div class="form-group col-2">
             <label for="firstName">First Name</label>
@@ -42,7 +44,8 @@
               name="firstName"
               placeholder="John"
               required
-              pattern=".{2,20}" title="2 to 20 characters"
+              pattern=".{2,20}"
+              title="2 to 20 characters"
             />
           </div>
           <div class="form-group col-2 ">
@@ -54,7 +57,8 @@
               name="lastName"
               placeholder="Doe"
               required
-              pattern=".{2,20}" title="2 to 20 characters"
+              pattern=".{2,20}"
+              title="2 to 20 characters"
             />
           </div>
         </div>
@@ -68,7 +72,8 @@
             name="otherName"
             placeholder="Your Other Name"
             required
-            pattern=".{2,20}" title="2 to 20 characters"
+            pattern=".{2,20}"
+            title="2 to 20 characters"
           />
         </div>
         <div class="form-group">
@@ -89,8 +94,9 @@
             type="tel"
             id="phoneNumber"
             name="phoneNumber"
-            placeholder="0802266...."
-            pattern="[0-9]{11}" title="min of 11 numbers"
+            placeholder="0802266****"
+            pattern="[0-9]{11}"
+            title="min of 11 numbers"
             required
           />
         </div>
@@ -103,7 +109,8 @@
             name="username"
             placeholder="Username"
             required
-            pattern=".{5,20}" title="5 to 20 characters"
+            pattern=".{4,30}"
+            title="4 to 30 characters"
           />
         </div>
         <div class="form-row">
@@ -117,9 +124,10 @@
               name="pw1"
               placeholder="***********"
               required
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" onchange="form.pw2.pattern = RegExp.escape(this.value);"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              onchange="form.pw2.pattern = RegExp.escape(this.value);"
               title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
-              />
+            />
           </div>
           <div class="form-group col-2">
             <label for="username">Confirm Password</label>
@@ -133,6 +141,7 @@
               title="Please enter the same Password as above"
             />
           </div>
+          
         </div>
         <div class=""><button type="submit">Register</button></div>
         <input type="text" name="registered" value="" hidden />
@@ -140,12 +149,15 @@
       </form>
       <div class="cs-loader" id="cs-loader" hidden>
         <div class="cs-loader-inner">
-          <label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label>
+          <label> ●</label><label> ●</label><label> ●</label><label> ●</label
+          ><label> ●</label><label> ●</label>
         </div>
       </div>
     </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
     <script>
-    </script></body>
+    errorToggler()
+    </script>
+  </body>
 </html>
