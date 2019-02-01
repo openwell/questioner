@@ -58,7 +58,34 @@ li {
 label {
   font-size: 15px;
 }
+#danger{
+  font-size: 14px;
+  color: #dc3545;
+  background-color: #fdabb2;;
+  border-color: #f5c6cb;
+  padding: .75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
 
+#success{
+  font-size: 14px;
+  color: #155724;
+  background-color: #3ee969;
+  border-color: #c3e6cb;
+  padding: .75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+#alert{
+  margin: 0 auto; 
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#alert:hover { 
+ cursor: pointer;
+}
 /*======================================================
                    index page
 ======================================================*/
@@ -94,6 +121,9 @@ a:hover {
   background-repeat: no-repeat;
   width: 150px;
   margin-left: 20px;
+}
+.logo:hover{
+cursor: pointer;
 }
 .nav-links li {
   float: left;
@@ -276,7 +306,7 @@ label {
                   Meet Ups 
 ======================================================*/
 .meetup_header {
-  color: #246bad;
+  color: #0F1721;
   text-align: center;
   padding: 40px;
 }
@@ -298,6 +328,23 @@ label {
   box-shadow: 0 6px 5px -3px #f4f4f4;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+.meetup-card h1{
+  font-size: 20px;
+  color: #2e3e48;
+  font-weight: 600;
+}
+.meetup-card h4{
+  font-size: 16px;
+  color: #2e3e48;
+  font-weight: 600;
+}
+.meetup-card h5{
+  font-size: 14px;
+  line-height: 1.6;
+  color: #353e48;
+  font-weight: 500;
+}
+
 .meetup-card:nth-child(3n + 1) {
   margin-left: 25px;
 }
@@ -359,10 +406,22 @@ label {
   display: block;
   border-radius: 5px;
 }
-.new-question-form {
+#meet_up-info p{
+  font-size: 14px;
+  line-height: 1.6;
+}
+#meet_up-info h2{
+color: #2e3e48;
+font-weight: 600;
+line-height: 1.1;
+}
+.rsvp-form {
   margin-top: 20px;
 }
-.new-question-form input[type="checkbox"] {
+.rsvp-form h4{
+  color: #2e3e48;
+}
+.rsvp-form input[type="checkbox"] {
   color: #246bad;
 }
 .new-comment {
@@ -399,6 +458,9 @@ label {
   margin: 5px 5px;
   border-radius: 3px;
 }
+.questions:hover{
+  background: #e6ecf0;;
+}
 .up-vote,
 .down-vote {
   display: block;
@@ -409,6 +471,12 @@ label {
   font-weight: 700;
   padding: 5px;
   background: #ced4da;
+}
+#green{
+  color: rgba(5, 161, 5, 0.753);
+}
+#red{
+  color: rgba(255, 1, 1, 0.582);
 }
 
 .vote_bar button {
@@ -421,7 +489,7 @@ label {
 }
 
 .vote_bar button:hover {
-  background: white;
+  background: rgb(189, 159, 159);
 }
 
 .questions-topic {
@@ -434,16 +502,18 @@ label {
 
 .new-question {
   flex: 0 1 300px;
+  height: 300px;
   background-color: #246bad23;
   padding: 20px 20px 0px 20px;
-  border-radius: 3px;
-  border-right: 0.5px solid #246bad7a;
+  border-radius: 5px;
+  /* border-right: 0.5px solid #246bad7a; */
 }
 #question-load {
   flex: 0 1 568px;
   margin-left: 40px;
 }
 .new-question-form button {
+  display: block;
   padding: 5px 20px;
   background: #edeff0;
   border: none;
@@ -455,28 +525,56 @@ label {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   background: #4caf50;
 }
-.new-question-form div[contenteditable] {
-  padding: 3px;
+/* .new-question-form div[contenteditable] { */
+  /* padding: 3px;
   margin: 5px;
   width: 300px;
   border-radius: 3px;
   background: #ffff;
-  outline: none;
+  outline: none; */
   /* it took the background of the container if not it wont show */
+/* } */
+#newQuestionTitle{
+  display: block;
+  line-height: 1;
+  border: .5px solid rgb(169, 169, 169);
+  border-radius: 3px;
+  padding: 3px;
+  margin: 5px;
+  outline: none;
+  width: 235px;
 }
 #newQuestionBody {
-  height: 100px;
+  border-radius: 3px;
+  padding: 3px;
+  margin: 5px;
+  resize: none;
 }
 /*======================================================
                   Question Comment Modal
 ======================================================*/
 .modal-topic-body {
   padding: 0 20px;
+  background: #eaf1ec;
+  padding-top: 20px;
+  border-radius: 5px;
+}
+.modal-topic-body h3{
+  font-size: 22px;
+}
+.modal-topic-body p{
+  padding: 0 20px;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: .01em;
 }
 .modal-new-comment {
-  padding-top: 20px;
+  padding-top: 10px;
   border-top: 0.5px solid #246bad7a;
   border-bottom: 0.5px solid #246bad7a;
+}
+.modal-new-comment h5{
+  font-size: 15px;
 }
 .modal-comment {
   margin-left: 30px;
@@ -485,15 +583,16 @@ label {
 .modal-new-comment h5 {
   padding-left: 30px;
 }
-.comment-form div[contenteditable] {
+.comment-form textarea {
   border: 0.5px solid var(--c1);
   padding: 3px;
   margin: 5px;
   width: 500px;
   border-radius: 4px;
-  outline: none;
   height: 50px;
   margin-left: 30px;
+  resize: none;
+  font-family: "Segoe UI",Arial,sans-serif;
 }
 .comment-form button {
   padding: 5px 20px;
@@ -532,7 +631,7 @@ label {
   overflow-x: hidden;
   overflow-y: scroll;
 }
-.comment-main {
+#comment-main {
   position: absolute;
   top: 20%;
   left: calc((100vw - 600px) / 2);
@@ -542,6 +641,14 @@ label {
   padding: 10px;
   border-radius: 5px;
   z-index: 2;
+  margin-bottom: 100px;
+}
+.comments_bar{
+    padding: 5px 0 5px 10px;
+    border: 0.5px solid #246bad7a;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #f5f8fa;
 }
 
 /*======================================================
@@ -584,12 +691,17 @@ label {
   height: calc(100% - 20%);
   margin: 10px;
 }
-.user-top-feed button {
-  padding: 5px;
-  font-weight: 600;
-  border-radius: 5px;
+.admin-top-feed button {
+  padding: 5px 20px;
+  background: #edeff0;
+  border: none;
+  border: 0.5px solid var(--c1);
+}
+.admin-top-feed button:hover {
   outline: none;
-  border: 0.3px solid bisque;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background: #4caf50;
+  cursor: pointer;
 }
 .user-statistic-1 {
   flex: 1 1 350px;
@@ -683,6 +795,8 @@ tr:nth-child(odd) {
 }
 .admin-new-meetup-form {
   padding: 20px;
+  background: #564faf;
+  color: #fffdfe;
 }
 
 /* loader */
@@ -962,9 +1076,9 @@ tr:nth-child(odd) {
   #count {
     text-align: center;
   }
-  .new-question-form div[contenteditable] {
+  /* .new-question-form div[contenteditable] {
     width: 250px;
-  }
+  } */
   .user-statistic-bar {
     margin-left: 0px;
   }
@@ -972,13 +1086,34 @@ tr:nth-child(odd) {
   td {
     font-size: 12px;
   }
-  .comment-main {
+  #comment-main {
     position: absolute;
     top: 10%;
     left: calc((100vw - 300px) / 2);
     width: 300px;
   }
-  .comment-form div[contenteditable] {
-    width: 200px;
+  .comment-form textarea {
+    width: 250px;
   }
+  #danger,
+  #success
+  {
+    font-size: 10px;
+  }
+
+  .modal-topic-body p {
+    padding: 0 10px;
+    font-size: 15px;
+    line-height: 20px;
+    letter-spacing: .01em;
+}
+.modal-topic-body h3{
+  font-size: 20px;
+}
+.modal-comment {
+  margin-left: 5px;
+}
+.comment-form textarea {
+  margin-left: 10px;
+}
 }
