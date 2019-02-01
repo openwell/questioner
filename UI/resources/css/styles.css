@@ -36,7 +36,7 @@ body {
   margin: 0 auto;
   font-family: "Roboto", "Lato", "Source Sans Pro", "Segoe UI", "Helvetica Neue",
     Arial, sans-serif;
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 .row {
   max-width: 1400px;
@@ -58,33 +58,33 @@ li {
 label {
   font-size: 15px;
 }
-#danger{
+#danger {
   font-size: 14px;
   color: #dc3545;
-  background-color: #fdabb2;;
+  background-color: #fdabb2;
   border-color: #f5c6cb;
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
-#success{
+#success {
   font-size: 14px;
   color: #155724;
   background-color: #3ee969;
   border-color: #c3e6cb;
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
-#alert{
-  margin: 0 auto; 
+#alert {
+  margin: 0 auto;
   text-align: center;
   margin-bottom: 20px;
 }
 
-#alert:hover { 
- cursor: pointer;
+#alert:hover {
+  cursor: pointer;
 }
 /*======================================================
                    index page
@@ -122,8 +122,8 @@ a:hover {
   width: 150px;
   margin-left: 20px;
 }
-.logo:hover{
-cursor: pointer;
+.logo:hover {
+  cursor: pointer;
 }
 .nav-links li {
   float: left;
@@ -306,7 +306,7 @@ label {
                   Meet Ups 
 ======================================================*/
 .meetup_header {
-  color: #0F1721;
+  color: #0f1721;
   text-align: center;
   padding: 40px;
 }
@@ -328,17 +328,17 @@ label {
   box-shadow: 0 6px 5px -3px #f4f4f4;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.meetup-card h1{
+.meetup-card h1 {
   font-size: 20px;
   color: #2e3e48;
   font-weight: 600;
 }
-.meetup-card h4{
+.meetup-card h4 {
   font-size: 16px;
   color: #2e3e48;
   font-weight: 600;
 }
-.meetup-card h5{
+.meetup-card h5 {
   font-size: 14px;
   line-height: 1.6;
   color: #353e48;
@@ -406,19 +406,19 @@ label {
   display: block;
   border-radius: 5px;
 }
-#meet_up-info p{
+#meet_up-info p {
   font-size: 14px;
   line-height: 1.6;
 }
-#meet_up-info h2{
-color: #2e3e48;
-font-weight: 600;
-line-height: 1.1;
+#meet_up-info h2 {
+  color: #2e3e48;
+  font-weight: 600;
+  line-height: 1.1;
 }
 .rsvp-form {
   margin-top: 20px;
 }
-.rsvp-form h4{
+.rsvp-form h4 {
   color: #2e3e48;
 }
 .rsvp-form input[type="checkbox"] {
@@ -458,8 +458,8 @@ line-height: 1.1;
   margin: 5px 5px;
   border-radius: 3px;
 }
-.questions:hover{
-  background: #e6ecf0;;
+.questions:hover {
+  background: #e6ecf0;
 }
 .up-vote,
 .down-vote {
@@ -472,10 +472,10 @@ line-height: 1.1;
   padding: 5px;
   background: #ced4da;
 }
-#green{
+#green {
   color: rgba(5, 161, 5, 0.753);
 }
-#red{
+#red {
   color: rgba(255, 1, 1, 0.582);
 }
 
@@ -526,18 +526,18 @@ line-height: 1.1;
   background: #4caf50;
 }
 /* .new-question-form div[contenteditable] { */
-  /* padding: 3px;
+/* padding: 3px;
   margin: 5px;
   width: 300px;
   border-radius: 3px;
   background: #ffff;
   outline: none; */
-  /* it took the background of the container if not it wont show */
+/* it took the background of the container if not it wont show */
 /* } */
-#newQuestionTitle{
+#newQuestionTitle {
   display: block;
   line-height: 1;
-  border: .5px solid rgb(169, 169, 169);
+  border: 0.5px solid rgb(169, 169, 169);
   border-radius: 3px;
   padding: 3px;
   margin: 5px;
@@ -559,21 +559,21 @@ line-height: 1.1;
   padding-top: 20px;
   border-radius: 5px;
 }
-.modal-topic-body h3{
+.modal-topic-body h3 {
   font-size: 22px;
 }
-.modal-topic-body p{
+.modal-topic-body p {
   padding: 0 20px;
   font-size: 24px;
   line-height: 32px;
-  letter-spacing: .01em;
+  letter-spacing: 0.01em;
 }
 .modal-new-comment {
   padding-top: 10px;
   border-top: 0.5px solid #246bad7a;
   border-bottom: 0.5px solid #246bad7a;
 }
-.modal-new-comment h5{
+.modal-new-comment h5 {
   font-size: 15px;
 }
 .modal-comment {
@@ -592,7 +592,7 @@ line-height: 1.1;
   height: 50px;
   margin-left: 30px;
   resize: none;
-  font-family: "Segoe UI",Arial,sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 .comment-form button {
   padding: 5px 20px;
@@ -643,12 +643,12 @@ line-height: 1.1;
   z-index: 2;
   margin-bottom: 100px;
 }
-.comments_bar{
-    padding: 5px 0 5px 10px;
-    border: 0.5px solid #246bad7a;
-    border-radius: 10px;
-    font-size: 14px;
-    background: #f5f8fa;
+.comments_bar {
+  padding: 5px 0 5px 10px;
+  border: 0.5px solid #246bad7a;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #f5f8fa;
 }
 
 /*======================================================
@@ -914,7 +914,7 @@ tr:nth-child(odd) {
   }
   .question-header-image {
     margin: 0;
-}
+  }
 }
 @media (max-width: 991.98px) {
   .text {
@@ -938,7 +938,6 @@ tr:nth-child(odd) {
   .new-question {
     flex: 0.7;
   }
- 
 }
 @media (max-width: 767.98px) {
   .text {
@@ -970,7 +969,6 @@ tr:nth-child(odd) {
     margin-top: 5px;
     margin-left: 10px;
   }
- 
 }
 @media (max-width: 575.98px) {
   /* .body{
@@ -1013,7 +1011,7 @@ tr:nth-child(odd) {
   }
   .nav-links {
     display: none;
-    animation: scale-display .3s;
+    animation: scale-display 0.3s;
   }
   @keyframes scale-display {
     0% {
@@ -1040,7 +1038,7 @@ tr:nth-child(odd) {
     font-size: 0.8em;
     font-weight: bold;
   }
- 
+
   .meetup_section {
     display: flex;
     flex-wrap: wrap;
@@ -1076,9 +1074,7 @@ tr:nth-child(odd) {
   #count {
     text-align: center;
   }
-  /* .new-question-form div[contenteditable] {
-    width: 250px;
-  } */
+
   .user-statistic-bar {
     margin-left: 0px;
   }
@@ -1096,8 +1092,7 @@ tr:nth-child(odd) {
     width: 250px;
   }
   #danger,
-  #success
-  {
+  #success {
     font-size: 10px;
   }
 
@@ -1105,15 +1100,15 @@ tr:nth-child(odd) {
     padding: 0 10px;
     font-size: 15px;
     line-height: 20px;
-    letter-spacing: .01em;
-}
-.modal-topic-body h3{
-  font-size: 20px;
-}
-.modal-comment {
-  margin-left: 5px;
-}
-.comment-form textarea {
-  margin-left: 10px;
-}
+    letter-spacing: 0.01em;
+  }
+  .modal-topic-body h3 {
+    font-size: 20px;
+  }
+  .modal-comment {
+    margin-left: 5px;
+  }
+  .comment-form textarea {
+    margin-left: 10px;
+  }
 }
