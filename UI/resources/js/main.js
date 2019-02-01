@@ -396,7 +396,6 @@ function signin() {
 /*======================================================
                     //Auto load of all meetups
 ======================================================*/
-
 function loadMeetupsPage() {
   document.getElementById("cs-loader").removeAttribute("hidden", "false");
   const url = `${baseUrl}/meetups`;
@@ -478,10 +477,6 @@ function adminSignin() {
   }
   postAdminSignin(request);
 }
-
-/*======================================================
-                    // admin table get all meetup
-======================================================*/
 function loadAllMeetupAdmin() {
   if (localStorage.getItem("adminToken") === null) {
     return (window.location.href = "login.html");
@@ -559,4 +554,35 @@ function newMeetup() {
     }
   });
   postMeetup(request);
+}
+
+
+/*======================================================
+                    // delete meetup
+======================================================*/
+function deleteMeetup(id) {
+  if (localStorage.getItem("adminToken") === null) {
+    return (window.location.href = "login.html");
+  }
+  async function delMeetup(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      location.reload();
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  const url = `${baseUrl}/meetups/${id}`;
+  let request = new Request(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("adminToken")
+    }
+  });
+  delMeetup(request);
 }
