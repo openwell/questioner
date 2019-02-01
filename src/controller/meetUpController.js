@@ -1,8 +1,8 @@
-import moment from 'moment';
 import db from '../db/index';
 import queries from '../db/queries';
 import errorHandler from '../middleware/errorHandler';
 
+const currentDate = (new Date(Date.now() + 3600000)).toISOString().slice(0, -1);
 class Controller {
   /**
    * Create A Questioner
@@ -19,7 +19,7 @@ class Controller {
 
   // Create an meetup record.
   static async createMeetUps(req, res) {
-    const createdOn = moment(new Date());
+    const createdOn = currentDate;
     const locations = req.body.location.trim();
     const topics = req.body.topic.trim();
     const date = req.body.happeningOn.trim();
@@ -71,7 +71,6 @@ class Controller {
 
   // Fetch all upcoming meetup records.
   static async upComingMeetUps(req, res) {
-    const currentDate = (new Date(Date.now() + 3600000)).toISOString().slice(0, -1);
     const sevenDaysFuture = (new Date(Date.now() + 608400000)).toISOString().slice(0, -1);
     try {
       const { rows } = await db.query(queries.upComingMeetups(currentDate, sevenDaysFuture));
@@ -97,7 +96,7 @@ class Controller {
 
   // Create a question for a specific meetup.
   static async questionEntry(req, res) {
-    const createdOn = moment(new Date());
+    const createdOn = currentDate;
     const createdBys = req.user.id;
     const meetupId = req.body.meetup;
     const titles = req.body.title;
@@ -182,7 +181,7 @@ class Controller {
     const meetup = req.params.meetupId;
     const responses = req.body.response;
     const userId = req.user.id;
-    const createdOn = moment(new Date());
+    const createdOn = currentDate;
     try {
       const { rows } = await db.query(queries.rsvp(meetup, responses, userId, createdOn));
       return res.status(201).json({
@@ -197,7 +196,7 @@ class Controller {
   static async comment(req, res) {
     const comments = req.body.comment;
     const questions = req.body.question;
-    const createdOn = moment(new Date());
+    const createdOn = currentDate;
     const userId = req.user.id;
     try {
       const { rows } = await db.query(queries.comment(comments, questions, createdOn, userId));
