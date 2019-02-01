@@ -32,35 +32,34 @@ function post(url, data) {
     }
   });
 }
-function errorToggler(){
+function errorToggler() {
   document.getElementById("alert").onclick = function(event) {
-  document.getElementById("alert").classList.toggle("icon");
-};
+    document.getElementById("alert").classList.toggle("icon");
+  };
 }
 
-
-function notLoggedIn(){
+function notLoggedIn() {
   if (localStorage.getItem("userToken") === null) {
     document.getElementById("alert").classList.toggle("icon");
-    document.getElementById("danger").innerHTML = 'You are not Logged in. You will be redirect to the login Page';
+    document.getElementById("danger").innerHTML =
+      "You are not Logged in. You will be redirect to the login Page";
     return setTimeout(() => {
-      (window.location.href = "login.html");
+      window.location.href = "login.html";
     }, 3000);
-}
+  }
 }
 
-function displayLogout(){
+function displayLogout() {
   if (!localStorage.getItem("userToken")) {
     document.getElementById("logout").classList.toggle("icon");
   }
 }
 
-function parseJwt (token) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace('-', '+').replace('_', '/');
+function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace("-", "+").replace("_", "/");
   return JSON.parse(window.atob(base64));
-};
-
+}
 
 function timeSince(timeStamp) {
   var now = new Date(),
@@ -112,15 +111,18 @@ function logOut() {
   return (window.location.href = "../index.html");
 }
 
-
 function adminLogOut() {
   localStorage.clear("adminToken");
   return (window.location.href = "login.html");
 }
 
-function setMinDateTime(){
-  const currentTimePlusTen = (new Date(Date.now() + 4200000)).toISOString().slice(0, -1);
-  return document.getElementById('new_happeningon').setAttribute('min', currentTimePlusTen)
+function setMinDateTime() {
+  const currentTimePlusTen = new Date(Date.now() + 4200000)
+    .toISOString()
+    .slice(0, -1);
+  return document
+    .getElementById("new_happeningon")
+    .setAttribute("min", currentTimePlusTen);
 }
 
 /*======================================================
@@ -176,7 +178,6 @@ function setMeetup(meetupId) {
 /*======================================================
                     //Auto load of all meetups
 ======================================================*/
-
 function loadMeetupsPage() {
   document.getElementById("cs-loader").removeAttribute("hidden", "false");
   const url = `${baseUrl}/meetups`;
@@ -292,7 +293,6 @@ function QuestionsInit() {
       throw err;
     }
   }
-
   questionsDetailsAjax(request);
 }
 
@@ -399,51 +399,6 @@ function signin() {
 }
 
 /*======================================================
-                    //Auto load of all meetups
-======================================================*/
-function loadMeetupsPage() {
-  document.getElementById("cs-loader").removeAttribute("hidden", "false");
-  const url = `${baseUrl}/meetups`;
-  let request = get(url);
-  async function getMeetupsDetails(payLoad) {
-    try {
-      let response = await fetch(payLoad);
-      let data = await response.json();
-      for (let i = 0; i <= data.data.length - 1; i++) {
-        let happening = new Date(
-          Date.parse(data.data[i].happeningon)
-        ).toLocaleString();
-        let main = (document.getElementById(
-          "question_loads"
-        ).innerHTML += `<div class="meetup-card">
-            <a href="meetup.html" onclick="return setMeetup(${
-              data.data[i].id
-            })">
-              <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
-              <h4>${data.data[i].location}</h4>
-              <div class="meetup-img">
-                <img
-                  src="../UI/resources/images/img5.webp"
-                  alt="meetup-img"
-                />
-              </div>
-              <h5>21 Questions</h5>
-              <h5>${happening}</h5>
-            </a>
-          </div>`);
-      }
-      document.getElementById("cs-loader").setAttribute("hidden", "true");
-      return response.status;
-    } catch (err) {
-      document.getElementById("cs-loader").setAttribute("hidden", "true");
-      throw err;
-    }
-  }
-
-  getMeetupsDetails(request);
-}
-
-/*======================================================
                     // Post Questions need Valid Token
 ======================================================*/
 function newQuestion() {
@@ -460,7 +415,6 @@ function newQuestion() {
 
   const url = `${baseUrl}/questions`;
   let request = post(url, data);
-
   async function postNewQuestion(payLoad) {
     try {
       let response = await fetch(payLoad);
@@ -480,7 +434,6 @@ function newQuestion() {
       throw err;
     }
   }
-
   postNewQuestion(request);
 }
 
@@ -495,7 +448,6 @@ function upVote(event) {
   const id = event.currentTarget.nextSibling.getAttribute("data");
   const url = `${baseUrl}/questions/${id}/upvote`;
   let request = patch(url);
-
   async function postUpVote(payLoad) {
     try {
       let response = await fetch(payLoad);
@@ -518,9 +470,7 @@ function upVote(event) {
 function downVote(event) {
   let vote = parseInt(event.currentTarget.previousSibling.innerHTML);
   vote = vote - 1;
-
   notLoggedIn();
-  
   const id = event.currentTarget.previousSibling.getAttribute("data");
   const url = `${baseUrl}/questions/${id}/downvote`;
   let request = patch(url);
@@ -604,6 +554,74 @@ function openModal() {
   }
 
   getQuestionComments(request);
+}
+
+/*======================================================
+                    // Upcoming Table
+======================================================*/
+function loadUpcomingTable() {
+  if (localStorage.getItem("userToken") === null) {
+    return (window.location.href = "../login.html");
+  }
+  const url = `${baseUrl}/meetups/upcoming`;
+  let request = get(url);
+  async function getUpcomingTable(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      let all = "";
+      data.data.forEach(x => {
+        let first = ` 
+        <tr>
+        <td>${x.topic}</td>
+        <td>${x.location}</td>
+        <td>${x.happeningon}</td>
+      </tr>`;
+        all += first;
+      });
+      document.getElementById(
+        "userDashboard"
+      ).innerHTML = ` <div class="user-details">
+      <span class="user-avatar"></span>
+      <p>user - ${localStorage.getItem("user")}</p>
+      <p>last login -</p>
+    </div>
+    <div class="user-statistic-bar">
+      <div class="user-statistic">
+        <div class="user-statistic-1">
+          <i class="fas fa-question-circle    "></i>
+          <p>No of Questions Posted</p> <p>${localStorage.getItem(
+            "tQ"
+          )}</p></div>
+        <div class="user-statistic-2">
+            <i class="fas fa-comments    "></i>
+          <p>No of Questions Commented on</p><p>${localStorage.getItem(
+            "tC"
+          )}</p>
+        </div>
+      </div>
+      <div class="user-top-feed">
+        <table id="upcoming_table">
+        <caption>
+      <h2>Top Questions Feed</h2> 
+    </caption>
+    <tr >
+      <th>Meetups</th>
+      <th>Location</th>
+      <th>Date</th>
+    </tr>
+        ${all}
+      </div> 
+      </table>
+      </div>
+    </div> `;
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getUpcomingTable(request);
 }
 
 /*======================================================
@@ -766,7 +784,6 @@ function newMeetup() {
   postMeetup(request);
 }
 
-
 /*======================================================
                     // delete meetup
 ======================================================*/
@@ -784,7 +801,6 @@ function deleteMeetup(id) {
       throw err;
     }
   }
-
   const url = `${baseUrl}/meetups/${id}`;
   let request = new Request(url, {
     method: "DELETE",

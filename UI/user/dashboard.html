@@ -15,12 +15,11 @@
   </head>
   <body>
     <header class="topnav">
-      <div class="logo" id="bash" onclick="window.location.href='../index.html'"></div>
+      <div class="logo" onclick="window.location.href='../index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="../index.html">HOME</a></li>
-          <li><a href="../meetup.html">MEET UPS</a></li>
-          <li><a href="../login.html">LOGIN</a></li>
+          <li><a href="../meetups.html">MEET UPS</a></li>
           <li><a href="" onclick="return logOut()">LOG OUT</a></li>
         </ul>
       </nav>
@@ -28,78 +27,15 @@
         <i class="fa fa-bars"></i>
       </a>
     </header>
-    <section class="user-dashboard-section row2">
-      <div class="user-details">
-        <span class="user-avatar"></span>
-        <p>user -</p>
-        <p>last login -</p>
-      </div>
-      <div class="user-statistic-bar">
-        <div class="user-statistic">
-          <div class="user-statistic-1">
-            <i class="fas fa-question-circle    "></i>
-            <p>No of Questions Posted</p> <p>0</p></div>
-          <div class="user-statistic-2">
-              <i class="fas fa-comments    "></i>
-            <p>No of Questions Commented on</p><p>0</p>
-          </div>
-        </div>
-        <div class="user-top-feed">
-          <table>
-            <caption>
-              <h2>Top Questions Feed</h2> 
-            </caption>
-            <tr>
-              <th>Meetups</th>
-              <th>Questions</th>
-              <th>RSVP</th>
-              <th>Date</th>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td>Lorem ipsum dolor sit amet consectetur,.</td>
-              <td>Yes</td>
-              <td>12-12-2092</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    <section class="user-dashboard-section row2" id="userDashboard">
+
     </section>
     <footer>©Questioner 2018</footer>
 
     <script src="../resources/js/main.js"></script>
     <script>
-     checkUserLogin()
+      checkUserLogin()
+      loadUpcomingTable()
     </script>
   </body>
 </html>
