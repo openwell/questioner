@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Home</title>
+    <title>Meet-Ups</title>
     <link rel="stylesheet" href="./resources/css/styles.css" />
     <link
       rel="stylesheet"
@@ -15,7 +15,7 @@
   </head>
   <body>
     <header class="row topnav">
-      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <div class="logo" onclick="location.href='index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
@@ -29,18 +29,24 @@
         <i class="fa fa-bars"></i>
       </a>
     </header>
-    <section class="index_main"><div class="text">WELCOME TO QUESTIONER</div>
-     <div>
-       <h4 class="text2">Questioner is a platform that helps meetup organizer prioritize
-        questions of meetups. <br> Users can vote on asked questions and they bubble to the top
-        or bottom of the log. <br> <br> <button onclick="window.location.href='meetups.html'">VIEW MEETUPS</button> <br> <br> </h4>
-        
-     </div>
+    <section class="meetup_header">
+      <h1>What interest you the most. Join a MeetUp to do More</h1>
+      <h3>Popular MeetUp Coming Up</h3>
     </section>
+    <section class="meetup_section row2" id="question_loads">
+      <!-- loads all meetups from javascript -->
+    </section>
+    <!-- Loader -->
+    <div class="cs-loader" id="cs-loader" hidden>
+      <div class="cs-loader-inner">
+        <label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label>
+      </div>
+    </div>
     <footer>©Questioner 2018</footer>
 
     <script src="./resources/js/main.js"></script>
     <script>
+    window.onload = loadMeetupsPage();
     displayLogout();
     </script>
   </body>

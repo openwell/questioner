@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Meet-Ups</title>
+    <title>Questions</title>
     <link rel="stylesheet" href="./resources/css/styles.css" />
     <link
       rel="stylesheet"
@@ -15,35 +15,112 @@
   </head>
   <body>
     <header class="row topnav">
-      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <div class="logo" onclick="location.href='index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
-          <li><a href="meetup.html">MEET UPS</a></li>
+          <li><a href="meetups.html">MEET UPS</a></li>
           <li><a href="login.html">LOGIN</a></li>
           <li><a href="signup.html">SIGNUP</a></li>
+          <li><a href="" onclick="return logOut()" id="logout">LOG OUT</a></li>
         </ul>
       </nav>
       <a href="javascript:void(0);" class="icon" onclick="myFun()">
         <i class="fa fa-bars"></i>
       </a>
     </header>
-    <section class="meetup_header">
-       <h1>What interest you the most. Join a MeetUp to do More</h1>
-       <h3>Popular MeetUp Coming Up</h3>
-    </section>
-    <section class="meetup_section row2" id="question_loads">
-      
-    <div ></div>
-    </section>
-    <div class="cs-loader" id="cs-loader" hidden>
-      <div class="cs-loader-inner">
-        <label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label><label>	●</label>
+    
+    <section class="question-header row3">
+      <div class="question-header-meetup-details">
+        <div id="meet_up-info"></div>
+        <form action="" class="rsvp-form" onclick="return rsvpForm()">
+          <h4>Are you going?</h4>
+          <label for="yes">YES</label>
+          <input
+            type="checkbox"
+            id="yes"
+            name="rsvp"
+            onclick="Rsvp(this)"
+            value="yes"
+          />
+          <label for="no">NO</label>
+          <input
+            type="checkbox"
+            id="no"
+            name="rsvp"
+            onclick="Rsvp(this)"
+            value="no"
+          />
+          <label for="maybe">MAY-BE</label>
+          <input
+            type="checkbox"
+            id="maybe"
+            name="rsvp"
+            onclick="Rsvp(this)"
+            value="maybe"
+          /><br />
+        </form>
       </div>
-    </div>
+      <div class="question-header-image">
+        <img src="../resources/images/meetup.jpg" alt="meetup-img" />
+      </div>
+    </section>
+    <div id="alert" class="icon">
+        <small id="danger"></small>
+      </div>
+    <section class="question_section row2">
+          
+      <div class="new-question">
+        <form
+          action=""
+          class="new-question-form"
+          id="new-question-form"
+          onsubmit="return newQuestion()"
+        >
+          <h4>New Question</h4>
+          <label for="">Title</label> <br />
+          <input
+            type="text"
+            name="title"
+            value=""
+            id="newQuestionTitle"
+            required
+            pattern=".{10,50}"
+            title="10 to 50 characters"
+          />
+          <label for="">Body</label> <br />
+          <textarea
+            name="body"
+            id="newQuestionBody"
+            cols="30"
+            rows="6"
+            required
+            maxlength="200" minlength="10"
+            title="10 to 200 characters"
+          ></textarea>
+          <button>Submit</button>
+        </form>
+        <br /> <small></small>
+      </div>
+      <!--javascript Loads Question -->
+      <div id="question-load"><!-- loads  questions from javascript --></div>
+    </section>
+    <!-- Comment Modal -->
+    <section class="row">
+      <div id="comment-container">
+        <div id="comment-main"> <!-- loads comments from javascript --> </div>
+      </div>  
+    </section>
+
     <footer>©Questioner 2018</footer>
 
     <script src="./resources/js/main.js"></script>
-    <script>window.onload = loadMeetupPage();</script>
+    <script>
+      checkMeetupId() 
+      QuestionsInit();
+      window.onload = meetupDetails();
+      errorToggler();
+      displayLogout();
+    </script>
   </body>
 </html>

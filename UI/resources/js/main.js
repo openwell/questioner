@@ -251,6 +251,52 @@ function meetupDetails() {
 }
 
 /*======================================================
+                    Get all questions
+======================================================*/
+function QuestionsInit() {
+  const url = `${baseUrl}/questions`;
+  let request = get(url);
+
+  async function questionsDetailsAjax(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      const data = await response.json();
+      const meetupId = localStorage.getItem("meetupId");
+      const output = data.data.filter(db => db.meetup_id === Number(meetupId));
+      const sortSample = output.sort((a, b) => b.votes - a.votes);
+      let all = "";
+      output.forEach(x => {
+        let main = document.getElementById("question-load");
+        let first =
+          '<div class="questions">' +
+          '<div class="vote_bar">' +
+          '<button class="up-vote" id="green" onclick="return upVote(event)" >' +
+          '<i class="fa fa-arrow-up" aria-hidden="true"></i></button>' +
+          '<div id="count" data=' +
+          x.id +
+          " >" +
+          x.votes +
+          " votes</div>" +
+          '<button class="down-vote" id="red" onclick="return downVote(event)">' +
+          '<i class="fa fa-arrow-down" aria-hidden="true"></i>' +
+          "</button> </div>" +
+          '<div class="questions-topic"><h4>' +
+          x.title +
+          "</h4>" +
+          '<small class="show-comment" onclick="return openModal(event)">Show comments</small></div></div>';
+        all += first;
+        main.innerHTML = all;
+      });
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  questionsDetailsAjax(request);
+}
+
+/*======================================================
                     // Post Questions need Valid Token
 ======================================================*/
 function newQuestion() {
@@ -437,6 +483,67 @@ function loadMeetupsPage() {
 
   getMeetupsDetails(request);
 }
+
+/*======================================================
+                    // Vote
+======================================================*/
+function upVote(event) {
+  let vote = parseInt(event.currentTarget.nextSibling.innerHTML);
+  vote = vote + 1;
+  notLoggedIn();
+
+  const id = event.currentTarget.nextSibling.getAttribute("data");
+  const url = `${baseUrl}/questions/${id}/upvote`;
+  let request = patch(url);
+
+  async function postUpVote(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        event.currentTarget.nextSibling.innerHTML = vote + " votes";
+        location.reload();
+        return response.status;
+      }
+      document.getElementById("alert").classList.toggle("icon");
+      document.getElementById("danger").innerHTML = data.data;
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+  postUpVote(request);
+}
+
+function downVote(event) {
+  let vote = parseInt(event.currentTarget.previousSibling.innerHTML);
+  vote = vote - 1;
+
+  notLoggedIn();
+  
+  const id = event.currentTarget.previousSibling.getAttribute("data");
+  const url = `${baseUrl}/questions/${id}/downvote`;
+  let request = patch(url);
+
+  async function postDownVote(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        event.currentTarget.previousSibling.innerHTML = vote + " votes";
+        location.reload();
+        return response.status;
+      }
+      document.getElementById("alert").classList.toggle("icon");
+      document.getElementById("danger").innerHTML = data.data;
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+  postDownVote(request);
+}
+
 /*======================================================
                     // Admin Sign-in
 ======================================================*/

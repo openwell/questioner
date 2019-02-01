@@ -15,12 +15,11 @@
   </head>
   <body>
     <header class="row topnav">
-      <div class="logo" id="bash" onclick="location.href='index.html'"></div>
+      <div class="logo" onclick="location.href='index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="index.html">HOME</a></li>
-          <li><a href="meetup.html">MEET UPS</a></li>
-          <li><a href="login.html">LOGIN</a></li>
+          <li><a href="meetups.html">MEET UPS</a></li>
           <li><a href="signup.html">SIGNUP</a></li>
         </ul>
       </nav>
@@ -29,9 +28,11 @@
       </a>
     </header>
     <section class="signin-section row">
+        <div id="alert" class="icon">
+            <small id="success"></small><small id="danger"></small>
+          </div>
         <form action="" onsubmit="return signin()">
             <h1>LOG IN</h1>
-            <br> <small id="success" style="color: green"></small>
           <div class="form-group">
             <label for="email">Email</label>
             <input
@@ -39,7 +40,7 @@
               type="email"
               name="email"
               id="email"
-              placeholder="username"
+              placeholder="email"
               required
             />
           </div>
@@ -67,6 +68,8 @@
       </section>
     <footer>©Questioner 2018</footer>
     <script src="./resources/js/main.js"></script>
-    <script></script>
+    <script>
+    errorToggler()
+    </script>
   </body>
 </html>
