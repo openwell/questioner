@@ -118,6 +118,11 @@ function adminLogOut() {
   return (window.location.href = "login.html");
 }
 
+function setMinDateTime(){
+  const currentTimePlusTen = (new Date(Date.now() + 4200000)).toISOString().slice(0, -1);
+  return document.getElementById('new_happeningon').setAttribute('min', currentTimePlusTen)
+}
+
 /*======================================================
                   // Modal close by window
 ======================================================*/
@@ -169,6 +174,52 @@ function setMeetup(meetupId) {
 }
 
 /*======================================================
+                    //Auto load of all meetups
+======================================================*/
+
+function loadMeetupsPage() {
+  document.getElementById("cs-loader").removeAttribute("hidden", "false");
+  const url = `${baseUrl}/meetups`;
+  let request = get(url);
+  async function getMeetupsDetails(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      for (let i = 0; i <= data.data.length - 1; i++) {
+        let happening = new Date(
+          Date.parse(data.data[i].happeningon)
+        ).toLocaleString();
+        let main = (document.getElementById(
+          "question_loads"
+        ).innerHTML += `<div class="meetup-card">
+            <a href="meetup.html" onclick="return setMeetup(${
+              data.data[i].id
+            })">
+              <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
+              <h4>${data.data[i].location}</h4>
+              <div class="meetup-img">
+                <img
+                  src="../resources/images/img5.webp"
+                  alt="meetup-img"
+                />
+              </div>
+              <h5>21 Questions</h5>
+              <h5>${happening}</h5>
+            </a>
+          </div>`);
+      }
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      throw err;
+    }
+  }
+
+  getMeetupsDetails(request);
+}
+
+/*======================================================
                     // Meetup details by the left
 ======================================================*/
 function meetupDetails() {
@@ -199,7 +250,7 @@ function meetupDetails() {
   getMeetupDetails(request);
 }
 
-*======================================================
+/*======================================================
                     // Post Questions need Valid Token
 ======================================================*/
 function newQuestion() {
@@ -343,55 +394,6 @@ function signin() {
 }
 
 /*======================================================
-                    //Auto load of meetup details
-======================================================*/
-
-/*======================================================
-                    //Auto load of all meetups
-======================================================*/
-
-function loadMeetupsPage() {
-  document.getElementById("cs-loader").removeAttribute("hidden", "false");
-  const url = `${baseUrl}/meetups`;
-  let request = get(url);
-  async function getMeetupsDetails(payLoad) {
-    try {
-      let response = await fetch(payLoad);
-      let data = await response.json();
-      for (let i = 0; i <= data.data.length - 1; i++) {
-        let happening = new Date(
-          Date.parse(data.data[i].happeningon)
-        ).toLocaleString();
-        let main = (document.getElementById(
-          "question_loads"
-        ).innerHTML += `<div class="meetup-card">
-            <a href="meetup.html" onclick="return setMeetup(${
-              data.data[i].id
-            })">
-              <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
-              <h4>${data.data[i].location}</h4>
-              <div class="meetup-img">
-                <img
-                  src="../resources/images/img5.webp"
-                  alt="meetup-img"
-                />
-              </div>
-              <h5>21 Questions</h5>
-              <h5>${happening}</h5>
-            </a>
-          </div>`);
-      }
-      document.getElementById("cs-loader").setAttribute("hidden", "true");
-      return response.status;
-    } catch (err) {
-      document.getElementById("cs-loader").setAttribute("hidden", "true");
-      throw err;
-    }
-  }
-
-  getMeetupsDetails(request);
-}
-/*======================================================
                     // Admin Sign-in
 ======================================================*/
 function adminSignin() {
@@ -430,4 +432,46 @@ function adminSignin() {
     }
   }
   postAdminSignin(request);
+}
+
+/*======================================================
+                    // admin table get all meetup
+======================================================*/
+function loadAllMeetupAdmin() {
+  if (localStorage.getItem("adminToken") === null) {
+    return (window.location.href = "login.html");
+  }
+
+  const url = `${baseUrl}/meetups`;
+  let request = get(url);
+  async function getAllMeetUp(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      let all = "";
+      data.data.forEach(x => {
+        let first = `<tr>
+        <td>${x.topic}</td>
+        <td><button onclick="return deleteMeetup(${x.id})">DELETE</button></td>
+      </tr>`;
+        all += first;
+      });
+      let main = (document.getElementById(
+        "admin_all_meetups"
+      ).innerHTML = `  <caption>
+      <h3>MEETUPS</h3>
+    </caption>
+    <tr>
+      <th>Meetups</th>
+      <th>Delete</th>
+    </tr>
+        ${all}
+      </div> `);
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getAllMeetUp(request);
 }

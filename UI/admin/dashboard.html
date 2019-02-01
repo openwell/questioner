@@ -15,13 +15,12 @@
   </head>
   <body>
     <header class="topnav">
-      <div class="logo" id="bash" onclick="window.location.href='../index.html'"></div>
+      <div class="logo" onclick="window.location.href='../index.html'"></div>
       <nav class="nav-links">
         <ul>
           <li><a href="../index.html">HOME</a></li>
-          <li><a href="../meetup.html">MEET UPS</a></li>
-          <li><a href="../login.html">LOGIN</a></li>
-          <li><a href="" onclick="">LOG OUT</a></li>
+          <li><a href="../meetups.html">MEET UPS</a></li>
+          <li><a href="" onclick="return adminLogOut()">LOG OUT</a></li>
         </ul>
       </nav>
       <a href="javascript:void(0);" class="icon" onclick="myFun()">
@@ -35,56 +34,46 @@
         <p>last login</p>
       </div>
       <div class="user-statistic-bar">
-        <form action="" class="admin-new-meetup-form">
+        <form action="" class="admin-new-meetup-form" onsubmit="newMeetup()">
           <h3>NEW MEETUPS</h3>
-          <label for="">MeetUp Name
-            <input type="text" required name="meetup-name" id="" /><br />
+          <label for=""
+            >Meetup Topic
+            <input
+              type="text"
+              required
+              name="meetup-name"
+              id="new_meetup-name"
+              pattern=".{5,100}"
+              title="5 to 100 characters"
+            /><br />
           </label>
-          
-          <label for="">Tags
-            <input type="text" required name="image-tags" id="" /><br />
+
+          <label for=""
+            >Location<input
+              type="text"
+              required
+              name="location"
+              id="new_location"
+              pattern=".{4,50}"
+              title="4 to 50 characters"
+            /><br />
           </label>
-          
-          <label for="">Happening On
-           <input type="datetime-local" required name="happening-on" id="" /> 
+
+          <label for=""
+            >Date and Time
+            <input
+              type="datetime-local"
+              required
+              name="happening-on"
+              id="new_happeningon"
+            />
           </label>
-          
+
           <button type="submit">Submit</button>
         </form>
-        <div class="user-top-feed">
-          <table>
-            <caption>
-              <h3>MEETUPS</h3>
-            </caption>
-            <tr>
-              <th>Meetups</th>
-              <th>Delete</th>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
-
-            <tr>
-              <td>Lorem ipsum dolor sit amet</td>
-              <td><button>DELETE</button></td>
-            </tr>
+        <div class="admin-top-feed">
+          <table id="admin_all_meetups">
+            <!-- table loads from db -->
           </table>
         </div>
       </div>
@@ -92,5 +81,10 @@
     <footer>©Questioner 2018</footer>
 
     <script src="../resources/js/main.js"></script>
+    <script>
+      setMinDateTime()
+      checkAdminLogin();
+      loadAllMeetupAdmin();
+    </script>
   </body>
 </html>
