@@ -199,7 +199,7 @@ function loadMeetupsPage() {
               <h4>${data.data[i].location}</h4>
               <div class="meetup-img">
                 <img
-                  src="../resources/images/img5.webp"
+                  src="../UI/resources/images/img5.webp"
                   alt="meetup-img"
                 />
               </div>
@@ -294,47 +294,6 @@ function QuestionsInit() {
   }
 
   questionsDetailsAjax(request);
-}
-
-/*======================================================
-                    // Post Questions need Valid Token
-======================================================*/
-function newQuestion() {
-  event.preventDefault();
-  notLoggedIn();
-  const title = document.getElementById("newQuestionTitle").value;
-  const body = document.getElementById("newQuestionBody").value;
-  const meetupId = localStorage.getItem("meetupId");
-  const data = {
-    title: title,
-    body: body,
-    meetup: meetupId
-  };
-
-  const url = `${baseUrl}/questions`;
-  let request = post(url, data);
-
-  async function postNewQuestion(payLoad) {
-    try {
-      let response = await fetch(payLoad);
-      let data = await response.json();
-      if (!response.ok) {
-        // console.log(data.error.message);
-        // console.log(data.errors[0].msg)
-        return response.status;
-      }
-      if (response.ok) {
-        document.getElementById("new-question-form").reset();
-        QuestionsInit();
-        return response.status;
-      }
-      return response.status;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  postNewQuestion(request);
 }
 
 /*======================================================
@@ -464,7 +423,7 @@ function loadMeetupsPage() {
               <h4>${data.data[i].location}</h4>
               <div class="meetup-img">
                 <img
-                  src="../resources/images/img5.webp"
+                  src="../UI/resources/images/img5.webp"
                   alt="meetup-img"
                 />
               </div>
@@ -482,6 +441,47 @@ function loadMeetupsPage() {
   }
 
   getMeetupsDetails(request);
+}
+
+/*======================================================
+                    // Post Questions need Valid Token
+======================================================*/
+function newQuestion() {
+  event.preventDefault();
+  notLoggedIn();
+  const title = document.getElementById("newQuestionTitle").value;
+  const body = document.getElementById("newQuestionBody").value;
+  const meetupId = localStorage.getItem("meetupId");
+  const data = {
+    title: title,
+    body: body,
+    meetup: meetupId
+  };
+
+  const url = `${baseUrl}/questions`;
+  let request = post(url, data);
+
+  async function postNewQuestion(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (!response.ok) {
+        // console.log(data.error.message);
+        // console.log(data.errors[0].msg)
+        return response.status;
+      }
+      if (response.ok) {
+        document.getElementById("new-question-form").reset();
+        QuestionsInit();
+        return response.status;
+      }
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  postNewQuestion(request);
 }
 
 /*======================================================
@@ -542,6 +542,109 @@ function downVote(event) {
     }
   }
   postDownVote(request);
+}
+
+/*======================================================
+                    // open Comment and question
+======================================================*/
+
+function closeModal(event) {
+  document.getElementById("comment-container").style.display = "none";
+  document.body.style.overflow = "scroll";
+}
+
+function openModal() {
+  const questionId = event.target.parentElement.previousElementSibling.children[1].getAttribute(
+    "data"
+  );
+  localStorage.setItem("questionId", questionId);
+  document.getElementById("comment-container").style.display = "block";
+  document.body.style.overflow = "hidden";
+
+  const url = `${baseUrl}/questions/${localStorage.getItem("questionId")}`;
+  let request = get(url);
+
+  async function getQuestionComments(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      let all = "";
+      data.comment.forEach(x => {
+        const hap = timeSince(new Date(x.created_on));
+        let first = `<small><i class="far fa-user-circle"></i>&nbsp;${
+          x.username
+        }&nbsp;${hap}&nbsp;ago</small><p class="comments_bar" >${
+          x.comment
+        }</p><br/>`;
+        all += first;
+      });
+      let main = (document.getElementById(
+        "comment-main"
+      ).innerHTML = `  <span><i class="fas fa-times" id="comment-close" onclick="return closeModal()"></i></span><br />
+      <div class="modal-topic-body">
+        <h3>${data.data.title}</h3><br />
+        <p>${data.data.body}</p><br />
+      </div>
+      <div class="modal-new-comment">
+        <h5>New Comment</h5>
+        <form action="" onsubmit="return createNewComment()" id="modalcommentform" class="comment-form";>
+          <textarea name="body" placeholder= 'Post a comment' id="commentTextarea"cols="60" rows="3" required maxlength="200" minlength="2" title="2 to 200 characters"
+          ></textarea>
+          <button>Submit</button>
+        </form>
+      </div>
+      <div class="modal-comment">
+        <h3>Comments</h3>
+        ${all}
+      </div> `);
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getQuestionComments(request);
+}
+
+/*======================================================
+                    // post new Comment
+======================================================*/
+function createNewComment() {
+  event.preventDefault();
+  if (localStorage.getItem("userToken") === null) {
+    return (window.location.href = "login.html");
+  }
+
+  const newComment = document.getElementById("commentTextarea").value;
+  const questionId = localStorage.getItem("questionId");
+  const data = {
+    comment: newComment,
+    question: questionId
+  };
+
+  const url = `${baseUrl}/comments`;
+  let request = post(url, data);
+
+  async function postComment(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (!response.ok) {
+        // console.log(data.error.message);
+        // console.log(data.errors[0].msg)
+        return response.status;
+      }
+      if (response.ok) {
+        document.getElementById("modalcommentform").reset();
+        location.reload();
+        return response.status;
+      }
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+  postComment(request);
 }
 
 /*======================================================
