@@ -1,176 +1,136 @@
-/*======================================================
-                    // Meetup pages by ID
-======================================================*/
-async function meetupDetailsAjax(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    document.getElementById("meet_up-info").innerHTML = `<h2>MeetUp Name: ${
-      data.data[0].topic
-    }</h2>
-          <p>Location - &nbsp; ${data.data[0].location}</p>
-          <p>Happening On - ${data.data[0].happeningon}</p>
-          <p>RSVP - ${data.data[0].title}</p>`;
-    return response.status;
-  } catch (err) {
-    throw err;
-  }
-}
+const baseUrl = "https://questioner1.herokuapp.com/api/v1";
+const baseUr = `http://localhost:3000/api/v1`;
 
-function meetup_details() {
-  function getUrlParameter(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-    var results = regex.exec(location.search);
-    return results === null
-      ? ""
-      : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
-  const id = getUrlParameter("key");
-
-  // sending
-  const url = `https://questioner1.herokuapp.com/api/v1/meetups/1/${id}`;
-  let request = new Request(url, {
+function get(url) {
+  return new Request(url, {
     method: "GET",
     headers: {
       Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("userToken")
     }
   });
-  meetupDetailsAjax(request);
 }
-
-/*======================================================
-                    Get all comments
-======================================================*/
-function QuestionsInit() {
-  const data = {
-    status: "success",
-    questions: [
-      {
-        subject: "Lorem ipsum, dolor sit amet consectetur",
-        id: 1,
-        votes: 8
-      },
-      {
-        subject: "Lorem ipsum, dolor sit amet consecteturn",
-        id: 3,
-        votes: 4
-      },
-      {
-        subject: "Lorem ipsum, dolor sit amet consectetur",
-        id: 2,
-        votes: 5
-      },
-      {
-        subject: "Lorem ipsum, dolor sit amet consectetur",
-        id: 3,
-        votes: 4
-      }
-    ]
-  };
-
-  let all = "";
-  const sortSample = data.questions.sort((a, b) => a.votes - b.votes);
-  data.questions.forEach(x => {
-    let main = document.getElementById("question-load");
-    let first =
-      '<div class="questions">' +
-      '<div class="vote_bar">' +
-      '<button class="up-vote" >' +
-      '<i class="fa fa-arrow-up" aria-hidden="true"></i></button>' +
-      '<div id="count">' +
-      x.votes +
-      " votes</div>" +
-      '<button class="down-vote">' +
-      '<i class="fa fa-arrow-down" aria-hidden="true"></i>' +
-      "</button> </div>" +
-      '<div class="questions-topic"><h4>' +
-      x.subject +
-      "</h4>" +
-      '<small class="show-comment">Show comments</small></div></div>';
-    all += first;
-    main.innerHTML = all;
+function patch(url) {
+  return new Request(url, {
+    method: "PATCH",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("userToken")
+    }
   });
-
-  /*======================================================
-                    // Vote
-======================================================*/
-  const upVote = document.getElementsByClassName("up-vote");
-  for (i = 0; i < upVote.length; ++i) {
-    upVote[i].onclick = function(event) {
-      let vote = parseInt(event.currentTarget.nextSibling.innerHTML);
-      vote = vote + 1;
-      console.log(event);
-      event.currentTarget.nextSibling.innerHTML = vote + " votes";
-    };
-  }
-
-  const downVote = document.getElementsByClassName("down-vote");
-  for (i = 0; i < downVote.length; ++i) {
-    downVote[i].onclick = function(event) {
-      let vote = parseInt(event.currentTarget.previousSibling.innerHTML);
-      vote = vote - 1;
-      event.currentTarget.previousSibling.innerHTML = vote + " votes";
-    };
-  }
-
-  /*======================================================
-                    // Comment
-======================================================*/
-document.getElementById("comment-close").onclick = function(event) {
-  document.getElementById("comment-container").style.display = "none";
-  document.body.style.overflow = "scroll";
-};
-
-const showComment = document.getElementsByClassName("show-comment");
-for (i = 0; i < showComment.length; ++i) {
-  showComment[i].onclick = function(event) {
-    document.getElementById("comment-container").style.display = "block";
-    document.body.style.overflow = "hidden";
-  };
 }
-/*======================================================
-                  // Modal
-======================================================*/
-const modal = document.getElementById("comment-container");
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-    document.body.style.overflow = "hidden";
-  }
+function post(url, data) {
+  return new Request(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("userToken")
+    }
+  });
+}
+function errorToggler(){
+  document.getElementById("alert").onclick = function(event) {
+  document.getElementById("alert").classList.toggle("icon");
 };
 }
 
 
-/*======================================================
-                    // RSVP
-======================================================*/
-function Rsvp(checkbox) {
-  var checkBoxes = document.getElementsByName("rsvp");
-  checkBoxes.forEach(item => {
-    if (item !== checkbox) item.checked = false;
-  });
+function notLoggedIn(){
+  if (localStorage.getItem("userToken") === null) {
+    document.getElementById("alert").classList.toggle("icon");
+    document.getElementById("danger").innerHTML = 'You are not Logged in. You will be redirect to the login Page';
+    return setTimeout(() => {
+      (window.location.href = "login.html");
+    }, 3000);
+}
 }
 
-function rsvpForm() {
-  event.preventDefault();
+function displayLogout(){
+  if (!localStorage.getItem("userToken")) {
+    document.getElementById("logout").classList.toggle("icon");
+  }
 }
+
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(window.atob(base64));
+};
+
+
+function timeSince(timeStamp) {
+  var now = new Date(),
+    secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+  if (secondsPast < 60) {
+    return parseInt(secondsPast) + "s";
+  }
+  if (secondsPast < 3600) {
+    return parseInt(secondsPast / 60) + "m";
+  }
+  if (secondsPast <= 86400) {
+    return parseInt(secondsPast / 3600) + "h";
+  }
+  if (secondsPast > 86400) {
+    day = timeStamp.getDate();
+    month = timeStamp
+      .toDateString()
+      .match(/ [a-zA-Z]*/)[0]
+      .replace(" ", "");
+    year =
+      timeStamp.getFullYear() == now.getFullYear()
+        ? ""
+        : " " + timeStamp.getFullYear();
+    return day + " " + month + year;
+  }
+}
+
 /*======================================================
                     // Login and CheckUser-Login
 ======================================================*/
 function checkUserLogin() {
   if (localStorage.getItem("userToken") === null) {
-    window.location.href = "../login.html";
+    return (window.location.href = "../login.html");
+  }
+}
+function checkMeetupId() {
+  if (localStorage.getItem("meetupId") === null) {
+    return (window.location.href = "../index.html");
+  }
+}
+function checkAdminLogin() {
+  if (localStorage.getItem("adminToken") === null) {
+    return (window.location.href = "../login.html");
   }
 }
 
 function logOut() {
   localStorage.clear("userToken");
-  window.location.href = "../index.html";
+  return (window.location.href = "../index.html");
 }
+
+
+function adminLogOut() {
+  localStorage.clear("adminToken");
+  return (window.location.href = "login.html");
+}
+
 /*======================================================
-                    // Screen Resize
+                  // Modal close by window
+======================================================*/
+const modal = document.getElementById("comment-container");
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "scroll";
+  }
+};
+
+/*======================================================
+                    // Form Validation
 ======================================================*/
 if (!RegExp.escape) {
   RegExp.escape = function(s) {
@@ -202,42 +162,73 @@ window.onresize = function(event) {
 };
 
 /*======================================================
-                    // Questions
+                    // Meetup-id
+======================================================*/
+function setMeetup(meetupId) {
+  localStorage.setItem("meetupId", meetupId);
+}
+
+/*======================================================
+                    // Meetup details by the left
+======================================================*/
+function meetupDetails() {
+  const meetupId = localStorage.getItem("meetupId");
+  const url = `${baseUrl}/meetups/${meetupId}`;
+  let request = get(url);
+  async function getMeetupDetails(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      let happening = new Date(
+        Date.parse(data.data[0].happeningon)
+      ).toLocaleString();
+      document.getElementById("meet_up-info").innerHTML = `<h2>${
+        data.data[0].topic
+      }</h2>
+          <p><i class="fas fa-map-marker-alt"></i>&nbsp; ${
+            data.data[0].location
+          }</p>
+          <p><i class="fas fa-calendar-alt"></i>&nbsp; ${happening}</p>
+          <p>RSVP -</p>`;
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  getMeetupDetails(request);
+}
+
+*======================================================
+                    // Post Questions need Valid Token
 ======================================================*/
 function newQuestion() {
   event.preventDefault();
-
-  if (localStorage.getItem("userToken") === null) {
-    window.location.href = "login.html";
-  }
-
-  const title = document.getElementById("newQuestionTitle").innerHTML;
-  const body = document.getElementById("newQuestionBody").innerHTML;
-  // console.log(title, body)
-
+  notLoggedIn();
+  const title = document.getElementById("newQuestionTitle").value;
+  const body = document.getElementById("newQuestionBody").value;
+  const meetupId = localStorage.getItem("meetupId");
   const data = {
-    title: "1",
+    title: title,
     body: body,
-    createdBy: "2",
-    meetup: "2"
+    meetup: meetupId
   };
 
-  const url = "https://questioner1.herokuapp.com/api/v1/questions";
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: localStorage.getItem("userToken")
-    }
-  });
+  const url = `${baseUrl}/questions`;
+  let request = post(url, data);
 
-  async function post(dat) {
+  async function postNewQuestion(payLoad) {
     try {
-      let response = await fetch(dat);
+      let response = await fetch(payLoad);
       let data = await response.json();
+      if (!response.ok) {
+        // console.log(data.error.message);
+        // console.log(data.errors[0].msg)
+        return response.status;
+      }
       if (response.ok) {
+        document.getElementById("new-question-form").reset();
+        QuestionsInit();
         return response.status;
       }
       return response.status;
@@ -246,32 +237,12 @@ function newQuestion() {
     }
   }
 
-  post(request);
+  postNewQuestion(request);
 }
 
 /*======================================================
                     // Sign Up
 ======================================================*/
-async function signUpResquest(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    if (response.ok) {
-      document.getElementById("success").innerHTML = "Registration Successful";
-      localStorage.setItem("userToken", data.token);
-      setTimeout(() => {
-        window.location.href = "user/dashboard.html";
-      }, 3000);
-      document.getElementById("cs-loader").setAttribute("hidden", "false");
-      return response.status;
-    }
-    document.getElementById("success").innerHTML = response.statusText;
-    return response.status;
-  } catch (err) {
-    document.getElementById("cs-loader").setAttribute("hidden", "false");
-    throw err;
-  }
-}
 
 function signUp() {
   let fN, lN, oN, e, pN, uN, p1, p2;
@@ -286,56 +257,51 @@ function signUp() {
   p1 = document.getElementById("password").value;
   p2 = document.getElementById("confirmPassword").value;
   const data = {
-    id: "1",
     firstName: fN,
     lastName: lN,
     otherName: oN,
     email: e,
     phoneNumber: pN,
     userName: uN,
-    registered: "2018-3-3",
-    isAdmin: "false",
     password: p1,
     confirmPassword: p2
   };
-  const url = "https://questioner1.herokuapp.com/api/v1/auth/signup";
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: "adminToken"
+  const url = `${baseUrl}/auth/signup`;
+  let request = post(url, data);
+
+  async function signUpRequest(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        document.getElementById("alert").classList.toggle("icon");
+        document.getElementById("success").innerHTML =
+          "Registration Successful";
+        localStorage.setItem("userToken", data.data[0].token);
+        localStorage.setItem("user", data.data[0].user.firstname);
+        localStorage.setItem("tQ", data.data[0].totalQuestions);
+        localStorage.setItem("tC", data.data[0].totalComments);
+        setTimeout(() => {
+          window.location.href = "user/dashboard.html";
+        }, 3000);
+        document.getElementById("cs-loader").setAttribute("hidden", "false");
+        return response.status;
+      }
+      document.getElementById("alert").classList.toggle("icon");
+      document.getElementById("danger").innerHTML = data.error;
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      throw err;
     }
-  });
-  signUpResquest(request);
+  }
+  signUpRequest(request);
 }
 
 /*======================================================
                     // Sign In
 ======================================================*/
-
-async function signinRequest(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    if (response.ok) {
-      document.getElementById("success").innerHTML = "Login Successful";
-      setTimeout(() => {
-        window.location.href = "user/dashboard.html";
-      }, 3000);
-      localStorage.setItem("userToken", data.data[0].token);
-      return response.status;
-    }
-    document.getElementById("success").innerHTML = response.statusText;
-    document.getElementById("cs-loader").setAttribute("hidden", "false");
-    return response.status;
-  } catch (err) {
-    document.getElementById("cs-loader").setAttribute("hidden", "false");
-    throw err;
-  }
-}
-
 function signin() {
   let uE, pW;
   event.preventDefault();
@@ -346,64 +312,122 @@ function signin() {
     email: uE,
     password: pW
   };
-  // https://questioner1.herokuapp.com
-  const url = "https://questioner1.herokuapp.com/api/v1/auth/login";
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: "adminToken"
+  const url = `${baseUrl}/auth/login`;
+  let request = post(url, data);
+  async function postUserSignin(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        document.getElementById("alert").classList.toggle("icon");
+        document.getElementById("success").innerHTML = "Login Successful";
+        setTimeout(() => {
+          window.location.href = "user/dashboard.html";
+        }, 3000);
+        localStorage.setItem("userToken", data.data[0].token);
+        localStorage.setItem("user", data.data[0].user.firstname);
+        localStorage.setItem("tQ", data.data[0].totalQuestions);
+        localStorage.setItem("tC", data.data[0].totalComments);
+        return response.status;
+      }
+      document.getElementById("alert").classList.toggle("icon");
+      document.getElementById("danger").innerHTML = data.error;
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      throw err;
     }
-  });
-  signinRequest(request);
+  }
+  postUserSignin(request);
 }
 
 /*======================================================
                     //Auto load of meetup details
 ======================================================*/
 
-async function meetupDetailsRequest(dat) {
-  try {
-    let response = await fetch(dat);
-    let data = await response.json();
-    for (let i = 0; i <= data.data.length - 1; i++) {
-      let main = (document.getElementById(
-        "question_loads"
-      ).innerHTML += `<div class="meetup-card">
-        <a href="questions.html?key=${data.data[i].id}">
-          <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
-          <h4>${data.data[i].location}</h4>
-          <div class="meetup-img">
-            <img
-              src="../UI/resources/images/img5.webp"
-              alt="meetup-img"
-            />
-          </div>
-          <h5>21 Questions</h5>
-          <h5>${data.data[i].happeningon}</h5>
-        </a>
-      </div>`);
-    }
+/*======================================================
+                    //Auto load of all meetups
+======================================================*/
 
-    document.getElementById("cs-loader").setAttribute("hidden", "true");
-    return response.status;
-  } catch (err) {
-    document.getElementById("cs-loader").setAttribute("hidden", "true");
-    throw err;
-  }
-}
-
-function loadMeetupPage() {
+function loadMeetupsPage() {
   document.getElementById("cs-loader").removeAttribute("hidden", "false");
-  const url = "https://questioner1.herokuapp.com/api/v1/meetups";
-  let request = new Request(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json"
+  const url = `${baseUrl}/meetups`;
+  let request = get(url);
+  async function getMeetupsDetails(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      for (let i = 0; i <= data.data.length - 1; i++) {
+        let happening = new Date(
+          Date.parse(data.data[i].happeningon)
+        ).toLocaleString();
+        let main = (document.getElementById(
+          "question_loads"
+        ).innerHTML += `<div class="meetup-card">
+            <a href="meetup.html" onclick="return setMeetup(${
+              data.data[i].id
+            })">
+              <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
+              <h4>${data.data[i].location}</h4>
+              <div class="meetup-img">
+                <img
+                  src="../resources/images/img5.webp"
+                  alt="meetup-img"
+                />
+              </div>
+              <h5>21 Questions</h5>
+              <h5>${happening}</h5>
+            </a>
+          </div>`);
+      }
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      throw err;
     }
-  });
-  meetupDetailsRequest(request);
+  }
+
+  getMeetupsDetails(request);
+}
+/*======================================================
+                    // Admin Sign-in
+======================================================*/
+function adminSignin() {
+  let uE, pW;
+  event.preventDefault();
+  document.getElementById("cs-loader").removeAttribute("hidden", "true");
+  uE = document.getElementById("email").value;
+  pW = document.getElementById("pw").value;
+  const data = {
+    email: uE,
+    password: pW
+  };
+  const url = `${baseUrl}/auth/admin`;
+  let request = post(url, data);
+
+  async function postAdminSignin(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        document.getElementById("alert").classList.toggle("icon");
+        document.getElementById("success").innerHTML = "Login Successful";
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 3000);
+        localStorage.setItem("adminToken", data.data[0].token);
+        return response.status;
+      }
+      document.getElementById("alert").classList.toggle("icon");
+      document.getElementById("danger").innerHTML = data.error;
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "false");
+      throw err;
+    }
+  }
+  postAdminSignin(request);
 }
