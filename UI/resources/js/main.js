@@ -394,6 +394,51 @@ function signin() {
 }
 
 /*======================================================
+                    //Auto load of all meetups
+======================================================*/
+
+function loadMeetupsPage() {
+  document.getElementById("cs-loader").removeAttribute("hidden", "false");
+  const url = `${baseUrl}/meetups`;
+  let request = get(url);
+  async function getMeetupsDetails(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      for (let i = 0; i <= data.data.length - 1; i++) {
+        let happening = new Date(
+          Date.parse(data.data[i].happeningon)
+        ).toLocaleString();
+        let main = (document.getElementById(
+          "question_loads"
+        ).innerHTML += `<div class="meetup-card">
+            <a href="meetup.html" onclick="return setMeetup(${
+              data.data[i].id
+            })">
+              <h1> ${data.data[i].topic.substring(0, 20)}...</h1>
+              <h4>${data.data[i].location}</h4>
+              <div class="meetup-img">
+                <img
+                  src="../resources/images/img5.webp"
+                  alt="meetup-img"
+                />
+              </div>
+              <h5>21 Questions</h5>
+              <h5>${happening}</h5>
+            </a>
+          </div>`);
+      }
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      return response.status;
+    } catch (err) {
+      document.getElementById("cs-loader").setAttribute("hidden", "true");
+      throw err;
+    }
+  }
+
+  getMeetupsDetails(request);
+}
+/*======================================================
                     // Admin Sign-in
 ======================================================*/
 function adminSignin() {
@@ -474,4 +519,44 @@ function loadAllMeetupAdmin() {
   }
 
   getAllMeetUp(request);
+}
+
+/*======================================================
+                    // meetup post by admin
+======================================================*/
+function newMeetup() {
+  async function postMeetup(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (response.ok) {
+        location.reload();
+        return response.status;
+      }
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  event.preventDefault();
+  const mT = document.getElementById("new_meetup-name").value;
+  const mL = document.getElementById("new_location").value;
+  const mD = document.getElementById("new_happeningon").value;
+  const data = {
+    topic: mT,
+    location: mL,
+    happeningOn: mD
+  };
+  const url = `${baseUrl}/meetups`;
+  let request = new Request(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+      tokens: localStorage.getItem("adminToken")
+    }
+  });
+  postMeetup(request);
 }
