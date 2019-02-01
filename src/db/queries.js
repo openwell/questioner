@@ -15,7 +15,7 @@ const Queries = {
   },
 
   getUsersComments(val) {
-    return `select c.comment, c.created_on, u.username from comments c left join users u on c.user_id = u.id where c.id = ${val}`;
+    return `select c.comment, c.created_on, u.username from comments c left join users u on c.user_id = u.id where c.question_id = ${val}`;
   },
 
   getComment(questionId, commentId) {
