@@ -41,7 +41,7 @@ Npm v5.6 or above
 - POST `/api/v1/comments/` Comment on a question.
 - GET `/api/v1/comments/:questionId/` Comment on a question.
 - DELETE `/api/v1/meetups/:meetupId` Delete a meetup.
-
+- GET `/api/v1/docs` Api Documentation.
 
 ### Installing
 
