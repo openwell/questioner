@@ -1,4 +1,3 @@
-import moment from 'moment';
 import db from '../db/index';
 import auth from './helpers';
 import queries from '../db/queries';
