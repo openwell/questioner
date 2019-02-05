@@ -35,30 +35,10 @@
         <div id="meet_up-info"></div>
         <form action="" class="rsvp-form" onclick="return rsvpForm()">
           <h4>Are you going?</h4>
-          <label for="yes">YES</label>
-          <input
-            type="checkbox"
-            id="yes"
-            name="rsvp"
-            onclick="Rsvp(this)"
-            value="yes"
-          />
-          <label for="no">NO</label>
-          <input
-            type="checkbox"
-            id="no"
-            name="rsvp"
-            onclick="Rsvp(this)"
-            value="no"
-          />
-          <label for="maybe">MAY-BE</label>
-          <input
-            type="checkbox"
-            id="maybe"
-            name="rsvp"
-            onclick="Rsvp(this)"
-            value="maybe"
-          /><br />
+          <button id="yes" name="rsvp_yes" value="yes">Yes</button>
+          <button id="no" name="rsvp_no" value="No">No</button>
+          <button id="maybe" name="rsvp_maybe" value="maybe">May-Be</button>
+          <br />
         </form>
       </div>
       <div class="question-header-image">
@@ -99,8 +79,8 @@
             title="10 to 200 characters"
           ></textarea>
           <button>Submit</button>
-        </form>
-        <br /> <small></small>
+        </form>  
+        <br /> <small> </small> 
       </div>
       <!--javascript Loads Question -->
       <div id="question-load"><!-- loads  questions from javascript --></div>

@@ -39,10 +39,20 @@ function errorToggler() {
 }
 
 function notLoggedIn() {
-  if (localStorage.getItem("userToken") === null) {
+  const token = localStorage.getItem("userToken");
+  if (token === null) {
     document.getElementById("alert").classList.toggle("icon");
     document.getElementById("danger").innerHTML =
       "You are not Logged in. You will be redirect to the login Page";
+    return setTimeout(() => {
+      window.location.href = "login.html";
+    }, 3000);
+  }
+  const decoded = parseJwt(token);
+  if (decoded.exp < new Date().getTime() / 1000) {
+    document.getElementById("alert").classList.toggle("icon");
+    document.getElementById("danger").innerHTML =
+      "Your Token as expired. Login Again";
     return setTimeout(() => {
       window.location.href = "login.html";
     }, 3000);
@@ -297,30 +307,55 @@ function QuestionsInit() {
 }
 
 /*======================================================
+                    // RSVP
+======================================================*/
+function rsvpForm() {
+  event.preventDefault();
+  notLoggedIn();
+  const response = event.target.value;
+  const meetupId = localStorage.getItem("meetupId");
+  const data = {
+    response
+  };
+  const url = `${baseUrl}/meetups/${meetupId}/rsvps`;
+  let request = post(url, data);
+
+  async function postRsvp(payLoad) {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      return response.status;
+    } catch (err) {
+      throw err;
+    }
+  }
+  postRsvp(request);
+}
+
+/*======================================================
                     // Sign Up
 ======================================================*/
 
 function signUp() {
-  let fN, lN, oN, e, pN, uN, p1, p2;
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
-  fN = document.getElementById("firstName").value;
-  lN = document.getElementById("lastName").value;
-  oN = document.getElementById("otherName").value;
-  e = document.getElementById("email").value;
-  pN = document.getElementById("phoneNumber").value;
-  uN = document.getElementById("userName").value;
-  p1 = document.getElementById("password").value;
-  p2 = document.getElementById("confirmPassword").value;
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const otherName = document.getElementById("otherName").value;
+  const email = document.getElementById("email").value;
+  const phoneNumber = document.getElementById("phoneNumber").value;
+  const userName = document.getElementById("userName").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
   const data = {
-    firstName: fN,
-    lastName: lN,
-    otherName: oN,
-    email: e,
-    phoneNumber: pN,
-    userName: uN,
-    password: p1,
-    confirmPassword: p2
+    firstName,
+    lastName,
+    otherName,
+    email,
+    phoneNumber,
+    userName,
+    password,
+    confirmPassword
   };
   const url = `${baseUrl}/auth/signup`;
   let request = post(url, data);
@@ -359,14 +394,13 @@ function signUp() {
                     // Sign In
 ======================================================*/
 function signin() {
-  let uE, pW;
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
-  uE = document.getElementById("email").value;
-  pW = document.getElementById("pw").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("pw").value;
   const data = {
-    email: uE,
-    password: pW
+    email,
+    password
   };
   const url = `${baseUrl}/auth/login`;
   let request = post(url, data);
@@ -408,8 +442,8 @@ function newQuestion() {
   const body = document.getElementById("newQuestionBody").value;
   const meetupId = localStorage.getItem("meetupId");
   const data = {
-    title: title,
-    body: body,
+    title,
+    body,
     meetup: meetupId
   };
 
@@ -453,7 +487,7 @@ function upVote(event) {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (response.ok) {
-        event.currentTarget.nextSibling.innerHTML = vote + " votes";
+        event.target.parentNode.nextSibling.innerHTML = vote + " votes";
         location.reload();
         return response.status;
       }
@@ -480,7 +514,7 @@ function downVote(event) {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (response.ok) {
-        event.currentTarget.previousSibling.innerHTML = vote + " votes";
+        event.target.parentNode.previousSibling.innerHTML = vote + " votes";
         location.reload();
         return response.status;
       }
@@ -521,16 +555,18 @@ function openModal() {
       let all = "";
       data.comment.forEach(x => {
         const hap = timeSince(new Date(x.created_on));
-        let first = `<small><i class="far fa-user-circle"></i>&nbsp;${
-          x.username
-        }&nbsp;${hap}&nbsp;ago</small><p class="comments_bar" >${
-          x.comment
-        }</p><br/>`;
+        let first = `<div class="comment_comments">
+        <small><img src="./resources/images/avatar1.png" width="30px" height="30" alt=""></small >
+        <div> 
+          &nbsp;${x.username}&nbsp;&nbsp;${hap}&nbsp;ago 
+          <p class="comments_bar" >${x.comment}</p>
+          </div>
+        </div>`;
         all += first;
       });
-      let main = (document.getElementById(
+      document.getElementById(
         "comment-main"
-      ).innerHTML = `  <span><i class="fas fa-times" id="comment-close" onclick="return closeModal()"></i></span><br />
+      ).innerHTML = `<span><i class="fas fa-times" id="comment-close" onclick="return closeModal()"></i></span><br />
       <div class="modal-topic-body">
         <h3>${data.data.title}</h3><br />
         <p>${data.data.body}</p><br />
@@ -538,15 +574,15 @@ function openModal() {
       <div class="modal-new-comment">
         <h5>New Comment</h5>
         <form action="" onsubmit="return createNewComment()" id="modalcommentform" class="comment-form";>
-          <textarea name="body" placeholder= 'Post a comment' id="commentTextarea"cols="60" rows="3" required maxlength="200" minlength="2" title="2 to 200 characters"
+          <textarea name="body" placeholder= 'Add a comment' id="commentTextarea"cols="60" rows="3" required maxlength="200" minlength="2" title="2 to 200 characters"
           ></textarea>
-          <button>Submit</button>
+          <button>Add a Comment</button>
         </form>
       </div>
       <div class="modal-comment">
         <h3>Comments</h3>
         ${all}
-      </div> `);
+      </div> `;
       return response.status;
     } catch (err) {
       throw err;
@@ -563,6 +599,14 @@ function loadUpcomingTable() {
   if (localStorage.getItem("userToken") === null) {
     return (window.location.href = "../login.html");
   }
+
+  document.getElementById(
+    "user_question_stats"
+  ).innerHTML = localStorage.getItem("tQ");
+  document.getElementById(
+    "user_comment_stats"
+  ).innerHTML = localStorage.getItem("tC");
+
   const url = `${baseUrl}/meetups/upcoming`;
   let request = get(url);
   async function getUpcomingTable(payLoad) {
@@ -571,50 +615,23 @@ function loadUpcomingTable() {
       let data = await response.json();
       let all = "";
       data.data.forEach(x => {
-        let first = ` 
-        <tr>
+        let happening = new Date(Date.parse(x.happeningon)).toLocaleString();
+        first = ` <tr>
         <td>${x.topic}</td>
         <td>${x.location}</td>
-        <td>${x.happeningon}</td>
-      </tr>`;
+        <td>${happening}</td>
+        </tr>`;
         all += first;
       });
-      document.getElementById(
-        "userDashboard"
-      ).innerHTML = ` <div class="user-details">
-      <span class="user-avatar"></span>
-      <p>user - ${localStorage.getItem("user")}</p>
-      <p>last login -</p>
-    </div>
-    <div class="user-statistic-bar">
-      <div class="user-statistic">
-        <div class="user-statistic-1">
-          <i class="fas fa-question-circle    "></i>
-          <p>No of Questions Posted</p> <p>${localStorage.getItem(
-            "tQ"
-          )}</p></div>
-        <div class="user-statistic-2">
-            <i class="fas fa-comments    "></i>
-          <p>No of Questions Commented on</p><p>${localStorage.getItem(
-            "tC"
-          )}</p>
-        </div>
-      </div>
-      <div class="user-top-feed">
-        <table id="upcoming_table">
-        <caption>
+      document.getElementById("upcoming_table").innerHTML += `<caption>
       <h2>Top Questions Feed</h2> 
     </caption>
     <tr >
       <th>Meetups</th>
       <th>Location</th>
       <th>Date</th>
-    </tr>
-        ${all}
-      </div> 
-      </table>
-      </div>
-    </div> `;
+    </tr> 
+    ${all}`;
       return response.status;
     } catch (err) {
       throw err;
@@ -629,15 +646,14 @@ function loadUpcomingTable() {
 ======================================================*/
 function createNewComment() {
   event.preventDefault();
-  if (localStorage.getItem("userToken") === null) {
-    return (window.location.href = "login.html");
-  }
 
-  const newComment = document.getElementById("commentTextarea").value;
-  const questionId = localStorage.getItem("questionId");
+  notLoggedIn();
+
+  const comment = document.getElementById("commentTextarea").value;
+  const question = localStorage.getItem("questionId");
   const data = {
-    comment: newComment,
-    question: questionId
+    comment,
+    question
   };
 
   const url = `${baseUrl}/comments`;
@@ -654,7 +670,16 @@ function createNewComment() {
       }
       if (response.ok) {
         document.getElementById("modalcommentform").reset();
-        location.reload();
+        const date_fix = new Date().toISOString();
+        const hap = timeSince(new Date(date_fix));
+        let first = `<div class="comment_comments">
+        <small><img src="./resources/images/avatar1.png" width="30px" height="30" alt=""></small >
+        <div> 
+          &nbsp;me&nbsp;&nbsp;${hap}&nbsp;ago 
+          <p class="comments_bar" >${comment}</p>
+          </div>
+        </div>`;
+        document.querySelector(".modal-comment").innerHTML += first;
         return response.status;
       }
       return response.status;
@@ -669,14 +694,13 @@ function createNewComment() {
                     // Admin Sign-in
 ======================================================*/
 function adminSignin() {
-  let uE, pW;
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
-  uE = document.getElementById("email").value;
-  pW = document.getElementById("pw").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("pw").value;
   const data = {
-    email: uE,
-    password: pW
+    email,
+    password
   };
   const url = `${baseUrl}/auth/admin`;
   let request = post(url, data);
@@ -763,13 +787,13 @@ function newMeetup() {
   }
 
   event.preventDefault();
-  const mT = document.getElementById("new_meetup-name").value;
-  const mL = document.getElementById("new_location").value;
-  const mD = document.getElementById("new_happeningon").value;
+  const topic = document.getElementById("new_meetup-name").value;
+  const location = document.getElementById("new_location").value;
+  const happeningOn = document.getElementById("new_happeningon").value;
   const data = {
-    topic: mT,
-    location: mL,
-    happeningOn: mD
+    topic,
+    location,
+    happeningOn
   };
   const url = `${baseUrl}/meetups`;
   let request = new Request(url, {
