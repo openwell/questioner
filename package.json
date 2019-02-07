@@ -16,7 +16,7 @@
     "dropTables": "babel-node ./src/db/dropTables.js",
     "createTables": "babel-node ./src/db/createTables.js",
     "emptyTables": "babel-node ./src/db/emptyTables.js",
-    "foreignKeys": "babel-node ./src/db/forTables.js",
+    "foreignKeys": "babel-node ./src/db/foreignTables.js",
     "admin": "babel-node ./src/db/adminModel.js"
   },
   "repository": {
