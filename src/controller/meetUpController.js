@@ -19,15 +19,14 @@ class Controller {
 
   // Create an meetup record.
   static async createMeetUps(req, res) {
-    const createdOn = currentDate;
     const locations = req.body.location.trim();
     const topics = req.body.topic.trim();
     const date = req.body.happeningOn.trim();
     const tag = '';
-    const adminId = req.user.id;
+    const { id: adminId } = req.user;
 
     try {
-      const { rows } = await db.query(queries.newMeetUp(createdOn, locations,
+      const { rows } = await db.query(queries.newMeetUp(currentDate, locations,
         topics, date, tag, adminId));
       return res.status(201).json({
         status: 201,
@@ -70,19 +69,50 @@ class Controller {
   }
 
   // Fetch all upcoming meetup records.
+  static async topFeeds(req, res) {
+    const { id } = req.user;
+    try {
+      const { rows } = await db.query(queries.topFeeds(id, currentDate));
+      if (rows[0]) {
+        return res.status(200).json({
+          status: 200,
+          data: rows,
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        data: 'Empty Resource',
+      });
+    } catch (err) {
+      return errorHandler(500, res, err);
+    }
+  }  
+
+  static async userStatistic(req, res) {
+    const { id } = req.user;
+    try {
+      const statistic = await db.query(queries.countAll('createdby', 'questions', id));
+      const statistic1 = await db.query(queries.countAll('user_id', 'comments', id));
+      return res.status(200).json({
+        status: 200,
+        data: [{
+          totalQuestions: statistic.rows[0].count,
+          totalComments: statistic1.rows[0].count,
+        }],
+      });
+    } catch (err) {
+      return errorHandler(500, res, err);
+    }
+  }
+
   static async upComingMeetUps(req, res) {
     const sevenDaysFuture = (new Date(Date.now() + 608400000)).toISOString().slice(0, -1);
     try {
       const { rows } = await db.query(queries.upComingMeetups(currentDate, sevenDaysFuture));
-      const result = rows.map(({
-        id, topic, location, happeningon,
-      }) => ({
-        id, topic, location, happeningon,
-      }));
       if (rows[0]) {
         return res.status(200).json({
           status: 200,
-          data: result,
+          data: rows,
         });
       }
       return res.status(200).json({
@@ -96,14 +126,11 @@ class Controller {
 
   // Create a question for a specific meetup.
   static async questionEntry(req, res) {
-    const createdOn = currentDate;
-    const createdBys = req.user.id;
-    const meetupId = req.body.meetup;
-    const titles = req.body.title;
-    const mainBody = req.body.body;
+    const { id: userId } = req.user;
+    const { meetup, title, body } = req.body;
     try {
-      const { rows } = await db.query(queries.newQuestion(createdOn, createdBys,
-        meetupId, titles, mainBody, 0));
+      const { rows } = await db.query(queries.newQuestion(currentDate, userId,
+        meetup, title, body, 0));
       return res.status(201).json({
         status: 201,
         data: rows,
@@ -145,27 +172,17 @@ class Controller {
       return errorHandler(500, res, err);
     }
   }
+  // Vote Up/Down
 
-  //  upVote (increase votes by 1) a specific question.
-  static async upVote(req, res) {
+  static async Vote(req, res) {
     try {
+      let resp;
       const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
-      const resp = await db.query(queries.updateVote((rows[0].votes + 1), rows[0].id));
-      const { rowCount } = await db.query(queries.votes(req.params.questionId, req.user.id));
-      return res.status(200).json({
-        status: 200,
-        data: resp.rows,
-      });
-    } catch (err) {
-      return errorHandler(500, res, err);
-    }
-  }
-
-  // downVote (decrease votes by 1) a specific question.
-  static async downVote(req, res) {
-    try {
-      const { rows } = await db.query(queries.selectById('questions', 'id', req.params.questionId));
-      const resp = await db.query(queries.updateVote((rows[0].votes - 1), rows[0].id));
+      if ((req.route.path === '/questions/:questionId/downvote')) {
+        resp = await db.query(queries.updateVote((rows[0].votes - 1), rows[0].id));
+      } else {
+        resp = await db.query(queries.updateVote((rows[0].votes + 1), rows[0].id));
+      }
       const { rowCount } = await db.query(queries.votes(req.params.questionId, req.user.id));
       return res.status(200).json({
         status: 200,
@@ -179,11 +196,10 @@ class Controller {
   // Respond to meetup RSVP.
   static async rsvp(req, res) {
     const meetup = req.params.meetupId;
-    const responses = req.body.response;
-    const userId = req.user.id;
-    const createdOn = currentDate;
+    const { response } = req.body;
+    const { id: userId } = req.user;
     try {
-      const { rows } = await db.query(queries.rsvp(meetup, responses, userId, createdOn));
+      const { rows } = await db.query(queries.rsvp(meetup, response, userId, currentDate));
       return res.status(201).json({
         status: 201,
         data: rows,
@@ -193,14 +209,26 @@ class Controller {
     }
   }
 
-  static async comment(req, res) {
-    const comments = req.body.comment;
-    const questions = req.body.question;
-    const createdOn = currentDate;
-    const userId = req.user.id;
+  // Get all RSVP
+  static async getRsvp(req, res) {
+    const { id: userId } = req.user;
     try {
-      const { rows } = await db.query(queries.comment(comments, questions, createdOn, userId));
-      const response = await db.query(queries.getComment(questions, rows[0].id));
+      const { rows } = await db.query(queries.selectById('rsvp', 'user_id', userId));
+      return res.status(200).json({
+        status: 200,
+        data: rows,
+      });
+    } catch (err) {
+      return errorHandler(500, res, err);
+    }
+  }
+
+  static async comment(req, res) {
+    const { comment, question } = req.body;
+    const { id: userId } = req.user;
+    try {
+      const { rows } = await db.query(queries.comment(comment, question, currentDate, userId));
+      const response = await db.query(queries.getComment(question, rows[0].id));
       return res.status(201).json({
         status: 201,
         data: response.rows,

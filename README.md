@@ -27,14 +27,17 @@ Npm v5.6 or above
 
 - POST `/api/v1/meetups` Create an meetup record.
 - GET `/api/v1/meetups` Fetch all meetup records.
-- GET `/api/v1/meetups/1/:meetupId` Fetch a specific meetup record.
 - GET `/api/v1/meetups/upcoming/` Fetch all upcoming meetup records.
+- GET `/api/v1/meetups/:meetupId` Fetch a specific meetup record.
+- GET `/api/v1/meetups/user/statistic` Fetch a user Total Comments and Questions.  
+- POST `/api/v1/meetups/:meetupId/rsvps` Respond to meetup RSVP.
+- GET `/api/v1/meetups/rsvps` Get a Single User RSVP.
 - POST `/api/v1/questions` Create a question for a specific meetup.
-- GET `/api/v1/questions` Fetch all questions.
+- GET `/api/v1/questions` Fetch all questions.  
+- GET `/api/v1/questions/topfeed` Fetches the top Questions of a User attending a Meetup.
 - GET `/api/v1/questions/:questionId` Fetches a Single question with Comments Attached to it.
 - PATCH `/api/v1/questions/:questionId/upvote` Upvote (increase votes by 1) a specific question.
 - PATCH `/api/v1/questions/:questionId/downvote` Downvote (decrease votes by 1) a specific question.
-- POST `/api/v1/meetups/:meetupId/rsvps` Respond to meetup RSVP.
 - POST `/api/v1/auth/signup` Create a user account.
 - POST `/api/v1/auth/login` Login a user
 - POST `/api/v1/auth/admin` Login as an admin
@@ -69,6 +72,8 @@ Run `npm test` in the terminal for the cloned folder.
 ### Deployment on Heroku Server
 `https://questioner1.herokuapp.com/api/v1`
 
+### Hosted UI
+`https://openwell.github.io/questioner/UI`
 
 ## Built With
 

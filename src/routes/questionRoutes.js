@@ -16,6 +16,10 @@ router.get('/questions',
   validateExist.checkQuestionEmpty,
   controller.allQuestions);
 
+router.get('/questions/topfeed',
+  auth.verifyToken,
+  controller.topFeeds);
+
 router.get('/questions/:questionId',
   validate.Params,
   validateExist.checkQuestionId,
@@ -26,13 +30,13 @@ router.patch('/questions/:questionId/upvote',
   auth.verifyToken,
   validateExist.checkQuestionId,
   validateExist.checkVote,
-  controller.upVote);
+  controller.Vote);
 
 router.patch('/questions/:questionId/downvote',
   validate.Params,
   auth.verifyToken,
   validateExist.checkQuestionId,
   validateExist.checkVote,
-  controller.downVote);
+  controller.Vote);
 
 export default router;

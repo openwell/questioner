@@ -3,12 +3,23 @@ const Queries = {
   selectAll(table) {
     return `SELECT * FROM ${table}`;
   },
+
   countAll(param, table, val) {
     return `select count(${param}) from ${table} where ${param} = ${val}`;
   },
+
+  topFeeds(id, currentDate) {
+    return {
+      text: `select questions.title, meetups.topic, questions.votes, meetups.happeningon from questions left join rsvp on rsvp.meetup_id = questions.meetup_id left join meetups on 
+      meetups.id = questions.meetup_id where meetups.happeningon >= $1 and rsvp.user_id = $2
+      and questions.votes > 0 and rsvp.response = 'yes'`,
+      values: [currentDate, id],
+    };
+  },
+
   upComingMeetups(currentDate, futureDate) {
     return {
-      text: `SELECT * FROM meetups WHERE happeningon > $1
+      text: `SELECT id, topic, location, happeningon FROM meetups WHERE happeningon > $1
       AND happeningon <= $2 LIMIT 5`,
       values: [currentDate, futureDate],
     };
@@ -22,6 +33,7 @@ const Queries = {
     return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
     q left join comments c on c.question_id = q.id WHERE q.id = ${questionId} and c.id =${commentId}`;
   },
+
   getAllComment(questionId) {
     return `SELECT c.question_id, c.comment, q.title, q.body FROM questions 
     q left join comments c on c.question_id = q.id WHERE q.id = ${questionId}`;
@@ -33,6 +45,7 @@ const Queries = {
       values: [val],
     };
   },
+
   newMeetUp(...restArgs) {
     return {
       text: `INSERT INTO
@@ -42,6 +55,7 @@ const Queries = {
       values: [restArgs[0], restArgs[1], restArgs[2], restArgs[3], restArgs[4], restArgs[5]],
     };
   },
+
   newQuestion(...restArgs) {
     return {
       text: `INSERT INTO
@@ -51,6 +65,7 @@ const Queries = {
       values: [restArgs[0], restArgs[1], restArgs[2], restArgs[3], restArgs[4], restArgs[5]],
     };
   },
+
   rsvp(meetup, response, userId, createdOn) {
     return {
       text: `INSERT INTO
@@ -60,6 +75,7 @@ const Queries = {
       values: [meetup, response, userId, createdOn],
     };
   },
+
   comment(comment, question, createdOn, userId) {
     return {
       text: `INSERT INTO
@@ -69,12 +85,14 @@ const Queries = {
       values: [comment, question, createdOn, userId]
     };
   },
+
   deleteMeetup(meetup) {
     return {
       text: 'DELETE FROM meetups WHERE id = $1',
       values: [meetup],
     };
   },
+
   adminSignUp(email, registered, isadmin, password) {
     return {
       text: `INSERT INTO
@@ -84,6 +102,7 @@ const Queries = {
       values: [email, registered, isadmin, password],
     };
   },
+
   userSignUp(...restArgs) {
     return {
       text: `INSERT INTO
@@ -105,12 +124,14 @@ const Queries = {
       ],
     };
   },
+
   updateVote(vote, id) {
     return {
       text: 'UPDATE questions SET votes = $1 WHERE id = $2 RETURNING meetup_id,title,body, votes',
       values: [vote, id],
     };
   },
+
   votes(questionId, userId) {
     return {
       text: `INSERT INTO

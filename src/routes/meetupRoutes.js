@@ -21,10 +21,18 @@ router.get('/meetups/upcoming',
   auth.verifyToken,
   controller.upComingMeetUps);
 
+router.get('/meetups/rsvps',
+  auth.verifyToken,
+  controller.getRsvp);
+
 router.get('/meetups/:meetupId',
   validate.Params,
   validateExist.checkMeetUpId,
   controller.findMeetUpsById);
+
+router.get('/meetups/user/statistic',
+  auth.verifyToken,
+  controller.userStatistic);
 
 router.post('/meetups/:meetupId/rsvps',
   validate.Params,
