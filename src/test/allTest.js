@@ -101,7 +101,7 @@ describe('/POST /api/v1/signup', () => {
   });
 });
 
-// user login
+// // user login
 describe('/POST', () => {
   it('user should be able to login', (done) => {
     request(server)
@@ -368,7 +368,7 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .send(data33)
       .end((err, res) => {
         res.should.have.a.status(400);
-        res.body.errors[0].msg.should.equal('must be minimum of 2 -6 letters');
+        res.body.errors[0].msg.should.equal('Special Characters not Allowed expect (.,_\'-)');
         res.body.should.a('object');
         done();
       });

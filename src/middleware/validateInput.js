@@ -18,29 +18,43 @@ function paramsValidation(req, res, next) {
   if (req.params.questionId) {
     params = req.params.questionId;
   }
-  const convertedParam = parseInt(params, 10);
-  if (Number.isInteger(convertedParam)) {
+  if (/^\d*$/.test(params)) {
     return next();
   } return errorHandler(400, res, 'params must be an integer');
 }
 
 function validationHandlerForIntegerInput(arg, min, max) {
   return check(arg)
-    .escape()
     .trim()
+    .matches(/^\d*$/).withMessage('regex')
     .isLength({ min, max })
     .withMessage(`must be minimum of ${min} -${max} letters`)
     .isInt()
+    .escape()
     .withMessage('must be an integer');
 }
 
 function validationHandlerForStringInput(arg, min, max) {
   return check(arg)
-    .escape()
     .trim()
+    .customSanitizer(value => value.replace(/\s+/g, ' '))
+    .matches(/^[a-zA-Z0-9 ,._'-]+$/i).withMessage("Special Characters not Allowed expect (.,_'-)")
     .isLength({ min, max })
     .withMessage(`must be minimum of ${min} -${max} letters`)
     .isString()
+    .escape()
+    .withMessage('must be a string');
+}
+
+// names
+function validationHandlerForStringInput1(arg, min, max) {
+  return check(arg)
+    .trim()
+    .matches(/^[a-zA-Z,._'-]+$/i).withMessage("WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)")
+    .isLength({ min, max })
+    .withMessage(`must be minimum of ${min} -${max} letters`)
+    .isString()
+    .escape()
     .withMessage('must be a string');
 }
 
@@ -112,13 +126,14 @@ const middleware = {
     validatorFunction,
   ],
   user: [
-    validationHandlerForStringInput('firstName', 2, 20),
-    validationHandlerForStringInput('lastName', 2, 20),
-    validationHandlerForStringInput('otherName', 2, 20),
+    validationHandlerForStringInput1('firstName', 2, 20),
+    validationHandlerForStringInput1('lastName', 2, 20),
+    validationHandlerForStringInput1('otherName', 2, 20),
     check('email').trim().isEmail().escape()
       .normalizeEmail().withMessage('Please provide a valid email'),
     validationHandlerForIntegerInput('phoneNumber', 11, 12),
-    validationHandlerForStringInput('userName', 4, 30),
+    check('userName').trim().matches(/^[a-zA-Z0-9,._'-]+$/i).withMessage("WhiteSpace and Special Characters not Allowed expect (.,_'-)")
+      .isLength({ min: 4, max: 30  }).withMessage('must be minimum of 4-30 letters'),
     validationHandlerForPassword('password'),
     validatorFunction,
   ],
