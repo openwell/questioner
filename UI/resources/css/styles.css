@@ -81,8 +81,8 @@ label {
   margin: 0 auto;
   text-align: center;
   margin-bottom: 20px;
-  position: absolute;
-  top: 150px;
+  position: fixed;
+  top: 20%;
   right: 0;
   z-index: 1;
 }
@@ -153,25 +153,27 @@ a:hover {
 }
 .text {
   color: rgb(255, 255, 255);
-  font-size: 40px;
+  font-size: 60px;
   font-weight: bold;
   padding: 10px;
-  width: 50%;
+  width: 65%;
   position: absolute;
   top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .text2 {
   color: rgb(255, 255, 255);
-  font-size: 25px;
+  font-size: 30px;
   font-weight: bold;
   padding: 10px;
-  width: 80%;
+  width: 50%;
+  text-align: center;
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 5px;
@@ -182,9 +184,9 @@ a:hover {
   background: transparent;
   padding: 10px 20px;
   font-size: 20px;
-  width: 20%;
+  width: 35%;
   border: 1px solid rgb(255, 255, 255);
-  margin: 0 40%;
+  margin: 0 35%;
   font-weight: bold;
   transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     background-color 0.4s;
@@ -199,6 +201,12 @@ a:hover {
 footer {
   text-align: center;
   padding: 10px;
+  /* position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+  height: 35px; */
 }
 
 /*======================================================
@@ -230,7 +238,7 @@ label {
   border-radius: 3px;
   width: 100%;
   padding: 0.3em 0.55em;
-  font-size: 1.5em;
+  font-size: 1.2em;
   line-height: 1;
   color: #000000;
   background-color: #fff;
@@ -238,6 +246,10 @@ label {
   border: 1px solid #ced4da;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.form-control::placeholder {
+  opacity: .3;
+}
+
 .form-control:focus {
   outline: auto 5px #3f51b5;
   outline-offset: -2px;
@@ -249,6 +261,7 @@ label {
   width: 50%;
   border: none;
   margin: 0 25%;
+  margin-top: 20px;
   font-weight: bold;
   box-shadow: 0 6px 5px -3px #f4f4f4;
   transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
@@ -299,13 +312,15 @@ label {
   margin: 0 auto;
   max-width: 400px;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 80px;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 .signin-section h1,
 .signup-section h1 {
   text-align: center;
-  color: #34495e;
+  color: #01579b;
+  margin-bottom: 20px;
+  border-bottom: .5px dotted rgb(71, 122, 241);
 }
 
 /*======================================================
@@ -324,6 +339,7 @@ label {
   background-position: center;
   background-size: cover;
   justify-content: flex-start;
+  min-height: 66vh;
 }
 .meetup-card {
   flex: 0 0 300px;
@@ -333,6 +349,7 @@ label {
   background: #fff;
   box-shadow: 0 6px 5px -3px #f4f4f4;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  height: 310px;
 }
 .meetup-card h1 {
   font-size: 20px;
@@ -404,6 +421,7 @@ label {
 }
 .question-header-meetup-details {
   flex: 0 1 500px;
+  margin-bottom: 20px;
 }
 .question-header-image img {
   width: 100%;
@@ -420,10 +438,11 @@ label {
   color: #2e3e48;
   font-weight: 600;
   line-height: 1.1;
+  margin-bottom: 30px;
 }
 .rsvp-form {
   margin-top: 20px;
-}
+} 
 .rsvp-form h4 {
   color: #2e3e48;
 }
@@ -508,17 +527,21 @@ label {
 }
 
 .new-question {
-  flex: 1 1 300px;
+  flex: .5 1 300px;
   height: 300px;
-  background-color: #2ecc71;
+  background: #141e30; 
+  background: linear-gradient(to left, #141e3077, #243b558c);
+
   padding: 20px 20px 0px 20px;
   border-radius: 5px;
   box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  margin-left: 10px;
   /* border-right: 0.5px solid #246bad7a; */
 }
 #question-load {
   flex: 0 1 568px;
   margin-left: 40px;
+  margin-right: 20px;
 }
 .new-question-form button {
   display: block;
@@ -697,6 +720,7 @@ label {
   justify-content: space-between;
   flex-wrap: wrap;
   background: #d9dde0af;
+  min-height: 83vh;
 }
 
 .user-details {
@@ -732,12 +756,12 @@ label {
   padding: 5px 20px;
   background: #edeff0;
   border: none;
-  border: 0.5px solid var(--c1);
+  border: 0.5px solid #d50000;
 }
 .admin-top-feed button:hover {
   outline: none;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  background: #4caf50;
+  background: #d50000;
   cursor: pointer;
 }
 .user-statistic-1 {
@@ -799,6 +823,7 @@ tr:nth-child(odd) {
   border: 0.2px solid rgb(248, 237, 237);
   border-radius: 5px;
   outline: none;
+  margin: 0 10px;
 }
 .admin-new-meetup-form input[type="datetime-local"] {
   padding: 5px;
@@ -806,6 +831,7 @@ tr:nth-child(odd) {
   margin-bottom: 5px;
   border-radius: 5px;
   outline: none;
+  margin: 0 10px;
 }
 
 .admin-new-meetup-form button {
@@ -824,6 +850,10 @@ tr:nth-child(odd) {
   padding: 20px;
   background: #564faf;
   color: #fffdfe;
+  margin-bottom: 20px;
+}
+.admin-new-meetup-form h3{
+  margin-bottom: 20px;
 }
 
 /* loader */
@@ -929,13 +959,29 @@ tr:nth-child(odd) {
   .question-header-image {
     margin: 0;
   }
+  .text {
+    font-size: 35px;
+    margin: 0 10%;
+  }
+  .text2 {
+    top: 55%;
+    font-size: 25px;
+  }
+  .index_main button {
+    padding: 5px 15px;
+    font-size: 20px;
+    width: 35%;
+    margin: 0 28%;
+  }
 }
 @media (max-width: 991.98px) {
   .text {
     font-size: 30px;
+    
   }
   .text2 {
     font-size: 30px;
+    width: 80%;
   }
 
   .index_main button {
@@ -989,13 +1035,14 @@ tr:nth-child(odd) {
     font-size: 8px;
   } */
   .text {
-    font-size: 20px;
+    font-size: 25px;
     padding: 10px;
     width: 80%;
     border-radius: 5px;
   }
   .text2 {
-    font-size: 15px;
+    top: 45%;
+    font-size: 17px;
     padding: 10px;
     width: 80%;
   }

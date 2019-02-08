@@ -1,7 +1,8 @@
+// 'use strict';
 const baseUrl = "https://questioner1.herokuapp.com/api/v1";
 const baseUr = `http://localhost:3000/api/v1`;
 
-function get(url) {
+const get = url => {
   return new Request(url, {
     method: "GET",
     headers: {
@@ -10,8 +11,8 @@ function get(url) {
       tokens: localStorage.getItem("userToken")
     }
   });
-}
-function patch(url) {
+};
+const patch = url => {
   return new Request(url, {
     method: "PATCH",
     headers: {
@@ -20,58 +21,65 @@ function patch(url) {
       tokens: localStorage.getItem("userToken")
     }
   });
-}
-function post(url, data) {
+};
+const post = (url, data, token) => {
   return new Request(url, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
       Accept: "application/json, text/plain, */*",
       "Content-Type": "application/json",
-      tokens: localStorage.getItem("userToken")
+      tokens: localStorage.getItem(token)
     }
   });
-}
-function errorToggler() {
+};
+const errorToggler = () => {
   document.getElementById("alert").onclick = function(event) {
     document.getElementById("alert").classList.toggle("icon");
   };
-}
+};
 
-function notLoggedIn() {
+const alertHandler = (message, link) => {
+  document.getElementById("alert").classList.toggle("icon");
+  document.getElementById("danger").innerHTML = message;
+  return setTimeout(() => {
+    window.location.href = link;
+  }, 2000);
+};
+
+const notLoggedIn = () => {
   const token = localStorage.getItem("userToken");
   if (token === null) {
-    document.getElementById("alert").classList.toggle("icon");
-    document.getElementById("danger").innerHTML =
-      "You are not Logged in. You will be redirect to the login Page";
-    return setTimeout(() => {
-      window.location.href = "login.html";
-    }, 3000);
+    return alertHandler("You are not Logged in. You will be redirect to the login Page",
+    "login.html");
   }
   const decoded = parseJwt(token);
-  if (decoded.exp < new Date().getTime() / 1000) {
-    document.getElementById("alert").classList.toggle("icon");
-    document.getElementById("danger").innerHTML =
-      "Your Token as expired. Login Again";
-    return setTimeout(() => {
-      window.location.href = "login.html";
-    }, 3000);
+  if (decoded instanceof TypeError) {
+    return alertHandler("Invalid Token", "../login.html");
   }
-}
+  if (decoded.exp < new Date().getTime() / 1000) {
+    return alertHandler("Your Token as expired. Login Again",
+    "login.html");
+  }
+};
 
-function displayLogout() {
+const displayLogout = () => {
   if (!localStorage.getItem("userToken")) {
     document.getElementById("logout").classList.toggle("icon");
   }
-}
+};
 
-function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace("-", "+").replace("_", "/");
-  return JSON.parse(window.atob(base64));
-}
+const parseJwt = token => {
+  try {
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  } catch (err) {
+    throw err;
+  }
+};
 
-function timeSince(timeStamp) {
+const timeSince = timeStamp => {
   var now = new Date(),
     secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
   if (secondsPast < 60) {
@@ -95,45 +103,59 @@ function timeSince(timeStamp) {
         : " " + timeStamp.getFullYear();
     return day + " " + month + year;
   }
-}
+};
 
 /*======================================================
                     // Login and CheckUser-Login
 ======================================================*/
-function checkUserLogin() {
-  if (localStorage.getItem("userToken") === null) {
+const checkUserLogin = () => {
+  const token = localStorage.getItem("userToken");
+  if (token === null) {
     return (window.location.href = "../login.html");
   }
-}
-function checkMeetupId() {
+  const decoded = parseJwt(token);
+
+  if (decoded.exp < new Date().getTime() / 1000) {
+    return (alertHandler = ("Your Token as expired. Login Again",
+    "../login.html"));
+  }
+};
+const checkMeetupId = () => {
   if (localStorage.getItem("meetupId") === null) {
     return (window.location.href = "../index.html");
   }
-}
-function checkAdminLogin() {
-  if (localStorage.getItem("adminToken") === null) {
+};
+const checkAdminLogin = () => {
+  const token = localStorage.getItem("adminToken");
+  if (token === null) {
     return (window.location.href = "../login.html");
   }
-}
 
-function logOut() {
+  const decoded = parseJwt(token);
+  if (decoded.exp < new Date().getTime() / 1000) {
+    return (alertHandler = ("Your Token as expired. Login Again",
+    "../login.html"));
+  }
+};
+
+const logOut = () => {
   localStorage.clear("userToken");
   return (window.location.href = "../index.html");
-}
+};
 
-function adminLogOut() {
+const adminLogOut = () => {
   localStorage.clear("adminToken");
   return (window.location.href = "login.html");
-}
+};
 
-function setMinDateTime() {
+const setMinDateTime = () => {
   const currentTimePlusTen = new Date(Date.now() + 4200000)
     .toISOString()
     .slice(0, -1);
   return document
     .getElementById("new_happeningon")
     .setAttribute("min", currentTimePlusTen);
-}
+};
 
 /*======================================================
                   // Modal close by window
@@ -159,14 +181,14 @@ if (!RegExp.escape) {
                     // Screen Resize
 ======================================================*/
 
-function myFun() {
+const myFun = () => {
   var x = document.querySelector(".nav-links");
   if (x.style.display === "block") {
     x.style.display = "none";
   } else {
     x.style.display = "block";
   }
-}
+};
 
 window.onresize = function(event) {
   if (window.matchMedia("(max-width: 576px)").matches) {
@@ -181,18 +203,18 @@ window.onresize = function(event) {
 /*======================================================
                     // Meetup-id
 ======================================================*/
-function setMeetup(meetupId) {
+const setMeetup = meetupId => {
   localStorage.setItem("meetupId", meetupId);
-}
+};
 
 /*======================================================
                     //Auto load of all meetups
 ======================================================*/
-function loadMeetupsPage() {
+const loadMeetupsPage = () => {
   document.getElementById("cs-loader").removeAttribute("hidden", "false");
   const url = `${baseUrl}/meetups`;
   let request = get(url);
-  async function getMeetupsDetails(payLoad) {
+  const getMeetupsDetails = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -225,20 +247,59 @@ function loadMeetupsPage() {
       document.getElementById("cs-loader").setAttribute("hidden", "true");
       throw err;
     }
-  }
+  };
 
   getMeetupsDetails(request);
-}
+};
+
+/*======================================================
+                    // Meetup details by the left rsvp
+======================================================*/
+const getRsvp = () => {
+  notLoggedIn();
+  const meetupId = localStorage.getItem("meetupId");
+  const url = `${baseUrl}/meetups/rsvps`;
+  let request = get(url);
+  const getRsvpDetails = async payLoad => {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      if (data.error === "Token Forbidden") {
+        return alertHandler("Forbidden Token", "../login.html");
+      }
+      if (data.data.length === 0) {
+        return "Yet to Decide";
+      }
+      const data2 = data.data.filter(db => db.meetup_id === Number(meetupId));
+      if (data2.length === 0) {
+        return "Yet to Decide";
+      }
+      document.querySelector(".rsvp-form").setAttribute("hidden", "true");
+      return data2[0].response;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  return getRsvpDetails(request);
+};
 
 /*======================================================
                     // Meetup details by the left
 ======================================================*/
-function meetupDetails() {
+const meetupDetails = () => {
   const meetupId = localStorage.getItem("meetupId");
   const url = `${baseUrl}/meetups/${meetupId}`;
   let request = get(url);
-  async function getMeetupDetails(payLoad) {
+  const getMeetupDetails = async payLoad => {
     try {
+      let rsvp = "Yet to decide";
+      if (localStorage.getItem("userToken")) {
+        rsvp = await getRsvp();
+      }
+      if (rsvp instanceof Error) {
+        return alertHandler("Forbidden Token", "../login.html");
+      }
       let response = await fetch(payLoad);
       let data = await response.json();
       let happening = new Date(
@@ -251,27 +312,31 @@ function meetupDetails() {
             data.data[0].location
           }</p>
           <p><i class="fas fa-calendar-alt"></i>&nbsp; ${happening}</p>
-          <p>RSVP -</p>`;
+          <p>RSVP -> ${rsvp.toUpperCase()}</p>`;
       return response.status;
     } catch (err) {
       throw err;
     }
-  }
+  };
 
   getMeetupDetails(request);
-}
+};
 
 /*======================================================
                     Get all questions
 ======================================================*/
-function QuestionsInit() {
+const QuestionsInit = () => {
   const url = `${baseUrl}/questions`;
   let request = get(url);
-
-  async function questionsDetailsAjax(payLoad) {
+  const questionsDetailsAjax = async payLoad => {
     try {
       let response = await fetch(payLoad);
       const data = await response.json();
+      if (data.error === "No Questions Exist") {
+        return (document.getElementById(
+          "question-load"
+        ).innerHTML = `Be the First To Add a Question.`);
+      }
       const meetupId = localStorage.getItem("meetupId");
       const output = data.data.filter(db => db.meetup_id === Number(meetupId));
       const sortSample = output.sort((a, b) => b.votes - a.votes);
@@ -302,41 +367,45 @@ function QuestionsInit() {
     } catch (err) {
       throw err;
     }
-  }
+  };
   questionsDetailsAjax(request);
-}
+};
 
 /*======================================================
                     // RSVP
 ======================================================*/
-function rsvpForm() {
+const rsvpForm = async () => {
   event.preventDefault();
   notLoggedIn();
+  event.preventDefault();
   const response = event.target.value;
   const meetupId = localStorage.getItem("meetupId");
   const data = {
     response
   };
   const url = `${baseUrl}/meetups/${meetupId}/rsvps`;
-  let request = post(url, data);
+  let request = post(url, data, "userToken");
 
-  async function postRsvp(payLoad) {
+  const postRsvp = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
+      location.reload();
       return response.status;
     } catch (err) {
       throw err;
     }
-  }
-  postRsvp(request);
-}
+  };
+  setTimeout(() => {
+    return postRsvp(request);
+  }, 3000);
+};
 
 /*======================================================
                     // Sign Up
 ======================================================*/
 
-function signUp() {
+const signUp = () => {
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
   const firstName = document.getElementById("firstName").value;
@@ -358,9 +427,9 @@ function signUp() {
     confirmPassword
   };
   const url = `${baseUrl}/auth/signup`;
-  let request = post(url, data);
+  let request = post(url, data, "userToken");
 
-  async function signUpRequest(payLoad) {
+  const signUpRequest = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -370,11 +439,9 @@ function signUp() {
           "Registration Successful";
         localStorage.setItem("userToken", data.data[0].token);
         localStorage.setItem("user", data.data[0].user.firstname);
-        localStorage.setItem("tQ", data.data[0].totalQuestions);
-        localStorage.setItem("tC", data.data[0].totalComments);
         setTimeout(() => {
           window.location.href = "user/dashboard.html";
-        }, 3000);
+        }, 2000);
         document.getElementById("cs-loader").setAttribute("hidden", "false");
         return response.status;
       }
@@ -386,14 +453,14 @@ function signUp() {
       document.getElementById("cs-loader").setAttribute("hidden", "false");
       throw err;
     }
-  }
+  };
   signUpRequest(request);
-}
+};
 
 /*======================================================
                     // Sign In
 ======================================================*/
-function signin() {
+const signin = () => {
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
   const email = document.getElementById("email").value;
@@ -403,8 +470,8 @@ function signin() {
     password
   };
   const url = `${baseUrl}/auth/login`;
-  let request = post(url, data);
-  async function postUserSignin(payLoad) {
+  let request = post(url, data, "userToken");
+  const postUserSignin = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -413,11 +480,9 @@ function signin() {
         document.getElementById("success").innerHTML = "Login Successful";
         setTimeout(() => {
           window.location.href = "user/dashboard.html";
-        }, 3000);
+        }, 2000);
         localStorage.setItem("userToken", data.data[0].token);
         localStorage.setItem("user", data.data[0].user.firstname);
-        localStorage.setItem("tQ", data.data[0].totalQuestions);
-        localStorage.setItem("tC", data.data[0].totalComments);
         return response.status;
       }
       document.getElementById("alert").classList.toggle("icon");
@@ -428,14 +493,14 @@ function signin() {
       document.getElementById("cs-loader").setAttribute("hidden", "false");
       throw err;
     }
-  }
+  };
   postUserSignin(request);
-}
+};
 
 /*======================================================
                     // Post Questions need Valid Token
 ======================================================*/
-function newQuestion() {
+const newQuestion = () => {
   event.preventDefault();
   notLoggedIn();
   const title = document.getElementById("newQuestionTitle").value;
@@ -448,14 +513,12 @@ function newQuestion() {
   };
 
   const url = `${baseUrl}/questions`;
-  let request = post(url, data);
-  async function postNewQuestion(payLoad) {
+  let request = post(url, data, "userToken");
+  const postNewQuestion = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (!response.ok) {
-        // console.log(data.error.message);
-        // console.log(data.errors[0].msg)
         return response.status;
       }
       if (response.ok) {
@@ -467,14 +530,15 @@ function newQuestion() {
     } catch (err) {
       throw err;
     }
-  }
-  postNewQuestion(request);
-}
+  };
+
+  return postNewQuestion(request);
+};
 
 /*======================================================
                     // Vote
 ======================================================*/
-function upVote(event) {
+const upVote = event => {
   let vote = parseInt(event.currentTarget.nextSibling.innerHTML);
   vote = vote + 1;
   notLoggedIn();
@@ -482,13 +546,12 @@ function upVote(event) {
   const id = event.currentTarget.nextSibling.getAttribute("data");
   const url = `${baseUrl}/questions/${id}/upvote`;
   let request = patch(url);
-  async function postUpVote(payLoad) {
+  const postUpVote = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (response.ok) {
         event.target.parentNode.nextSibling.innerHTML = vote + " votes";
-        location.reload();
         return response.status;
       }
       document.getElementById("alert").classList.toggle("icon");
@@ -497,11 +560,12 @@ function upVote(event) {
     } catch (err) {
       throw err;
     }
-  }
-  postUpVote(request);
-}
+  };
 
-function downVote(event) {
+  return postUpVote(request);
+};
+
+const downVote = event => {
   let vote = parseInt(event.currentTarget.previousSibling.innerHTML);
   vote = vote - 1;
   notLoggedIn();
@@ -509,13 +573,12 @@ function downVote(event) {
   const url = `${baseUrl}/questions/${id}/downvote`;
   let request = patch(url);
 
-  async function postDownVote(payLoad) {
+  const postDownVote = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (response.ok) {
         event.target.parentNode.previousSibling.innerHTML = vote + " votes";
-        location.reload();
         return response.status;
       }
       document.getElementById("alert").classList.toggle("icon");
@@ -524,20 +587,21 @@ function downVote(event) {
     } catch (err) {
       throw err;
     }
-  }
-  postDownVote(request);
-}
+  };
+
+  return postDownVote(request);
+};
 
 /*======================================================
                     // open Comment and question
 ======================================================*/
 
-function closeModal(event) {
+const closeModal = event => {
   document.getElementById("comment-container").style.display = "none";
   document.body.style.overflow = "scroll";
-}
+};
 
-function openModal() {
+const openModal = () => {
   const questionId = event.target.parentElement.previousElementSibling.children[1].getAttribute(
     "data"
   );
@@ -548,7 +612,7 @@ function openModal() {
   const url = `${baseUrl}/questions/${localStorage.getItem("questionId")}`;
   let request = get(url);
 
-  async function getQuestionComments(payLoad) {
+  const getQuestionComments = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -587,38 +651,44 @@ function openModal() {
     } catch (err) {
       throw err;
     }
-  }
+  };
 
   getQuestionComments(request);
-}
+};
 
 /*======================================================
-                    // Upcoming Table
+                    // Top Question Feed Table
 ======================================================*/
-function loadUpcomingTable() {
+const topFeeds = () => {
   if (localStorage.getItem("userToken") === null) {
     return (window.location.href = "../login.html");
   }
 
-  document.getElementById(
-    "user_question_stats"
-  ).innerHTML = localStorage.getItem("tQ");
-  document.getElementById(
-    "user_comment_stats"
-  ).innerHTML = localStorage.getItem("tC");
-
-  const url = `${baseUrl}/meetups/upcoming`;
+  const url = `${baseUrl}/questions/topfeed`;
   let request = get(url);
-  async function getUpcomingTable(payLoad) {
+  const getTopFeed = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       let all = "";
+      if (data.data === "Empty Resource") {
+        return (document.getElementById("upcoming_table").innerHTML = `<caption>
+        <h2>Top Questions Feed</h2> 
+      </caption>
+      <tr >
+        <th>Questions</th>
+        <th>Vote</th>
+        <th>Meetups</th>
+        <th>Date</th>
+      </tr> 
+          <h1>Empty Feeds</h1>`);
+      }
       data.data.forEach(x => {
         let happening = new Date(Date.parse(x.happeningon)).toLocaleString();
         first = ` <tr>
+        <td>${x.title}</td>
+        <td>${x.votes}</td>
         <td>${x.topic}</td>
-        <td>${x.location}</td>
         <td>${happening}</td>
         </tr>`;
         all += first;
@@ -627,28 +697,45 @@ function loadUpcomingTable() {
       <h2>Top Questions Feed</h2> 
     </caption>
     <tr >
-      <th>Meetups</th>
-      <th>Location</th>
-      <th>Date</th>
+    <th>Questions</th>
+    <th>Vote</th>
+    <th>Meetups</th>
+    <th>Date</th>
     </tr> 
     ${all}`;
       return response.status;
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  getUpcomingTable(request);
-}
+  getTopFeed(request);
+};
+
+const userStatistic = () => {
+  const url = `${baseUrl}/meetups/user/statistic/`;
+  let request = get(url);
+
+  const getUserStatistic = async payLoad => {
+    try {
+      let response = await fetch(payLoad);
+      let data = await response.json();
+      document.getElementById("user_question_stats").innerHTML = data.data[0].totalQuestions;
+      document.getElementById("user_comment_stats").innerHTML = data.data[0].totalComments;
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  };
+  getUserStatistic(request);
+};
 
 /*======================================================
                     // post new Comment
 ======================================================*/
-function createNewComment() {
+const createNewComment = () => {
   event.preventDefault();
-
   notLoggedIn();
-
   const comment = document.getElementById("commentTextarea").value;
   const question = localStorage.getItem("questionId");
   const data = {
@@ -657,9 +744,9 @@ function createNewComment() {
   };
 
   const url = `${baseUrl}/comments`;
-  let request = post(url, data);
+  let request = post(url, data, "userToken");
 
-  async function postComment(payLoad) {
+  const postComment = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -686,14 +773,17 @@ function createNewComment() {
     } catch (err) {
       throw err;
     }
-  }
-  postComment(request);
-}
+  };
+
+  setTimeout(() => {
+    return postComment(request);
+  }, 3000);
+};
 
 /*======================================================
                     // Admin Sign-in
 ======================================================*/
-function adminSignin() {
+const adminSignin = () => {
   event.preventDefault();
   document.getElementById("cs-loader").removeAttribute("hidden", "true");
   const email = document.getElementById("email").value;
@@ -703,9 +793,9 @@ function adminSignin() {
     password
   };
   const url = `${baseUrl}/auth/admin`;
-  let request = post(url, data);
+  let request = post(url, data, "adminToken");
 
-  async function postAdminSignin(payLoad) {
+  const postAdminSignin = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -714,7 +804,7 @@ function adminSignin() {
         document.getElementById("success").innerHTML = "Login Successful";
         setTimeout(() => {
           window.location.href = "dashboard.html";
-        }, 3000);
+        }, 2000);
         localStorage.setItem("adminToken", data.data[0].token);
         return response.status;
       }
@@ -726,21 +816,33 @@ function adminSignin() {
       document.getElementById("cs-loader").setAttribute("hidden", "false");
       throw err;
     }
-  }
+  };
   postAdminSignin(request);
-}
-function loadAllMeetupAdmin() {
+};
+const loadAllMeetupAdmin = () => {
   if (localStorage.getItem("adminToken") === null) {
     return (window.location.href = "login.html");
   }
 
   const url = `${baseUrl}/meetups`;
   let request = get(url);
-  async function getAllMeetUp(payLoad) {
+  const getAllMeetUp = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       let all = "";
+      if (data.error === "No Meetups Exist") {
+        return (document.getElementById(
+          "admin_all_meetups"
+        ).innerHTML = `<caption>
+        <h3>MEETUPS</h3>
+      </caption>
+      <tr>
+        <th>Meetups</th>
+        <th>Delete</th>
+      </tr>
+          <h1>No Available Questions</h1>`);
+      }
       data.data.forEach(x => {
         let first = `<tr>
         <td>${x.topic}</td>
@@ -763,28 +865,29 @@ function loadAllMeetupAdmin() {
     } catch (err) {
       throw err;
     }
-  }
+  };
 
   getAllMeetUp(request);
-}
+};
 
 /*======================================================
                     // meetup post by admin
 ======================================================*/
-function newMeetup() {
-  async function postMeetup(payLoad) {
+const newMeetup = () => {
+  checkAdminLogin();
+  const postMeetup = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
       if (response.ok) {
-        location.reload();
+        window.location.reload(true);
         return response.status;
       }
       return response.status;
     } catch (err) {
       throw err;
     }
-  }
+  };
 
   event.preventDefault();
   const topic = document.getElementById("new_meetup-name").value;
@@ -796,26 +899,16 @@ function newMeetup() {
     happeningOn
   };
   const url = `${baseUrl}/meetups`;
-  let request = new Request(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-      tokens: localStorage.getItem("adminToken")
-    }
-  });
+  let request = post(url, data, "adminToken");
   postMeetup(request);
-}
+};
 
 /*======================================================
                     // delete meetup
 ======================================================*/
-function deleteMeetup(id) {
-  if (localStorage.getItem("adminToken") === null) {
-    return (window.location.href = "login.html");
-  }
-  async function delMeetup(payLoad) {
+const deleteMeetup = id => {
+  checkAdminLogin();
+  const delMeetup = async payLoad => {
     try {
       let response = await fetch(payLoad);
       let data = await response.json();
@@ -824,7 +917,7 @@ function deleteMeetup(id) {
     } catch (err) {
       throw err;
     }
-  }
+  };
   const url = `${baseUrl}/meetups/${id}`;
   let request = new Request(url, {
     method: "DELETE",
@@ -835,4 +928,4 @@ function deleteMeetup(id) {
     }
   });
   delMeetup(request);
-}
+};
