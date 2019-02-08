@@ -241,7 +241,7 @@
         ],
         "parameters": [
           {
-            "name": "token",
+            "name": "tokens",
             "in": "header",
             "required": true,
             "type": "string"
@@ -278,6 +278,61 @@
         ]
       }
     },
+    "/meetups/user/statistic": {
+      "get": {
+        "tags": [
+          "Meetups"
+        ],
+        "summary": "Gets the User Statistic of Total Commnets and Questions",
+        "description": "",
+        "operationId": "rsvp",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tokens",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Authentication Errors"
+          },
+          "403": {
+            "description": "Token Forbidden"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "security": [
+          {
+            "tokens": []
+          }
+        ]
+      }
+    },
     "/meetups/{meetupId}/rsvps": {
       "post": {
         "tags": [
@@ -285,7 +340,7 @@
         ],
         "summary": "Add new Rsvp to Meetup",
         "description": "",
-        "operationId": "rsvp",
+        "operationId": "",
         "consumes": [
           "application/json"
         ],
@@ -319,6 +374,61 @@
         "responses": {
           "200": {
             "description": "successful operation Or Meetup-Id Doesnt Exit"
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Authentication Errors"
+          },
+          "403": {
+            "description": "Token Forbidden"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "security": [
+          {
+            "tokens": []
+          }
+        ]
+      }
+    },
+    "/meetups/rsvps": {
+      "get": {
+        "tags": [
+          "Meetups"
+        ],
+        "summary": "Gets a user Rsvp response to meetups",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tokens",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
           },
           "201": {
             "description": "successful operation",
@@ -431,6 +541,61 @@
             "description": "Server Error"
           }
         }
+      }
+    },
+    "/questions/topfeed": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Gets a user Rsvp response to meetups",
+        "description": "",
+        "operationId": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tokens",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Authentication Errors"
+          },
+          "403": {
+            "description": "Token Forbidden"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        },
+        "security": [
+          {
+            "tokens": []
+          }
+        ]
       }
     },
     "/questions/{questionId}/upvote": {
