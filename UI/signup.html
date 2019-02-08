@@ -44,8 +44,8 @@
               name="firstName"
               placeholder="John"
               required
-              pattern=".{2,20}"
-              title="2 to 20 characters"
+              pattern="[a-zA-Z,._'-]{2,20}"
+              title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
             />
           </div>
           <div class="form-group col-2 ">
@@ -57,8 +57,8 @@
               name="lastName"
               placeholder="Doe"
               required
-              pattern=".{2,20}"
-              title="2 to 20 characters"
+              pattern="[a-zA-Z,._'-]{2,20}"
+              title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
             />
           </div>
         </div>
@@ -72,8 +72,8 @@
             name="otherName"
             placeholder="Your Other Name"
             required
-            pattern=".{2,20}"
-            title="2 to 20 characters"
+            pattern="[a-zA-Z,._'-]{2,20}"
+            title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
           />
         </div>
         <div class="form-group">
@@ -109,8 +109,8 @@
             name="username"
             placeholder="Username"
             required
-            pattern=".{4,30}"
-            title="4 to 30 characters"
+            pattern="[a-zA-Z0-9,._'-]{4,30}"
+            title="4 to 30 characters / WhiteSpace and Special Characters not Allowed expect (.,_'-)"
           />
         </div>
         <div class="form-row">

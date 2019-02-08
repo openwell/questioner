@@ -31,11 +31,10 @@
       <div class="user-details">
         <span class="user-avatar"></span>
         <p>Admin</p>
-        <p>last login</p>
       </div>
       <div class="user-statistic-bar">
         <form action="" class="admin-new-meetup-form" onsubmit="newMeetup()">
-          <h3>NEW MEETUPS</h3>
+          <h3>Create New Meet-Ups</h3>
           <label for=""
             >Meetup Topic
             <input
@@ -43,8 +42,8 @@
               required
               name="meetup-name"
               id="new_meetup-name"
-              pattern=".{5,100}"
-              title="5 to 100 characters"
+              pattern="[a-zA-Z0-9 ,._'-]{5,100}"
+              title="5 to 100 characters / Special Characters not Allowed expect (.,_'-)"
             /><br />
           </label>
 
@@ -54,8 +53,8 @@
               required
               name="location"
               id="new_location"
-              pattern=".{4,50}"
-              title="4 to 50 characters"
+              pattern="[a-zA-Z0-9 ,._'-]{4,50}"
+              title="4 to 50 characters / Special Characters not Allowed expect (.,_'-)"
             /><br />
           </label>
 
@@ -82,7 +81,7 @@
 
     <script src="../resources/js/main.js"></script>
     <script>
-      setMinDateTime()
+      setMinDateTime();
       checkAdminLogin();
       loadAllMeetupAdmin();
     </script>

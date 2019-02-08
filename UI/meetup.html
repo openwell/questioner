@@ -48,7 +48,7 @@
     <div id="alert" class="icon">
         <small id="danger"></small>
       </div>
-    <section class="question_section row2">
+    <section class="question_section row3">
           
       <div class="new-question">
         <form
@@ -65,8 +65,8 @@
             value=""
             id="newQuestionTitle"
             required
-            pattern=".{10,50}"
-            title="10 to 50 characters"
+            pattern="[a-zA-Z0-9 ,._'-]{10,50}"
+            title="10 to 50 characters / Special Characters not Allowed expect (.,_'-)"
           />
           <label for="">Body</label> <br />
           <textarea
@@ -83,7 +83,7 @@
         <br /> <small> </small> 
       </div>
       <!--javascript Loads Question -->
-      <div id="question-load"><!-- loads  questions from javascript --></div>
+      <div id="question-load"> <!-- loads  questions from javascript --></div>
     </section>
     <!-- Comment Modal -->
     <section class="row">
@@ -101,6 +101,7 @@
       window.onload = meetupDetails();
       errorToggler();
       displayLogout();
+
     </script>
   </body>
 </html>
