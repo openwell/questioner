@@ -10,7 +10,7 @@
     "start": "nodemon --exec babel-node ./src/index.js",
     "build": "babel src/ -d dist",
     "test": "npm run database && nyc mocha --require @babel/register --require @babel/polyfill --timeout 10000 ./src/test/",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
     "lint": "eslint --fix ./src/index.js ./src/controller/",
     "database": "npm run dropTables && npm run createTables && npm run foreignKeys && npm run admin",
     "dropTables": "babel-node ./src/db/dropTables.js",
