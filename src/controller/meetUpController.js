@@ -86,7 +86,7 @@ class Controller {
     } catch (err) {
       return errorHandler(500, res, err);
     }
-  }  
+  }
 
   static async userStatistic(req, res) {
     const { id } = req.user;

@@ -4,7 +4,9 @@ import server from '../index';
 
 use(chaiHttp);
 const should = _should();
-const sevenDaysFuture = (new Date(Date.now() + 435600000)).toISOString().slice(0, -1);
+const sevenDaysFuture = new Date(Date.now() + 435600000)
+  .toISOString()
+  .slice(0, -1);
 const meetup = {
   location: 'London',
   topic: 'Lorem ipsum dolor sit, amet',
@@ -51,8 +53,8 @@ const userLogins = {
 };
 
 const adminLogin = {
-  email: 'admin5@questioner.com',
-  password: 'Timetofly2',
+  email: process.env.ADMIN_EMAIL,
+  password: process.env.ADMIN_PASSWORD,
 };
 
 let userToken;
@@ -338,8 +340,7 @@ describe('/POST /api/v1/questions', () => {
       createdBy: 'user',
       meetup: '',
       title: 'Lorem ipsum dolor sit',
-      body:
-        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
+      body: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta, commodi',
       votes: '',
     };
     request(server)
@@ -368,7 +369,9 @@ describe('/POST /api/v1/meetups/:meetupId/rsvps', () => {
       .send(data33)
       .end((err, res) => {
         res.should.have.a.status(400);
-        res.body.errors[0].msg.should.equal('Special Characters not Allowed expect (.,_\'-)');
+        res.body.errors[0].msg.should.equal(
+          "Special Characters not Allowed expect (.,_'-)"
+        );
         res.body.should.a('object');
         done();
       });

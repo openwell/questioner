@@ -4,7 +4,6 @@ import db from '../db/index';
 import queries from '../db/queries';
 import errorHandler from '../middleware/errorHandler';
 
-
 class auth {
   static hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
