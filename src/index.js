@@ -1,6 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
+import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json';
 import questionRoute from './routes/questionRoutes';
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(logger('common'));
 app.use(express.json());
+app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use('/api/v1', questionRoute, authRoute, meetupRoute, commentRoute);
