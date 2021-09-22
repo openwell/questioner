@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sign-Up</title>
+    <link rel="stylesheet" href="./resources/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header class="row topnav">
+      <div class="logo" onclick="location.href='index.html'"></div>
+      <nav class="nav-links">
+        <ul>
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="meetups.html">MEET UPS</a></li>
+          <li><a href="login.html">LOGIN</a></li>
+          <li><a href="signup.html">SIGNUP</a></li>
+        </ul>
+      </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </header>
+    <section class="signup-section row">
+      <div id="alert" class="icon">
+        <small id="success"></small><small id="danger"></small>
+      </div>
+      <form action="" onsubmit=" return signUp()">
+        <h1>REGISTER</h1>
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label for="firstName">First Name</label>
+            <input
+              class="form-control"
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="John"
+              required
+              pattern="[a-zA-Z,._'-]{2,20}"
+              title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
+            />
+          </div>
+          <div class="form-group col-2 ">
+            <label for="lastName">Last Name</label>
+            <input
+              class="form-control"
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Doe"
+              required
+              pattern="[a-zA-Z,._'-]{2,20}"
+              title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="otherName">Other Name</label>
+          <input
+            class="form-control"
+            type="text"
+            id="otherName"
+            name="otherName"
+            placeholder="Your Other Name"
+            required
+            pattern="[a-zA-Z,._'-]{2,20}"
+            title="2 to 20 characters / WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            class="form-control"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email address"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">Mobile Number</label>
+          <input
+            class="form-control"
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            placeholder="08022****22"
+            pattern="[0-9]{11}"
+            title="min of 11 numbers"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="username">User Name</label>
+          <input
+            class="form-control"
+            type="text"
+            id="userName"
+            name="username"
+            placeholder="Username"
+            required
+            pattern="[a-zA-Z0-9,._'-]{4,30}"
+            title="4 to 30 characters / WhiteSpace and Special Characters not Allowed expect (.,_'-)"
+          />
+        </div>
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label for="pw1">Password</label>
+            <input
+              class="form-control"
+              class="form-control"
+              id="password"
+              type="password"
+              name="pw1"
+              placeholder="Password"
+              required
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              onchange="form.pw2.pattern = RegExp.escape(this.value);"
+              title="Password must contain at least 8 characters, including UPPER/lowercase and numbers"
+            />
+          </div>
+          <div class="form-group col-2">
+            <label for="username">Confirm Password</label>
+            <input
+              class="form-control"
+              type="password"
+              id="confirmPassword"
+              name="pw2"
+              placeholder="Password"
+              required
+              title="Please enter the same Password as above"
+            />
+          </div>
+          
+        </div>
+        <div class=""><button type="submit">Register</button></div>
+        <input type="text" name="registered" value="" hidden />
+        <input type="text" name="isAdmin" value="false" hidden />
+      </form>
+      <div class="cs-loader" id="cs-loader" hidden>
+        <div class="cs-loader-inner">
+          <label> ●</label><label> ●</label><label> ●</label><label> ●</label
+          ><label> ●</label><label> ●</label>
+        </div>
+      </div>
+    </section>
+    <footer>©Questioner 2018</footer>
+    <script src="./resources/js/main.js"></script>
+    <script>
+    errorToggler()
+    </script>
+  </body>
+</html>

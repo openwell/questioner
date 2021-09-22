@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Questioner</title>
+    <link rel="stylesheet" href="../resources/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <header class="topnav">
+      <div class="logo" onclick="window.location.href='../index.html'"></div>
+      <nav class="nav-links">
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../meetups.html">MEET UPS</a></li>
+          <li><a href="" onclick="return adminLogOut()">LOG OUT</a></li>
+        </ul>
+      </nav>
+      <a href="javascript:void(0);" class="icon" onclick="myFun()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </header>
+    <section class="user-dashboard-section row2">
+      <div class="user-details">
+        <span class="user-avatar"></span>
+        <p>Admin</p>
+      </div>
+      <div class="user-statistic-bar">
+        <form action="" class="admin-new-meetup-form" onsubmit="newMeetup()">
+          <h3>Create New Meet-Ups</h3>
+          <label for=""
+            >Meetup Topic
+            <input
+              type="text"
+              required
+              name="meetup-name"
+              id="new_meetup-name"
+              pattern="[a-zA-Z0-9 ,._'-]{5,100}"
+              title="5 to 100 characters / Special Characters not Allowed expect (.,_'-)"
+            /><br />
+          </label>
+
+          <label for=""
+            >Location<input
+              type="text"
+              required
+              name="location"
+              id="new_location"
+              pattern="[a-zA-Z0-9 ,._'-]{4,50}"
+              title="4 to 50 characters / Special Characters not Allowed expect (.,_'-)"
+            /><br />
+          </label>
+
+          <label for=""
+            >Date and Time
+            <input
+              type="datetime-local"
+              required
+              name="happening-on"
+              id="new_happeningon"
+            />
+          </label>
+
+          <button type="submit">Submit</button>
+        </form>
+        <div class="admin-top-feed">
+          <table id="admin_all_meetups">
+            <!-- table loads from db -->
+          </table>
+        </div>
+      </div>
+    </section>
+    <footer>©Questioner 2018</footer>
+
+    <script src="../resources/js/main.js"></script>
+    <script>
+      setMinDateTime();
+      checkAdminLogin();
+      loadAllMeetupAdmin();
+    </script>
+  </body>
+</html>
