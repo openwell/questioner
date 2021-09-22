@@ -1,6 +1,5 @@
-import { check, validationResult } from 'express-validator/check';
+import { check, validationResult } from 'express-validator';
 import errorHandler from './errorHandler';
-
 
 function validatorFunction(req, res, next) {
   const errors = validationResult(req);
@@ -20,13 +19,15 @@ function paramsValidation(req, res, next) {
   }
   if (/^\d*$/.test(params)) {
     return next();
-  } return errorHandler(400, res, 'params must be an integer');
+  }
+  return errorHandler(400, res, 'params must be an integer');
 }
 
 function validationHandlerForIntegerInput(arg, min, max) {
   return check(arg)
     .trim()
-    .matches(/^\d*$/).withMessage('regex')
+    .matches(/^\d*$/)
+    .withMessage('regex')
     .isLength({ min, max })
     .withMessage(`must be minimum of ${min} -${max} letters`)
     .isInt()
@@ -37,8 +38,9 @@ function validationHandlerForIntegerInput(arg, min, max) {
 function validationHandlerForStringInput(arg, min, max) {
   return check(arg)
     .trim()
-    .customSanitizer(value => value.replace(/\s+/g, ' '))
-    .matches(/^[a-zA-Z0-9 ,._'-]+$/i).withMessage("Special Characters not Allowed expect (.,_'-)")
+    .customSanitizer((value) => value.replace(/\s+/g, ' '))
+    .matches(/^[a-zA-Z0-9 ,._'-]+$/i)
+    .withMessage("Special Characters not Allowed expect (.,_'-)")
     .isLength({ min, max })
     .withMessage(`must be minimum of ${min} -${max} letters`)
     .isString()
@@ -50,7 +52,10 @@ function validationHandlerForStringInput(arg, min, max) {
 function validationHandlerForStringInput1(arg, min, max) {
   return check(arg)
     .trim()
-    .matches(/^[a-zA-Z,._'-]+$/i).withMessage("WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)")
+    .matches(/^[a-zA-Z,._'-]+$/i)
+    .withMessage(
+      "WhiteSpace, Integer and Special Characters not Allowed expect (.,_'-)"
+    )
     .isLength({ min, max })
     .withMessage(`must be minimum of ${min} -${max} letters`)
     .isString()
@@ -61,11 +66,14 @@ function validationHandlerForStringInput1(arg, min, max) {
 function validationHandlerForPassword(arg) {
   return check(arg)
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i')
-    .withMessage('Password must contain at least 8 characters, including 1 UPPER / 1 Lowercase a Number')
+    .withMessage(
+      'Password must contain at least 8 characters, including 1 UPPER / 1 Lowercase a Number'
+    )
     .custom((value, { req }) => {
       if (req.body.confirmPassword === undefined) {
         return false;
-      } return true;
+      }
+      return true;
     })
     .withMessage('Confirm password is required')
     .custom((value, { req }) => {
@@ -83,9 +91,12 @@ function validateHappeningOn(arg) {
       const inputDate = Date.parse(value);
       if (!Number(inputDate)) {
         return false;
-      } return value;
+      }
+      return value;
     })
-    .withMessage('happeningOn requires Date/time in this format (yyyy:mm:dd hh:mm:ss)')
+    .withMessage(
+      'happeningOn requires Date/time in this format (yyyy:mm:dd hh:mm:ss)'
+    )
     .custom((value, { req }) => {
       const inputDate = Date.parse(value);
       const currentDate = Date.now();
@@ -94,7 +105,9 @@ function validateHappeningOn(arg) {
       }
       return value;
     })
-    .withMessage('happeningOn requires future Date/time in this format (yyyy:mm:dd hh:mm:ss)');
+    .withMessage(
+      'happeningOn requires future Date/time in this format (yyyy:mm:dd hh:mm:ss)'
+    );
 }
 
 const middleware = {
@@ -110,30 +123,45 @@ const middleware = {
     validationHandlerForStringInput('body', 10, 200),
     validatorFunction,
   ],
-  rsvp: [
-    validationHandlerForStringInput('response', 2, 6),
-    validatorFunction,
-  ],
+  rsvp: [validationHandlerForStringInput('response', 2, 6), validatorFunction],
   comment: [
     validationHandlerForStringInput('comment', 2, 200),
     validationHandlerForIntegerInput('question', 1, 4),
     validatorFunction,
   ],
   login: [
-    check('email').trim().isEmail().escape().withMessage('Please provide a valid email'),
-    check('password').trim().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i')
-      .withMessage('Password must contain at least 8 characters, including 1 UPPER / 1 Lowercase a Number'),
+    check('email')
+      .trim()
+      .isEmail()
+      .escape()
+      .withMessage('Please provide a valid email'),
+    check('password')
+      .trim()
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, 'i')
+      .withMessage(
+        'Password must contain at least 8 characters, including 1 UPPER / 1 Lowercase a Number'
+      ),
     validatorFunction,
   ],
   user: [
     validationHandlerForStringInput1('firstName', 2, 20),
     validationHandlerForStringInput1('lastName', 2, 20),
     validationHandlerForStringInput1('otherName', 2, 20),
-    check('email').trim().isEmail().escape()
-      .normalizeEmail().withMessage('Please provide a valid email'),
+    check('email')
+      .trim()
+      .isEmail()
+      .escape()
+      .normalizeEmail()
+      .withMessage('Please provide a valid email'),
     validationHandlerForIntegerInput('phoneNumber', 11, 12),
-    check('userName').trim().matches(/^[a-zA-Z0-9,._'-]+$/i).withMessage("WhiteSpace and Special Characters not Allowed expect (.,_'-)")
-      .isLength({ min: 4, max: 30  }).withMessage('must be minimum of 4-30 letters'),
+    check('userName')
+      .trim()
+      .matches(/^[a-zA-Z0-9,._'-]+$/i)
+      .withMessage(
+        "WhiteSpace and Special Characters not Allowed expect (.,_'-)"
+      )
+      .isLength({ min: 4, max: 30 })
+      .withMessage('must be minimum of 4-30 letters'),
     validationHandlerForPassword('password'),
     validatorFunction,
   ],

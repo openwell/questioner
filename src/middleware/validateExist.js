@@ -2,7 +2,7 @@ import db from '../db/index';
 import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
-class validateExist {
+class ValidateExist {
   static async validate(table, value, message, res, next) {
     try {
       const { rows } = await db.query(queries.selectById(table, 'id', value));
@@ -15,13 +15,18 @@ class validateExist {
     }
   }
 
-
   static async checkMeetUpId(req, res, next) {
     let value = req.params.meetupId;
     if (req.body.meetup) {
-      value = (req.body.meetup);
+      value = req.body.meetup;
     }
-    validateExist.validate('meetups', value, 'Meetup-id Doesnt Exist', res, next);
+    ValidateExist.validate(
+      'meetups',
+      value,
+      'Meetup-id Doesnt Exist',
+      res,
+      next
+    );
   }
 
   static async checkQuestionId(req, res, next) {
@@ -29,8 +34,13 @@ class validateExist {
     if (req.body.question) {
       params = req.body.question;
     }
-    validateExist.validate('questions', params,
-      'Question-id Doesnt Exist', res, next);
+    ValidateExist.validate(
+      'questions',
+      params,
+      'Question-id Doesnt Exist',
+      res,
+      next
+    );
   }
 
   static async checkMeetUpEmpty(req, res, next) {
@@ -57,7 +67,6 @@ class validateExist {
     }
   }
 
-
   static async checkRSVP(req, res, next) {
     const meetup = req.params.meetupId;
     const responses = req.body.response;
@@ -67,7 +76,8 @@ class validateExist {
     try {
       const { rowCount } = await db.query(text, value);
       if (rowCount > 0) {
-        const text1 = 'UPDATE rsvp set response = $1 WHERE meetup_id = $2 returning meetup_id, response';
+        const text1 =
+          'UPDATE rsvp set response = $1 WHERE meetup_id = $2 returning meetup_id, response';
         const value1 = [responses, meetup];
         const { rows } = await db.query(text1, value1);
         return res.status(200).json({
@@ -99,5 +109,4 @@ class validateExist {
   }
 }
 
-
-export default validateExist;
+export default ValidateExist;

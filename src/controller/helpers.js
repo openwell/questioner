@@ -4,7 +4,7 @@ import db from '../db/index';
 import queries from '../db/queries';
 import errorHandler from '../middleware/errorHandler';
 
-class auth {
+class Auth {
   static hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
   }
@@ -14,12 +14,14 @@ class auth {
   }
 
   static generateToken(id, isadmin) {
-    const token = jwt.sign({
-      userId: id,
-      isAdmin: isadmin,
-    },
-    process.env.SECRET, { expiresIn: '1d' });
-    return token;
+    return jwt.sign(
+      {
+        userId: id,
+        isAdmin: isadmin,
+      },
+      process.env.SECRET,
+      { expiresIn: '1d' }
+    );
   }
 
   static async verifyToken(req, res, next) {
@@ -32,7 +34,9 @@ class auth {
       if (decoded.isAdmin === 'true') {
         return errorHandler(403, res, 'Token Forbidden');
       }
-      const { rows } = await db.query(queries.selectById('users', 'id', decoded.userId));
+      const { rows } = await db.query(
+        queries.selectById('users', 'id', decoded.userId)
+      );
       if (!rows[0]) {
         return errorHandler(401, res, 'Invalid token');
       }
@@ -53,7 +57,9 @@ class auth {
       if (decoded.isAdmin === 'false') {
         return errorHandler(403, res, 'Token Forbidden');
       }
-      const { rows } = await db.query(queries.selectById('admins', 'id', decoded.userId));
+      const { rows } = await db.query(
+        queries.selectById('admins', 'id', decoded.userId)
+      );
       if (!rows[0]) {
         return errorHandler(401, res, 'Invalid token');
       }
@@ -65,4 +71,4 @@ class auth {
   }
 }
 
-export default auth;
+export default Auth;

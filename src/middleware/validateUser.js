@@ -3,23 +3,27 @@ import auth from '../controller/helpers';
 import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
-class userValidation {
+class UserValidation {
   static async checkEmailExist(req, res, next) {
     try {
-      const { rowCount } = await db.query(queries.selectById('users', 'email', req.body.email));
+      const { rowCount } = await db.query(
+        queries.selectById('users', 'email', req.body.email)
+      );
       if (rowCount > 0) {
         return next(409);
       }
       return next();
     } catch (err) {
+      console.log(err);
       return errorHandler(500, res, err);
     }
   }
 
-
   static async checkEmailPassword(req, res, next) {
     try {
-      const { rows } = await db.query(queries.selectById('users', 'email', req.body.email));
+      const { rows } = await db.query(
+        queries.selectById('users', 'email', req.body.email)
+      );
       if (!rows[0]) {
         return errorHandler(401, res, 'Invalid Email');
       }
@@ -33,5 +37,4 @@ class userValidation {
   }
 }
 
-
-export default userValidation;
+export default UserValidation;

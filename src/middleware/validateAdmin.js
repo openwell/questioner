@@ -3,10 +3,12 @@ import auth from '../controller/helpers';
 import queries from '../db/queries';
 import errorHandler from './errorHandler';
 
-class adminValidation {
+class AdminValidation {
   static async checkEmailPassword(req, res, next) {
     try {
-      const { rows } = await db.query(queries.selectById('admins', 'email', req.body.email));
+      const { rows } = await db.query(
+        queries.selectById('admins', 'email', req.body.email)
+      );
       if (!rows[0]) {
         return errorHandler(401, res, 'Invalid Email');
       }
@@ -20,4 +22,4 @@ class adminValidation {
   }
 }
 
-export default adminValidation;
+export default AdminValidation;
