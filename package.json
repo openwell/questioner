@@ -12,12 +12,13 @@
     "test": "npm run database && nyc mocha --require @babel/register --require @babel/polyfill --timeout 10000 ./src/test/",
     "coverage": "nyc report --reporter=text-lcov | coveralls && nyc report --reporter=lcov",
     "lint": "eslint --fix ./src/index.js ./src/controller/",
-    "database": "npm run dropTables && npm run createTables && npm run foreignKeys && npm run admin",
-    "dropTables": "babel-node ./src/db/dropTables.js",
-    "createTables": "babel-node ./src/db/createTables.js",
-    "emptyTables": "babel-node ./src/db/emptyTables.js",
-    "foreignKeys": "babel-node ./src/db/foreignTables.js",
-    "admin": "babel-node ./src/db/adminModel.js"
+    "database": "npm run drop-tables && npm run create-tables && npm run foreign-keys && npm run admin",
+    "drop-tables": "babel-node ./src/db/dropTables.js",
+    "create-tables": "babel-node ./src/db/createTables.js",
+    "empty-tables": "babel-node ./src/db/emptyTables.js",
+    "foreign-keys": "babel-node ./src/db/foreignTables.js",
+    "admin": "babel-node ./src/db/adminModel.js",
+    "deploy-ui": "gh-pages -d UI"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
+    "gh-pages": "^3.2.3",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
